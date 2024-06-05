@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import Input from "../../components/input";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../../components/button";
-import useRequest from "../../components/hooks/use-request";
+// import Button from "../../components/button";
+// import useRequest from "../../components/hooks/use-request";
 import { CircleLoader } from "react-spinners";
-import Logo from "../../assets/Logo Desktop.svg";
-import Visible from "../../assets/Eye.svg";
-import Invisible from "../../assets/eye-regular.svg";
-import { showToast } from "../../components/toast";
+// import Logo from "../../assets/Logo Desktop.svg";
+// import Visible from "../../assets/Eye.svg";
+// import Invisible from "../../assets/eye-regular.svg";
+// import { showToast } from "../../components/toast";
+import Input from "../../component/input";
+import Card from "../../component/cards";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loading, makeRequest } = useRequest("/auth/login", "POST");
+  // const { loading, makeRequest } = useRequest("/auth/login", "POST");
   const { handleSubmit, control } = useForm();
   const [viewPassword, setViewPassword] = useState("");
   const handleShowPassword = () => {
@@ -25,35 +26,36 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const handleLogin = handleSubmit(async (formData) => {
-    const user = {
-      email: formData.email,
-      password: formData.password,
-    };
-    const [response] = await makeRequest(user);
-    if (response.status) {
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response?.data?.user));
-      showToast(response.message, true, {
-        position: "top-center",
-      });
-      navigate("/")
-    } else {
-      showToast(response.message, false, {
-        position: "top-center",
-      });
-      navigate("/login")
-    }
-  });
+  // const handleLogin = handleSubmit(async (formData) => {
+  //   const user = {
+  //     email: formData.email,
+  //     password: formData.password,
+  //   };
+  //   const [response] = await makeRequest(user);
+  //   if (response.status) {
+  //     localStorage.setItem("token", response.data.token);
+  //     localStorage.setItem("user", JSON.stringify(response?.data?.user));
+  //     showToast(response.message, true, {
+  //       position: "top-center",
+  //     });
+  //     navigate("/")
+  //   } else {
+  //     showToast(response.message, false, {
+  //       position: "top-center",
+  //     });
+  //     navigate("/login")
+  //   }
+  // });
 
   return (
+    <Card>
     <div className="flex flex-col mt-10 lg:w-[40%] px-5 lg:px-0 mx-auto ">
-      <img src={Logo} alt="logo" className="h-[27px]" />
+      {/* <img src={Logo} alt="logo" className="h-[27px]" /> */}
       <p className="font-semibold text-md md:text-[26px] text-center mt-3">
         Welcome Back!
       </p>
       <span className="text-[14px] font-light text-center">Sign in as an Admin User</span>
-      <form className="mt-6 md:mt-8" onSubmit={handleLogin}>
+      <form className="mt-6 md:mt-8">
         <div className="gap-4 md:gap-6 mb-5">
           <Controller
             name="email"
@@ -108,11 +110,11 @@ const Login = () => {
                     className="w-5 h-5 absolute top-1/2 right-2 transform -translate-y-1/2 mt-3 md:mt-4"
                     type="button"
                   >
-                    {viewPassword ? (
+                    {/* {viewPassword ? (
                       <img src={Invisible} alt="password" />
                     ) : (
                       <img src={Visible} alt="password" />
-                    )}
+                    )} */}
                   </button>
               </div>
             )}
@@ -143,16 +145,17 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center items-center mt-10">
-          <Button size="md" variant="primary" type="submit">
+          {/* <Button size="md" variant="primary" type="submit">
             {loading ? (
               <CircleLoader color="#ffffff" loading={loading} size={20} />
             ) : (
               "  Sign in"
             )}
-          </Button>
+          </Button> */}
         </div>
       </form>
     </div>
+    </Card>
   );
 };
 
