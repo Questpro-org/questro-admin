@@ -10,10 +10,10 @@ const MainRoutes = {
     </AuthGuard>
   ),
   children: [
-    {
-      path: "/",
-      element: <DashboardDefault />,
-    },
+    // {
+    //   path: "/",
+    //   element: <DashboardDefault />,
+    // },
 
   ],
 };
