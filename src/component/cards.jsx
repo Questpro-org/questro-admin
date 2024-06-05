@@ -7,10 +7,10 @@ const Card = (props) => {
 
   return (
     <div className=" bg-image h-screen p-14">
-      <Icon name="questIcon" className="" />
+      <Icon name="questIcon"/>
       <div
         style={style}
-        className="rounded-xl w-1/2 mx-auto bg-white shadow-sm border mt-10 p-4 md:px-12"
+        className="rounded w-[40%] mx-auto bg-white shadow-sm border mt-10 p-4 md:px-12"
       >
         {children}
       </div>
