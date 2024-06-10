@@ -127,7 +127,7 @@ const Login = () => {
             </p>
 
           <div className="flex justify-center items-center mt-5">
-            <Button size="lg" variant="primary" type="submit">
+            <Button size="lg" variant="primary" type="submit" href='/'>
             {loading ? (
               <CircleLoader color="#ffffff" loading={loading} size={20} />
             ) : (

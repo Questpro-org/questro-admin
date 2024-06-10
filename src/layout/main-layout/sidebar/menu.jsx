@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Icon from "../../../assets/icon";
 
 const MenuItem = ({ to, label, icon }) => {
   const location = useLocation();
   const active = location.pathname === to;
-  const isSettings = to === "/settings";
   const [backgroundBlue, setBackgroundBlue] = useState(false);
 
   const handleMouseEnter = () => {
@@ -18,16 +18,15 @@ const MenuItem = ({ to, label, icon }) => {
   return (
     <Link to={to}>
       <div
-        className={`flex gap-6 items-center mb-6 p-2 rounded-md font-semibold fill-base cursor-pointer
-          ${active ? "bg-[#0979A1CC] ml-4 text-[#fff]" : "hover:bg-gray-100"}
-          ${isSettings ? "mt-20" : ""}`}
+        className={`flex gap-6 items-center mb-3 p-3 rounded-md font-semibold fill-base cursor-pointer
+          ${active ? "bg-[#0979A1CC]  text-[#fff]" : "hover:bg-[#0979A1CC] text-white"}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* <Icon
+        <Icon
           name={icon}
           className={backgroundBlue ? "fill-white" : "fill-white"}
-        /> */}
+        />
         {label}
       </div>
     </Link>
@@ -36,23 +35,14 @@ const MenuItem = ({ to, label, icon }) => {
 
 const Menu = () => {
   const menuItems = [
-    { to: "/", icon: "account", label: "Accounts" },
+    { to: "/", icon: "homeicon", label: "Dashboard" },
     {
-      to: "/transactions",
-      icon: "transaction",
-      label: "Transactions",
+      to: "/agents",
+      icon: "homeicon",
+      label: "Agents",
     },
-    { to: "/refunds", icon: "refund", label: "Refunds" },
-    { to: "/mediation", icon: "mediation", label: "Mediation" },
-    { to: "/blacklist", icon: "blacklist", label: "Blacklist" },
-    {
-      to: "/support",
-      icon: "support",
-      label: "Customer Support",
-    },
-    { to: "/analytics", icon: "analytics", label: "Analytics" },
-    { to: "/admins", icon: "account", label: "Admins" },
-    { to: "/settings", icon: "settings", label: "Settings" },
+    { to: "/updates", icon: "homeicon", label: "Updates" },
+    { to: "/settings", icon: "homeicon", label: "Settings" },
   ];
 
   return (
