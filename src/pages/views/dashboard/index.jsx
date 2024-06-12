@@ -1,6 +1,7 @@
 import React from "react";
 import Icon from "../../../assets/icon";
 import HomeDashboard from "./home";
+import NotificationsTable from "./notification-table";
 
 const Dashboard = () => {
   return (
@@ -13,6 +14,7 @@ const Dashboard = () => {
       </div>
 
       <HomeDashboard />
+      <NotificationsTable />
     </>
   );
 };
