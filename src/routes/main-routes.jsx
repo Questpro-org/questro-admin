@@ -9,9 +9,9 @@ import AuthGuard from "../utilities/constant/private-route";
 const MainRoutes = {
   path: "/",
   element: (
-    // <AuthGuard>
+    <AuthGuard>
       <MainLayout />
-    // </AuthGuard>
+    </AuthGuard>
   ),
   children: [
     {

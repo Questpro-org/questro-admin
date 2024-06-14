@@ -1,8 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../../../assets/icon";
 import AgentTable from "./agent-table";
+import useRequest from "../../../component/hook/use-request";
 
 function Agents() {
+  const { makeRequest } = useRequest("/admin/agents", "GET");
+  const [agent, setAgent] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  // const params = new URLSearchParams(new URL(window.location.href).search);
+  const params = new URLSearchParams(new URL(window.location.href));
+  const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10;
+
+  function updateUrlParams(params) {
+    const url = new URL(window.location.href);
+    Object.keys(params).forEach((key) => {
+      url.searchParams.set(key, params[key].toString());
+    });
+    window.history.pushState({}, "", url.toString());
+  }
+
+  useEffect(() => {
+    const storedSearchQuery = params.get("search") || "";
+    const storedStatus = params.get("status") || "";
+
+    setSearchQuery(storedSearchQuery);
+    setSelectedStatus(storedStatus);
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  useEffect(() => {
+    updateUrlParams({
+      page: currentPage,
+      search: searchQuery,
+      status: selectedStatus,
+    });
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, selectedStatus, currentPage]);
+
+  // const fetchData = async () => {
+  //   const [response] = await makeRequest();
+  //   setAgent(response.data?.data);
+  // };
+
+  async function fetchData() {
+    const page = currentPage;
+    const limit = itemsPerPage;
+
+    const params = {
+      limit: limit,
+      page: page,
+    };
+
+    if (selectedStatus) {
+      params.status = selectedStatus;
+    }
+    if (searchQuery) {
+      params.search = searchQuery;
+    }
+
+    const [response] = await makeRequest();
+    setAgent(response.data?.data?.docs);
+    setTotalPages(Math.ceil(response.data?.data?.totalPages));
+  }
+
+  function handlePageChange(page) {
+    setCurrentPage(page);
+  }
+
+  function handleSearchChange(event) {
+    setSearchQuery(event.target.value);
+  }
+
+  function handleStatusChange(event) {
+    setSelectedStatus(event.target.value);
+  }
+
+  console.log(agent);
+
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
@@ -48,11 +127,14 @@ function Agents() {
             <option value="inactive">Inactive</option>
             <option value="blocked">Blocked</option>
           </select>
-
         </section>
       </div>
 
-      <AgentTable />
+      <AgentTable
+        agent={agent}
+        selectedStatus={selectedStatus}
+        handleStatusChange={handleStatusChange}
+      />
     </>
   );
 }

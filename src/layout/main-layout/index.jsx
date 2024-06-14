@@ -6,6 +6,8 @@ import classNames from "classnames";
 import Icon from "../../assets/icon";
 
 const DashboardLayout = () => {
+  const user = localStorage.getItem("user");
+  const parsedUser = user ? JSON.parse(user) : null;
   const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const sidebarBackgroundCheck = pathname.split("/")[1];
@@ -25,9 +27,10 @@ const DashboardLayout = () => {
   };
 
   const handleLogout = () => {
-    // Add logout logic here
-    console.log("User logged out");
-  };
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.reload()
+    };
 
   return (
     <div className="max-w-1500 mx-auto flex flex-col md:flex-row">
@@ -46,7 +49,7 @@ const DashboardLayout = () => {
               <Icon name="questicon" />
               <h3 className="text-[15px] text-white font-bold">
                 {" "}
-                Questpro <span className="font-normal block">Admin</span>
+                Questpro <span className="font-normal block">{parsedUser?.roles}</span>
               </h3>
             </section>
             <button onClick={handleDropdownToggle}>

@@ -5,12 +5,12 @@ import Input from "../../component/input";
 import { CircleLoader } from "react-spinners";
 import Button from "../../component/button";
 import Reset from "./reset";
+import useRequest from "../../component/hook/use-request";
 
 function ForgotPassword() {
-  // const { loading, makeRequest } = useRequest("/users/forgot-password", "POST");
+  const { loading, makeRequest } = useRequest("/users/forgot-password", "POST");
   const { handleSubmit, control } = useForm();
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState();
 
   // const handleSubmitPassword = handleSubmit(async (formData) => {
   //     const userEmail = {

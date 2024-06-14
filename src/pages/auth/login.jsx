@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-// import useRequest from "../../components/hooks/use-request";
 import { CircleLoader } from "react-spinners";
-// import Logo from "../../assets/Logo Desktop.svg";
-// import Visible from "../../assets/Eye.svg";
-// import Invisible from "../../assets/eye-regular.svg";
-// import { showToast } from "../../components/toast";
 import Input from "../../component/input";
 import Card from "../../component/cards";
 import Button from "../../component/button";
+import useRequest from "../../component/hook/use-request";
+import { showToast } from "../../component/toast";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState()
-  // const { loading, makeRequest } = useRequest("/auth/login", "POST");
+  const { loading, makeRequest } = useRequest("/admin/login", "POST");
   const { handleSubmit, control } = useForm();
   const [viewPassword, setViewPassword] = useState("");
   const handleShowPassword = () => {
@@ -25,26 +21,26 @@ const Login = () => {
     event.preventDefault();
   };
 
-  // const handleLogin = handleSubmit(async (formData) => {
-  //   const user = {
-  //     email: formData.email,
-  //     password: formData.password,
-  //   };
-  //   const [response] = await makeRequest(user);
-  //   if (response.status) {
-  //     localStorage.setItem("token", response.data.token);
-  //     localStorage.setItem("user", JSON.stringify(response?.data?.user));
-  //     showToast(response.message, true, {
-  //       position: "top-center",
-  //     });
-  //     navigate("/")
-  //   } else {
-  //     showToast(response.message, false, {
-  //       position: "top-center",
-  //     });
-  //     navigate("/login")
-  //   }
-  // });
+  const handleLogin = handleSubmit(async (formData) => {
+    const user = {
+      email: formData.email,
+      password: formData.password,
+    };
+    const [response, status] = await makeRequest(user);
+    if (status === 200) {
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response?.data?.superAdmin));
+      showToast(response?.message, true, {
+        position: "top-center",
+      });
+      navigate("/")
+    } else {
+      showToast(response?.message, false, {
+        position: "top-center",
+      });
+      navigate("/login")
+    }
+  });
 
   return (
     <Card>
@@ -54,7 +50,7 @@ const Login = () => {
           Welcome to Quest
           <br /> Properties
         </p>
-        <form className="mt-6 md:mt-8">
+        <form className="mt-6 md:mt-8" onSubmit={handleLogin}>
           <div className="gap-4 md:gap-6 mb-5">
             <Controller
               name="email"
@@ -111,11 +107,6 @@ const Login = () => {
                     className="w-5 h-5 absolute top-1/2 right-2 transform -translate-y-1/2 mt-3 md:mt-4"
                     type="button"
                   >
-                    {/* {viewPassword ? (
-                      <img src={Invisible} alt="password" />
-                    ) : (
-                      <img src={Visible} alt="password" />
-                    )} */}
                   </button>
                 </div>
               )}
@@ -127,7 +118,7 @@ const Login = () => {
             </p>
 
           <div className="flex justify-center items-center mt-5">
-            <Button size="lg" variant="primary" type="submit" href='/'>
+            <Button size="lg" variant="primary" type="submit">
             {loading ? (
               <CircleLoader color="#ffffff" loading={loading} size={20} />
             ) : (

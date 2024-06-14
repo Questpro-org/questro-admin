@@ -7,7 +7,8 @@ const Table = ({
   onUserClick,
   selectedUserId,
   currentPage,
-  onPageChange
+  onPageChange,
+  PlaceholderImage
 }) => {
   const getStatusColor = (status) => {
     switch (status) {
@@ -39,32 +40,46 @@ const Table = ({
           ))}
         </tr>
       </thead>
-      <tbody className="text-[12px]">
-        {data?.map((row, rowIndex) => (
-          <tr key={rowIndex}>
+      <tbody className="text-[12px]" >
+        {data.map((row, rowIndex) => (
+          <tr key={rowIndex} 
+          >
             {columns.map((column, colIndex) => (
               <td key={colIndex} className="pt-5">
                 {column.accessor === "created_at" || column.accessor === "createdAt" ? (
                   formatDate(row[column.accessor])
                 ) : column.accessor === "profilePhoto" ? (
-                //   <img
-                //     src={row[column.accessor] ? row[column.accessor] : PlaceholderImage}
-                //     width={40}
-                //     alt="profile"
-                //   />
-                <p></p>
-                ) : column.accessor === "id" || column.accessor === "orderId" ? (
-                  <button onClick={() => onUserClick(row[column.accessor])}>
+                  <img
+                    src={
+                      row[column.accessor]
+                        ? row[column.accessor]
+                        : PlaceholderImage
+                    }
+                    className="rounded-full w-[40px] h-[40px]"
+                    alt="profile"
+                  />
+                ) : column.accessor === "id" ? (
+                  <button 
+                  // onClick={() => onUserClick(row["id"])}
+                  >
+                    <Icon name="dotIcon" />
+                  </button>
+                ) : column.accessor === "_id" ? (
+                  <button 
+                  // onClick={() => onUserClick(row["_id"])}
+                  >
                     <Icon name="dotIcon" />
                   </button>
                 ) : column.accessor === "phone" && !row[column.accessor] ? (
                   "N/A"
                 ) : column.accessor === "status" ? (
                   <p
-                    className="-mt-1 text-[12px] text-center font-normal w-20 p-1 rounded-lg"
-                    style={{ backgroundColor: getStatusColor(row[column.accessor]) }}
+                    className="-mt-1 text-[12px] p-1 text-center font-normal w-20 rounded-md"
+                    style={{
+                      backgroundColor: getStatusColor(row[column.accessor]),
+                    }}
                   >
-                    {row[column.accessor]}
+                    {(row[column.accessor])}
                   </p>
                 ) : (
                   row[column.accessor]
