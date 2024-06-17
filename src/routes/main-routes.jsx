@@ -1,5 +1,6 @@
 import MainLayout from "../layout/main-layout";
 import Agents from "../pages/views/agents";
+import AgentDetails from "../pages/views/agents/agent-details";
 import Dashboard from "../pages/views/dashboard";
 import Settings from "../pages/views/settings";
 import Updates from "../pages/views/updates";
@@ -29,6 +30,10 @@ const MainRoutes = {
     {
       path: "/settings",
       element: <Settings />,
+    },
+    {
+      path: "/agent/:_id",
+      element: <AgentDetails />,
     },
   ],
 };

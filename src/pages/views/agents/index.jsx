@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import Icon from "../../../assets/icon";
 import AgentTable from "./agent-table";
 import useRequest from "../../../component/hook/use-request";
+import Pagination from "../../../component/pagination/pagination";
 
 function Agents() {
-  const { makeRequest } = useRequest("/admin/agents", "GET");
-  const [agent, setAgent] = useState();
+  const userToken = localStorage.getItem("token");
+  const { makeRequest } = useRequest("/admin/agents", "GET",{
+    Authorization: `Bearer ${userToken}`,
+  });
+  const [agent, setAgent] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  // const params = new URLSearchParams(new URL(window.location.href).search);
-  const params = new URLSearchParams(new URL(window.location.href));
+  const params = new URLSearchParams(new URL(window.location.href).search);
   const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
@@ -29,7 +32,6 @@ function Agents() {
     setSearchQuery(storedSearchQuery);
     setSelectedStatus(storedStatus);
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {
@@ -39,34 +41,37 @@ function Agents() {
       status: selectedStatus,
     });
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedStatus, currentPage]);
-
-  // const fetchData = async () => {
-  //   const [response] = await makeRequest();
-  //   setAgent(response.data?.data);
-  // };
 
   async function fetchData() {
     const page = currentPage;
     const limit = itemsPerPage;
-
+  
     const params = {
       limit: limit,
       page: page,
+      ...(selectedStatus ? { status: selectedStatus } : {}),
     };
-
-    if (selectedStatus) {
-      params.status = selectedStatus;
-    }
+  
+    const [response] = await makeRequest(undefined, params);
+    let agents = response.data?.data?.docs || [];
+  
+    // Client-side filtering for search query
     if (searchQuery) {
-      params.search = searchQuery;
+      const lowerSearchQuery = searchQuery.toLowerCase();
+      agents = agents.filter(agent => 
+        agent.agencyName?.toLowerCase().includes(lowerSearchQuery) ||
+        agent.firstname?.toLowerCase().includes(lowerSearchQuery) ||
+        agent.lastname?.toLowerCase().includes(lowerSearchQuery) ||
+        agent.email?.toLowerCase().includes(lowerSearchQuery)
+      );
     }
-
-    const [response] = await makeRequest();
-    setAgent(response.data?.data?.docs);
+  
+    setAgent(agents);
     setTotalPages(Math.ceil(response.data?.data?.totalPages));
   }
+  console.log('krvnjnjrv', agent)
+  
 
   function handlePageChange(page) {
     setCurrentPage(page);
@@ -79,8 +84,6 @@ function Agents() {
   function handleStatusChange(event) {
     setSelectedStatus(event.target.value);
   }
-
-  console.log(agent);
 
   return (
     <>
@@ -98,34 +101,22 @@ function Agents() {
             className="outline-none border-none bg-transparent"
             id="input-placeholder"
             placeholder="Search agent"
-            //   value={searchQuery}
-            //   onChange={handleSearchChange}
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
         </div>
 
         <section className="flex gap-4">
           <select
             className=" custom-select border px-3 py-1 bg-[#fff] text-[#459BDA] text-[14px] font-semibold rounded-full border-[#459BDA]"
-            // value={selectedStatus}
-            // onChange={handleStatusChange}
+            value={selectedStatus}
+            onChange={handleStatusChange}
           >
-            <option value="">LGA</option>
+            <option value="">All</option>
             <option value="active">Active</option>
+            <option value="pending">Pending</option>
             <option value="suspended">Suspended</option>
-            <option value="inactive">Inactive</option>
-            <option value="blocked">Blocked</option>
-          </select>
-
-          <select
-            className="border text-[14px] font-semibold px-3 py-1 bg-[#fff] text-[#459BDA] rounded-full border-[#459BDA]"
-            // value={selectedStatus}
-            // onChange={handleStatusChange}
-          >
-            <option value="">Status</option>
-            <option value="active">Active</option>
-            <option value="suspended">Suspended</option>
-            <option value="inactive">Inactive</option>
-            <option value="blocked">Blocked</option>
+            <option value="deactivated">Deactivated</option>
           </select>
         </section>
       </div>
@@ -135,6 +126,14 @@ function Agents() {
         selectedStatus={selectedStatus}
         handleStatusChange={handleStatusChange}
       />
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </>
   );
 }

@@ -17,6 +17,7 @@ const Table = ({
       case "confirmed":
         return "#D1FFC9";
       case "pending":
+        return "#F2F4F7"
       case "delivered":
         return "#CFF0FC";
       case "failed":
@@ -74,10 +75,11 @@ const Table = ({
                   "N/A"
                 ) : column.accessor === "status" ? (
                   <p
-                    className="-mt-1 text-[12px] p-1 text-center font-normal w-20 rounded-md"
+                    className="-mt-1 text-[12px] p-1 text-center font-normal w-20 rounded-md cursor-pointer"
                     style={{
                       backgroundColor: getStatusColor(row[column.accessor]),
                     }}
+                      onClick={() => onUserClick(row["_id"])}
                   >
                     {(row[column.accessor])}
                   </p>

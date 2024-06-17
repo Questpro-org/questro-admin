@@ -15,7 +15,13 @@ const DashboardLayout = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    if (sidebarBackgroundCheck === "" || sidebarBackgroundCheck === "agents" || sidebarBackgroundCheck === "updates" || sidebarBackgroundCheck === "settings") {
+    if (
+      sidebarBackgroundCheck === "" ||
+      sidebarBackgroundCheck === "agents" ||
+      sidebarBackgroundCheck === "updates" ||
+      sidebarBackgroundCheck === "settings" ||
+      sidebarBackgroundCheck === "agent"
+    ) {
       setSidebarOpen(true);
     } else {
       setSidebarOpen(false);
@@ -27,10 +33,10 @@ const DashboardLayout = () => {
   };
 
   const handleLogout = () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.reload()
-    };
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
 
   return (
     <div className="max-w-1500 mx-auto flex flex-col md:flex-row">
@@ -49,7 +55,8 @@ const DashboardLayout = () => {
               <Icon name="questicon" />
               <h3 className="text-[15px] text-white font-bold">
                 {" "}
-                Questpro <span className="font-normal block">{parsedUser?.roles}</span>
+                Questpro{" "}
+                <span className="font-normal block">{parsedUser?.roles}</span>
               </h3>
             </section>
             <button onClick={handleDropdownToggle}>
@@ -57,10 +64,11 @@ const DashboardLayout = () => {
             </button>
           </div>
           {dropdownOpen && (
-            <div className="absolute w-[12%] h-[60px] left-8 mt-2 bg-white shadow-lg rounded-md" onClick={handleLogout}>
-              <button
-                className="block px-4 py-4 text-[#FF0000] font-medium hover:bg-gray-100"
-              >
+            <div
+              className="absolute w-[12%] h-[60px] left-8 mt-2 bg-white shadow-lg rounded-md"
+              onClick={handleLogout}
+            >
+              <button className="block px-4 py-4 text-[#FF0000] font-medium hover:bg-gray-100">
                 Logout
               </button>
             </div>
@@ -69,13 +77,10 @@ const DashboardLayout = () => {
         </aside>
       )}
       <main
-        className={classNames(
-          "flex-grow transition-all duration-300",
-          {
-            "": sidebarOpen,
-            "pl-2 ": !sidebarOpen,
-          }
-        )}
+        className={classNames("flex-grow transition-all duration-300", {
+          "": sidebarOpen,
+          "pl-2 ": !sidebarOpen,
+        })}
       >
         <Outlet />
       </main>

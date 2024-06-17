@@ -2,37 +2,39 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import Table from "../../../component/table";
+import { capitalizeFirstLetter } from "../../../utilities/function";
 
 const AgentTable = ({
   agent,
   selectedStatus,
-  handleStatusChange,
-  activeTab,
 }) => {
   const navigate = useNavigate();
-  console.log('jhvxdfgvbnm', agent)
   const [filteredData, setFilteredData] = useState([]);
   const columns = [
+    { header: "Name", accessor: "fullName" },  
     { header: "Email", accessor: "email" },
-    { header: "LGA", accessor: "phone" },
+    { header: "Phone", accessor: "phone" },
     { header: "Status", accessor: "status" },
     { header: "Joined On", accessor: "createdAt" },
     { header: "", accessor: "_id" },
   ];
 
   useEffect(() => {
-    const filtered = agent?.filter((user) => {
-      if (user) {
-        return true;
+    const filtered = agent?.map((user) => {
+      if (user?.status) {
+        return {
+          ...user,
+          fullName: `${capitalizeFirstLetter(user.firstname)} ${capitalizeFirstLetter(user.lastname)}`
+        };
       }
-      return false;
-    });
+      return null;
+    })
     setFilteredData(filtered);
   }, [agent, selectedStatus]);
 
-  // const handleUserClick = (id) => {
-  //   navigate(`/account/details/${id}`);
-  // };
+  const handleUserClick = (_id) => {
+    navigate(`/agent/${_id}`);
+  };
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
@@ -41,7 +43,7 @@ const AgentTable = ({
           columns={columns}
           data={filteredData}
           selectedUserId={null}
-          // onUserClick={handleUserClick}
+          onUserClick={handleUserClick}
         />
       ) : (
         <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">

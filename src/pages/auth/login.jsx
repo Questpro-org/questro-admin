@@ -45,7 +45,6 @@ const Login = () => {
   return (
     <Card>
       <div className="flex flex-col mt-10 lg:w-[80%] px-5 lg:px-0 mx-auto ">
-        {/* <img src={Logo} alt="logo" className="h-[27px]" /> */}
         <p className="custom-font md:text-[30px] font-black text-center text-[#459BDA] ">
           Welcome to Quest
           <br /> Properties
