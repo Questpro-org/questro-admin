@@ -9,7 +9,7 @@ import useRequest from "../../component/hook/use-request";
 import { showToast } from "../../component/toast";
 
 function ForgotPassword() {
-  const { loading, makeRequest } = useRequest("/users/forgot-password", "POST");
+  const { loading, makeRequest } = useRequest("/admin/forgot-password", "POST");
   const { handleSubmit, control } = useForm();
   const [success, setSuccess] = useState(false);
 
