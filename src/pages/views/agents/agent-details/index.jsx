@@ -36,7 +36,7 @@ const AgentDetails = () => {
         <Back />
         <h2 className="text-[14px] hidden md:block mt-4">Back to projects</h2>
       </div>
-      <AgentDetail agent={selectedAgent} />
+      <AgentDetail agent={selectedAgent} _id={_id} />
     </>
   );
 };

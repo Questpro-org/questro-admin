@@ -70,7 +70,6 @@ function Agents() {
     setAgent(agents);
     setTotalPages(Math.ceil(response.data?.data?.totalPages));
   }
-  console.log('krvnjnjrv', agent)
   
 
   function handlePageChange(page) {

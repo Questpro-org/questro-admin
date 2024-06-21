@@ -340,6 +340,7 @@ const Icon = ({ name, className }) => {
       );
 
     case "cancelIcon":
+
       return (
         <svg
         className={className}
@@ -366,7 +367,8 @@ const Icon = ({ name, className }) => {
           />
         </svg>
       );
-    default:
+  
+      default:
       return null; // or render a default icon here if needed
   }
 };

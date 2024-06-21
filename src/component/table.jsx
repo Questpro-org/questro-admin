@@ -1,23 +1,31 @@
-
+import React, { useState } from "react";
 import Icon from "../assets/icon";
-import { formatDate } from "../utilities/function";
-const Table = ({
-  columns,
-  data,
-  onUserClick,
-  selectedUserId,
-  currentPage,
-  onPageChange,
-  PlaceholderImage
-}) => {
+import { capitalizeFirstLetter, formatDate } from "../utilities/function";
+
+const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+
+  const handleDropdownToggle = (rowId) => {
+    setDropdownOpen(dropdownOpen === rowId ? null : rowId);
+  };
+
+  const handleEdit = (rowId) => {
+    setDropdownOpen(null);
+  };
+
+  const handleDelete = (rowId) => {
+    setDropdownOpen(null);
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case "paid":
       case "completed":
+        return "#ECFDF3";
       case "confirmed":
         return "#D1FFC9";
       case "pending":
-        return "#F2F4F7"
+        return "#F2F4F7";
       case "delivered":
         return "#CFF0FC";
       case "failed":
@@ -25,6 +33,31 @@ const Table = ({
         return "#FFE2E2";
       case "inactive":
         return "#D9D9D9";
+      case "active":
+        return "#ECFDF3";
+      default:
+        return "transparent";
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case "paid":
+      case "completed":
+        return "#008138";
+      case "confirmed":
+        return "#D1FFC9";
+      case "pending":
+        return "#344054";
+      case "delivered":
+        return "#CFF0FC";
+      case "failed":
+      case "cancelled":
+        return "#FFE2E2";
+      case "inactive":
+        return "#D9D9D9";
+      case "active":
+        return "#008138";
       default:
         return "transparent";
     }
@@ -41,13 +74,21 @@ const Table = ({
           ))}
         </tr>
       </thead>
-      <tbody className="text-[12px]" >
+      <tbody className="text-[12px]">
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex} 
-          >
+          <tr key={rowIndex} className="hover:bg-gray-100">
             {columns.map((column, colIndex) => (
-              <td key={colIndex} className="pt-5">
-                {column.accessor === "created_at" || column.accessor === "createdAt" ? (
+              <td
+                key={colIndex}
+                className="h-14 border-b-[2px] relative cursor-pointer"
+                onClick={() =>
+                  column.accessor === "id" || column.accessor === "_id"
+                    ? null
+                    : onUserClick(row["_id"])
+                }
+              >
+                {column.accessor === "created_at" ||
+                column.accessor === "createdAt" ? (
                   formatDate(row[column.accessor])
                 ) : column.accessor === "profilePhoto" ? (
                   <img
@@ -59,18 +100,28 @@ const Table = ({
                     className="rounded-full w-[40px] h-[40px]"
                     alt="profile"
                   />
-                ) : column.accessor === "id" ? (
-                  <button 
-                  // onClick={() => onUserClick(row["id"])}
-                  >
-                    <Icon name="dotIcon" />
-                  </button>
-                ) : column.accessor === "_id" ? (
-                  <button 
-                  // onClick={() => onUserClick(row["_id"])}
-                  >
-                    <Icon name="dotIcon" />
-                  </button>
+                ) : column.accessor === "id" || column.accessor === "_id" ? (
+                  <>
+                    <button onClick={() => handleDropdownToggle(row["_id"])}>
+                      <Icon name="dotIcon" />
+                    </button>
+                    {dropdownOpen === row["_id"] && (
+                      <div className="absolute right-0 bg-white shadow-lg rounded-md mt-2 z-10">
+                        <button
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          onClick={() => handleEdit(row["_id"])}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          onClick={() => handleDelete(row["_id"])}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </>
                 ) : column.accessor === "phone" && !row[column.accessor] ? (
                   "N/A"
                 ) : column.accessor === "status" ? (
@@ -78,10 +129,11 @@ const Table = ({
                     className="-mt-1 text-[12px] p-1 text-center font-normal w-20 rounded-md cursor-pointer"
                     style={{
                       backgroundColor: getStatusColor(row[column.accessor]),
+                      color: getStatusText(row[column.accessor]),
                     }}
-                      onClick={() => onUserClick(row["_id"])}
+                    onClick={() => onUserClick(row["_id"])}
                   >
-                    {(row[column.accessor])}
+                    {capitalizeFirstLetter(row[column.accessor])}
                   </p>
                 ) : (
                   row[column.accessor]
