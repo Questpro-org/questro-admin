@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import useRequest from "../../../../component/hook/use-request";
 import AgentDetail from "./details";
 import Icon from "../../../../assets/icon";
-import Back from "../../../../component/back";
+import Back from "../../../../component/reusables/back";
+import EditAgent from "../agent-modal/edit-agent";
+
 
 const AgentDetails = () => {
   const { _id } = useParams();
@@ -37,6 +39,7 @@ const AgentDetails = () => {
         <h2 className="text-[14px] hidden md:block mt-4">Back to projects</h2>
       </div>
       <AgentDetail agent={selectedAgent} _id={_id} />
+      <EditAgent agent={selectedAgent}  _id={_id}/>
     </>
   );
 };

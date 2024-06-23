@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Card from '../../component/cards'
+import Card from '../../component/reusables/cards'
 import { Controller, useForm } from 'react-hook-form';
-import Input from '../../component/input';
-import Button from '../../component/button';
+import Input from '../../component/reusables/input';
+import Button from "../../component/reusables/button";
 import { CircleLoader } from 'react-spinners';
-import { showToast } from '../../component/toast';
+import { showToast } from '../../component/reusables/toast';
 import useRequest from '../../component/hook/use-request';
 
 function ResetPassword() {

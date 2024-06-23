@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
-import Table from "../../../component/table";
+import Table from "../../../component/reusables/table";
 import { capitalizeFirstLetter } from "../../../utilities/function";
 
 const AgentTable = ({

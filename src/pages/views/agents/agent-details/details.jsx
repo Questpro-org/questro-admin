@@ -86,8 +86,6 @@ const AgentDetail = ({ agent, _id }) => {
     fetchComment();
   }, [agent?._id]);
 
-  // console.log('dkdguyasgyudhycuhd', comment[0]?.comment)
-
 
   return (
     <div className="mt-2 w-full px-10">

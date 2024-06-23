@@ -65,10 +65,10 @@ const DashboardLayout = () => {
           </div>
           {dropdownOpen && (
             <div
-              className="absolute w-[12%] h-[60px] left-8 mt-2 bg-white shadow-lg rounded-md"
+              className="absolute w-[70%] h-[60px] left-8 mt-2 bg-white shadow-lg rounded-md"
               onClick={handleLogout}
             >
-              <button className="block px-4 py-4 text-[#FF0000] font-medium hover:bg-gray-100">
+              <button className="block w-full px-4 py-4 text-[#FF0000] font-medium hover:bg-gray-100">
                 Logout
               </button>
             </div>

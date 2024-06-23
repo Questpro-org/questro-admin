@@ -1,5 +1,5 @@
 import "./App.css";
-import Toast from "./component/toast";
+import Toast from "./component/reusables/toast";
 import Routes from "./routes";
 
 function App() {
