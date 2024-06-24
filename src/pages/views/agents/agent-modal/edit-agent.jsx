@@ -66,7 +66,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       plan: formData.plan,
       updatedAt: moment(formData.updatedAt).toISOString(),
     };
-    console.log(updatedAgent);
     const [response] = await editAgent(updatedAgent);
     if (response) {
       showToast(response.message, true, {

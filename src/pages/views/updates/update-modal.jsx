@@ -12,8 +12,18 @@ const DeleteUpdate = ({ visible, handleClose, updates }) => {
     "DELETE",{Authorization: `Bearer ${userToken}`});
 
   const handleDeactivate = async () => {
-      const [response] = await makeRequest();
-    console.log(response)
+      const response = await makeRequest();
+      console.log(response)
+      if (response && response.message) {
+        showToast(response.message, true, {
+          position: "top-center",
+        });
+        handleClose();
+      } else {
+        showToast("Failed to delete the update", false, {
+          position: "top-center",
+        });
+      }
   };
 
   return (
