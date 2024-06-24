@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import Card from "../../component/cards";
+import Card from "../../component/reusables/cards";
 import { Controller, useForm } from "react-hook-form";
-import Input from "../../component/input";
+import Input from "../../component/reusables/input";
 import { CircleLoader } from "react-spinners";
-import Button from "../../component/button";
-import Reset from "./reset";
 import useRequest from "../../component/hook/use-request";
-import { showToast } from "../../component/toast";
+import { showToast } from "../../component/reusables/toast";
+import Button from "../../component/reusables/button";
 
 function ForgotPassword() {
   const { loading, makeRequest } = useRequest("/admin/forgot-password", "POST");

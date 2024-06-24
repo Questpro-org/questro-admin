@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
-import Table from "../../../component/table";
+import { capitalizeFirstLetter } from "../../../utilities/function";
+import TableUpdate from "../../../component/reusables/update-table";
 
 const UpdateTable = ({
-  data,
+  updates,
   selectedStatus,
   handleStatusChange,
-  activeTab,
 }) => {
   const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState([]);
   const columns = [
     { header: "Message title", accessor: "title" },
-    { header: "Type", accessor: "phone" },
-    { header: "Status", accessor: "status" },
-    { header: "Sent On", accessor: "created_at" },
-    { header: "", accessor: "id" },
+    { header: "Type", accessor: "type" },
+    { header: "Status", accessor: "sentStatus" },
+    { header: "Sent On", accessor: "createdAt" },
+    { header: "", accessor: "_id" },
   ];
 
   useEffect(() => {
-    const filtered = data?.filter((user) => {
-      if (user?.status) {
-        return true;
+    const filtered = updates?.filter((update) => {
+      if (update?.sentStatus) {
+        return {
+          ...update,
+          sentStatus: `${capitalizeFirstLetter(update.sentStatus)}`
+        };
       }
       return false;
     });
     setFilteredData(filtered);
-  }, [data, selectedStatus]);
+  }, [updates, selectedStatus]);
 
   const handleUserClick = (id) => {
     navigate(`/account/details/${id}`);
@@ -35,18 +38,17 @@ const UpdateTable = ({
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
-      {/* {filteredData?.length > 0 ? ( */}
-        <Table
+      {filteredData?.length > 0 ? (
+        <TableUpdate
           columns={columns}
           data={filteredData}
           selectedUserId={null}
-          onUserClick={handleUserClick}
         />
-      {/* ) : (
+       ) : (
         <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
          <TailSpin color="skyblue" />
         </div>
-      )} */}
+      )} 
     </div>
   );
 };

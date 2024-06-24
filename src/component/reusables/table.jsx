@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import Icon from "../assets/icon";
-import { capitalizeFirstLetter, formatDate } from "../utilities/function";
+import Icon from "../../assets/icon";
+import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
+import EditAgent from "../../pages/views/agents/agent-modal/edit-agent";
+import DeactivateAgent from "../../pages/views/agents/agent-modal/deactivate-agent";
 
 const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState(null);
 
   const handleDropdownToggle = (rowId) => {
     setDropdownOpen(dropdownOpen === rowId ? null : rowId);
   };
 
   const handleEdit = (rowId) => {
+    const agent = data.find((agent) => agent._id === rowId);
+    setSelectedAgent(agent);
     setDropdownOpen(null);
+    setModalVisible(true);
   };
 
   const handleDelete = (rowId) => {
+    const agent = data.find((agent) => agent._id === rowId);
     setDropdownOpen(null);
+    setSelectedAgent(agent);
+    setDeleteModal(true);
   };
 
   const getStatusColor = (status) => {
@@ -75,7 +86,7 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
         </tr>
       </thead>
       <tbody className="text-[12px]">
-        {data.map((row, rowIndex) => (
+        {data?.map((row, rowIndex) => (
           <tr key={rowIndex} className="hover:bg-gray-100">
             {columns.map((column, colIndex) => (
               <td
@@ -106,7 +117,7 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
                       <Icon name="dotIcon" />
                     </button>
                     {dropdownOpen === row["_id"] && (
-                      <div className="absolute right-0 bg-white shadow-lg rounded-md mt-2 z-10">
+                      <div className="absolute w-[164px] right-0  bg-white shadow-lg rounded-md mt-2 z-10">
                         <button
                           className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                           onClick={() => handleEdit(row["_id"])}
@@ -114,10 +125,10 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
                           Edit
                         </button>
                         <button
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-[#E52323] hover:bg-gray-100"
                           onClick={() => handleDelete(row["_id"])}
                         >
-                          Delete
+                          Deactivate
                         </button>
                       </div>
                     )}
@@ -143,6 +154,21 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
           </tr>
         ))}
       </tbody>
+      {modalVisible && (
+        <EditAgent
+          visible={modalVisible}
+          handleClose={() => setModalVisible(false)}
+          agent={selectedAgent}
+        />
+      )}
+
+      {deleteModal && (
+        <DeactivateAgent
+          visible={deleteModal}
+          handleClose={() => setDeleteModal(false)}
+          agent={selectedAgent}
+        />
+      )}
     </table>
   );
 };

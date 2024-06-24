@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { CircleLoader } from "react-spinners";
-import Input from "../../component/input";
-import Card from "../../component/cards";
-import Button from "../../component/button";
+import Input from "../../component/reusables/input";
+import Card from "../../component/reusables/cards";
 import useRequest from "../../component/hook/use-request";
-import { showToast } from "../../component/toast";
+import { showToast } from "../../component/reusables/toast";
+import Button from "../../component/reusables/button";
 
 const Login = () => {
   const navigate = useNavigate();

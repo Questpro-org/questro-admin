@@ -1,6 +1,5 @@
 import React from "react";
-import Icon from "../assets/icon";
-import Meme from "../assets/images/frame.svg"
+import Icon from "../../assets/icon";
 
 const Card = (props) => {
   const { classNames, sx, children, showCard, style } = props;

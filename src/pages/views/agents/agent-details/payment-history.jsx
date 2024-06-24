@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { capitalizeFirstLetter, formatCurrency, formatDate } from "../../../../utilities/function";
-import Table from "../../../../component/table";
+import Table from "../../../../component/reusables/table";
 
 const PaymentHistory = ({ payment }) => {
   const [filteredData, setFilteredData] = useState([]);

@@ -69,8 +69,6 @@ const AgentDetail = ({ agent, _id }) => {
     fetchData();
   }, [agent?._id]);
 
-  console.log(activeListing)
-
   useEffect(() => {
     const fetchPayment = async () => {
       const [response] = await getPayment();
@@ -81,17 +79,12 @@ const AgentDetail = ({ agent, _id }) => {
 
   useEffect(() => {
     const fetchComment = async () => {
-        const [response] = await getComments();
-        const commentsData = response?.message?.data || [];
-        const agentComments = commentsData
-          .find(commentObj => commentObj.hasOwnProperty(agent?._id))
-          ?.comments[agent?._id] || [];
-        setComment(agentComments);
+      const [response] = await getComments();
+      const commentsData = response?.data?.flatMap((item) => item.comments) || [];
+      setComment(commentsData);
     };
     fetchComment();
   }, [agent?._id]);
-
-
 
 
   return (

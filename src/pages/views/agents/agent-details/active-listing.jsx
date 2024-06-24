@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Bed from "../../../../assets/images/bed 1.svg";
 import Bath from "../../../../assets/images/bath-tub 1.svg";
 import useRequest from "../../../../component/hook/use-request";
-import Back from "../../../../component/back";
+import Back from "../../../../component/reusables/back";
 import Icon from "../../../../assets/icon";
 import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg"
 
