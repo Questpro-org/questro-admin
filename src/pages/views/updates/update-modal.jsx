@@ -13,7 +13,6 @@ const DeleteUpdate = ({ visible, handleClose, updates }) => {
 
   const handleDeactivate = async () => {
       const response = await makeRequest();
-      console.log(response)
       if (response && response.message) {
         showToast(response.message, true, {
           position: "top-center",
