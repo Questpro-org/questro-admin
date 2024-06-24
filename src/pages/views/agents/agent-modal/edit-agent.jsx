@@ -7,8 +7,8 @@ import { showToast } from "../../../../component/reusables/toast";
 import { CircleLoader } from "react-spinners";
 import useRequest from "../../../../component/hook/use-request";
 import Select from "../../../../component/reusables/select";
-import { DatePicker } from 'antd';
-import moment from 'moment'; 
+import { DatePicker } from "antd";
+import moment from "moment";
 
 const EditAgent = ({ visible, handleClose, agent }) => {
   const [data, setData] = useState([]);
@@ -16,9 +16,13 @@ const EditAgent = ({ visible, handleClose, agent }) => {
   const { makeRequest } = useRequest("/admin/agents", "GET", {
     Authorization: `Bearer ${userToken}`,
   });
-  const { makeRequest: editAgent, loading } = useRequest(`/admin/agent/${agent?._id}`, "PATCH", {
-    Authorization: `Bearer ${userToken}`,
-  });
+  const { makeRequest: editAgent, loading } = useRequest(
+    `/admin/agent/${agent?._id}`,
+    "PATCH",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +34,8 @@ const EditAgent = ({ visible, handleClose, agent }) => {
 
   const { handleSubmit, control, reset } = useForm({
     defaultValues: {
-      fullName: agent?.fullName || "",
+      firstname: agent?.firstname?.split(" ")[0] || "",
+      lastname: agent?.lastname?.split(" ")[1] || "",
       email: agent?.email || "",
       status: agent?.status || "",
       isVerified: agent?.isVerified || "",
@@ -41,10 +46,11 @@ const EditAgent = ({ visible, handleClose, agent }) => {
 
   useEffect(() => {
     reset({
-      fullName: agent?.fullName || "",
+      firstname: agent?.firstname || "",
+      lastname: agent?.lastname || "",
       email: agent?.email || "",
       status: agent?.status || "",
-      updatedAt: moment(agent?.updatedAt) || null, // Convert to moment object
+      updatedAt: moment(agent?.updatedAt) || null,
       isVerified: agent?.isVerified || "",
       plan: agent?.subscription?.plan || "",
     });
@@ -52,15 +58,17 @@ const EditAgent = ({ visible, handleClose, agent }) => {
 
   const handleEdit = handleSubmit(async (formData) => {
     const updatedAgent = {
-      fullName: formData.fullName,
+      firstname: formData.firstname,
+      lastname: formData.lastname,
       email: formData.email,
       status: formData.status,
       isVerified: formData.isVerified,
       plan: formData.plan,
-      updatedAt: moment(formData.updatedAt).toISOString(), // Convert back to string if needed
+      updatedAt: moment(formData.updatedAt).toISOString(),
     };
+    console.log(updatedAgent);
     const [response] = await editAgent(updatedAgent);
-    if (response.status) {
+    if (response) {
       showToast(response.message, true, {
         position: "top-center",
       });
@@ -93,10 +101,10 @@ const EditAgent = ({ visible, handleClose, agent }) => {
         <form className="w-full mt-10" onSubmit={handleEdit}>
           <div className="grid grid-cols-2 gap-6 mx-auto">
             <Controller
-              name="fullName"
+              name="firstname"
               control={control}
               rules={{
-                required: "Agent name is required",
+                required: "Agent's first name is required",
                 minLength: {
                   value: 3,
                   message: "Agent name must be at least 3 characters",
@@ -105,12 +113,33 @@ const EditAgent = ({ visible, handleClose, agent }) => {
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
-                  label="Agent name"
+                  label="First name"
                   className="w-full"
                   error={fieldState?.error?.message}
                 />
               )}
             />
+
+            <Controller
+              name="lastname"
+              control={control}
+              rules={{
+                required: "Agent's last name is required",
+                minLength: {
+                  value: 3,
+                  message: "Agent name must be at least 3 characters",
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  label="Last name"
+                  className="w-full"
+                  error={fieldState?.error?.message}
+                />
+              )}
+            />
+
             <Controller
               name="email"
               control={control}
@@ -204,7 +233,10 @@ const EditAgent = ({ visible, handleClose, agent }) => {
           </div>
 
           <div className="flex gap-8 justify-end items-center mt-8">
-            <button className="border w-[84px] h-[40px] rounded-md" onClick={handleClose}>
+            <button
+              className="border w-[84px] h-[40px] rounded-md"
+              onClick={handleClose}
+            >
               Cancel
             </button>
             <Button size="sm" variant="primary" type="submit">
