@@ -20,7 +20,10 @@ const DashboardLayout = () => {
       sidebarBackgroundCheck === "updates" ||
       sidebarBackgroundCheck === "settings" ||
       sidebarBackgroundCheck === "agent" ||
-      sidebarBackgroundCheck === "properties"
+      sidebarBackgroundCheck === "properties" ||
+      sidebarBackgroundCheck === "property" ||
+      sidebarBackgroundCheck === "push"
+    
     ) {
       setSidebarOpen(true);
     } else {

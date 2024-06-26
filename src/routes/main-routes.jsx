@@ -5,6 +5,8 @@ import ActiveListings from "../pages/views/agents/agent-details/active-listing";
 import Dashboard from "../pages/views/dashboard";
 import Settings from "../pages/views/settings";
 import Updates from "../pages/views/updates";
+import PropertyUpdates from "../pages/views/updates/property-updates/index";
+import PushNotification from "../pages/views/updates/push-notification";
 import AuthGuard from "../utilities/constant/private-route";
 
 
@@ -39,6 +41,14 @@ const MainRoutes = {
     {
       path: "/properties/:_id",
       element: <ActiveListings />,
+    },
+    {
+      path: "/property/update",
+      element: <PropertyUpdates />,
+    },
+    {
+      path: "/push/notification",
+      element: <PushNotification />,
     },
   ],
 };
