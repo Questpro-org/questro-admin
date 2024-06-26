@@ -16,6 +16,7 @@ function Updates() {
   const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+  const [dropdownOpen, setDropdownOpen] = useState(null);
 
   function updateUrlParams(params) {
     const url = new URL(window.location.href);
@@ -84,6 +85,11 @@ function Updates() {
   function handleTypeChange(event) {
     setSelectedType(event.target.value);
   }
+
+  const handleDropdownToggle = (rowId) => {
+    setDropdownOpen(dropdownOpen === rowId ? null : rowId);
+  };
+  
   return (
     <>
     <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
