@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
 import DeleteUpdate from "../../pages/views/updates/update-modal";
+import { useNavigate } from "react-router-dom";
 
 const TableUpdate = ({ columns, data, onUserClick, PlaceholderImage }) => {
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedUpdate, setSelectedUpdate] = useState(null);
@@ -17,6 +19,13 @@ const TableUpdate = ({ columns, data, onUserClick, PlaceholderImage }) => {
     setDropdownOpen(null);
     setSelectedUpdate(update);
     setDeleteModal(true);
+  };
+
+  const handleEdit = (rowId) => {
+    const update = data.find((update) => update._id === rowId);
+    setSelectedUpdate(update);
+    setDropdownOpen(null);
+    navigate(`/assets/update/${rowId}`);
   };
 
   const getStatusColor = (sentStatus) => {
@@ -109,6 +118,14 @@ const TableUpdate = ({ columns, data, onUserClick, PlaceholderImage }) => {
                     </button>
                     {dropdownOpen === row["_id"] && (
                       <div className="absolute w-[164px] right-0  bg-white shadow-lg rounded-md mt-2 z-10">
+                        {row.sentStatus !== "sent" && (
+                          <button
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                            onClick={() => handleEdit(row["_id"])}
+                          >
+                            Edit
+                          </button>
+                        )}
                         <button
                           type="button"
                           className="block px-4 py-2 text-[#E52323] hover:bg-gray-100"

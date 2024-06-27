@@ -22,7 +22,8 @@ const DashboardLayout = () => {
       sidebarBackgroundCheck === "agent" ||
       sidebarBackgroundCheck === "properties" ||
       sidebarBackgroundCheck === "property" ||
-      sidebarBackgroundCheck === "push"
+      sidebarBackgroundCheck === "push" ||
+      sidebarBackgroundCheck === "assets"
     
     ) {
       setSidebarOpen(true);
