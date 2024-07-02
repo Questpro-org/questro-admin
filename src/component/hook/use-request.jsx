@@ -20,7 +20,7 @@ export default function useRequest(endpoint, method, headers = {}) {
       const response = await fetch(urlWithParams, {
         method,
         headers: {
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
           ...headers,
         },

@@ -71,7 +71,7 @@ function Push1({ control, UpdateProperty }) {
             Back
           </button>
 
-          <button className="border px-5 py-1 flex gap-3 bg-[#459BDA] text-[#fff] text-[14px] font-semibold rounded-md border-[#459BDA]">
+          <button className="border px-5 py-1 flex gap-3 bg-[#459BDA] hover:bg-[#008138] text-[#fff] text-[14px] font-semibold rounded-md border-[#459BDA]">
             Continue
           </button>
         </div>
