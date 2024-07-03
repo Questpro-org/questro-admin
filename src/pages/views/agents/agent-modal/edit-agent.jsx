@@ -9,6 +9,7 @@ import useRequest from "../../../../component/hook/use-request";
 import Select from "../../../../component/reusables/select";
 import { DatePicker } from "antd";
 import moment from "moment";
+import useApi from "../../../../component/hook/request";
 
 const EditAgent = ({ visible, handleClose, agent }) => {
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
   const { makeRequest } = useRequest("/admin/agents", "GET", {
     Authorization: `Bearer ${userToken}`,
   });
-  const { makeRequest: editAgent, loading } = useRequest(
+  const { makeRequest: editAgent, loading } = useApi(
     `/admin/agent/${agent?._id}`,
     "PATCH",
     {

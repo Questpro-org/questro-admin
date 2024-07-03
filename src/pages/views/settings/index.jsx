@@ -1,8 +1,97 @@
-import React from 'react'
-import SettingsTable from './seetings-table'
+import React, { useEffect, useState } from 'react'
+import SettingsTable from './settings-table'
 import Icon from '../../../assets/icon'
+import useRequest from '../../../component/hook/use-request';
 
 function Settings() {
+  const userToken = localStorage.getItem("token");
+  const { makeRequest } = useRequest("/admin/admins", "GET",{
+    Authorization: `Bearer ${userToken}`,
+  });
+  const [admins, setAdmins] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedRoles, setSelectedRoles] = useState("");
+  const params = new URLSearchParams(new URL(window.location.href).search);
+  const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10;
+
+  function updateUrlParams(params) {
+    const url = new URL(window.location.href);
+    Object.keys(params).forEach((key) => {
+      url.searchParams.set(key, params[key].toString());
+    });
+    window.history.pushState({}, "", url.toString());
+  }
+
+  useEffect(() => {
+    const storedSearchQuery = params.get("search") || "";
+    const storedStatus = params.get("status") || "";
+    const storedRoles = params.get("roles") || "";
+
+    setSearchQuery(storedSearchQuery);
+    setSelectedStatus(storedStatus);
+    setSelectedRoles(storedRoles);
+    fetchData();
+  }, [currentPage]);
+
+  useEffect(() => {
+    updateUrlParams({
+      page: currentPage,
+      search: searchQuery,
+      status: selectedStatus,
+      roles: selectedRoles,
+    });
+    fetchData();
+  }, [searchQuery, selectedStatus, selectedRoles, currentPage]);
+
+  async function fetchData() {
+    const page = currentPage;
+    const limit = itemsPerPage;
+  
+    const params = {
+      limit: limit,
+      page: page,
+      ...(selectedStatus ? { status: selectedStatus } : {}),
+      ...(selectedRoles ? { roles: selectedRoles } : {}),
+    };
+  
+    const [response] = await makeRequest(undefined, params);
+    let users = response.data?.data?.docs || [];
+  
+    // Client-side filtering for search query
+    if (searchQuery) {
+      const lowerSearchQuery = searchQuery.toLowerCase();
+      users = users.filter(admin => 
+        admin.username?.toLowerCase().includes(lowerSearchQuery) ||
+        admin.email?.toLowerCase().includes(lowerSearchQuery) ||
+        admin.roles?.toLowerCase().includes(lowerSearchQuery)
+      );
+    }
+  
+    setAdmins(users);
+    setTotalPages(Math.ceil(response.data?.data?.totalPages));
+  }
+  
+
+  function handlePageChange(page) {
+    setCurrentPage(page);
+  }
+
+  function handleSearchChange(event) {
+    setSearchQuery(event.target.value);
+  }
+
+  function handleStatusChange(event) {
+    setSelectedStatus(event.target.value);
+  }
+
+  function handleRolesChange(event) {
+    setSelectedRoles(event.target.value);
+  }
+
+
   return (
     <>
     <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
@@ -19,8 +108,8 @@ function Settings() {
           className="outline-none border-none bg-transparent"
           id="input-placeholder"
           placeholder="Search user"
-          //   value={searchQuery}
-          //   onChange={handleSearchChange}
+            value={searchQuery}
+            onChange={handleSearchChange}
         />
       </div>
 
@@ -34,32 +123,36 @@ function Settings() {
 
         <select
           className=" custom-select border px-3 py-1 bg-[#fff] text-[#459BDA] text-[14px] font-semibold rounded-full border-[#459BDA]"
-          // value={selectedStatus}
-          // onChange={handleStatusChange}
+          value={selectedRoles}
+          onChange={handleRolesChange}
         >
           <option value="">Type</option>
-          <option value="active">Active</option>
-          <option value="suspended">Suspended</option>
-          <option value="inactive">Inactive</option>
-          <option value="blocked">Blocked</option>
+          <option value="admin">Admin</option>
+          <option value="superAdmin">Super Admin</option>
+          {/* <option value="inactive">Inactive</option>
+          <option value="blocked">Blocked</option> */}
         </select>
 
         <select
           className="border text-[14px] font-semibold px-3 py-1 bg-[#fff] text-[#459BDA] rounded-full border-[#459BDA]"
-          // value={selectedStatus}
-          // onChange={handleStatusChange}
+          value={selectedStatus}
+          onChange={handleStatusChange}
         >
           <option value="">Status</option>
           <option value="active">Active</option>
-          <option value="suspended">Suspended</option>
-          <option value="inactive">Inactive</option>
-          <option value="blocked">Blocked</option>
+          <option value="deactivated">Deactivated</option>
+          {/* <option value="inactive">Inactive</option>
+          <option value="blocked">Blocked</option> */}
         </select>
 
       </section>
     </div>
 
-    <SettingsTable />
+    <SettingsTable 
+     admins={admins}
+     selectedStatus={selectedStatus}
+     handleStatusChange={handleStatusChange}
+    />
   </>
   )
 }

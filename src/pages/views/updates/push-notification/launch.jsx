@@ -18,7 +18,7 @@ function Launch({ data }) {
         Review & Launch
       </h1>
       <div className="border justify-between lg:flex mx-10 rounded-md px-5 py-5">
-        <section className="flex">
+        <section className="flex gap-3">
           <div className="flex w-full gap-3">
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
@@ -46,7 +46,7 @@ function Launch({ data }) {
         </button>
 
         <button
-          className="border px-5 py-1 flex gap-3 bg-[#459BDA] text-[#fff] text-[14px] font-semibold rounded-md border-[#459BDA]"
+          className="border px-5 py-1 flex gap-3 bg-[#459BDA] hover:bg-[#008138] text-[#fff] text-[14px] font-semibold rounded-md border-[#459BDA]"
           onClick={sendUpdate}
         >
           Launch

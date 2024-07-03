@@ -24,7 +24,6 @@ function PropertyUpdates() {
       type: "Property Updates",
     };
     const [response] = await makeRequest(updatedProperty);
-    console.log(response)
     if (response) {
       showToast(response.message, true, {
         position: "top-center",

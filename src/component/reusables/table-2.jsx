@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
 import EditAgent from "../../pages/views/agents/agent-modal/edit-agent";
-import DeactivateAgent from "../../pages/views/agents/agent-modal/deactivate-agent";
+import DeactivateAdmin from "../../pages/views/settings/settings-modal/deactivate-admin";
 
-const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
+const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
 
   const handleDropdownToggle = (rowId) => {
     setDropdownOpen(dropdownOpen === rowId ? null : rowId);
@@ -16,15 +16,15 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
 
   const handleEdit = (rowId) => {
     const agent = data.find((agent) => agent._id === rowId);
-    setSelectedAgent(agent);
+    setSelectedAdmin(agent);
     setDropdownOpen(null);
     setModalVisible(true);
   };
 
   const handleDelete = (rowId) => {
-    const agent = data.find((agent) => agent._id === rowId);
+    const admin = data.find((admin) => admin?._id === rowId);
     setDropdownOpen(null);
-    setSelectedAgent(agent);
+    setSelectedAdmin(admin);
     setDeleteModal(true);
   };
 
@@ -46,8 +46,8 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
         return "#D9D9D9";
       case "active":
         return "#ECFDF3";
-        case "deactivated":
-          return "#F2F4F7";
+      case "deactivated":
+        return "#F2F4F7";
       default:
         return "transparent";
     }
@@ -71,8 +71,8 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
         return "#D9D9D9";
       case "active":
         return "#008138";
-        case "deactivated":
-          return "#344054"
+      case "deactivated":
+        return "#344054";
       default:
         return "transparent";
     }
@@ -121,20 +121,20 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
                       <Icon name="dotIcon" />
                     </button>
                     {dropdownOpen === row["_id"] && (
-                      <div className="absolute w-[164px] right-0  bg-white shadow-lg rounded-md mt-2 z-10">
-                         {row.username !== "sent" && (
-                        <button
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          onClick={() => handleEdit(row["_id"])}
-                        >
-                          Edit
-                        </button>
-                         )}
+                      <div className="absolute w-[164px] right-0 bg-white shadow-lg rounded-md mt-2 z-10">
+                        {row.username !== "sent" && (
+                          <button
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                            onClick={() => handleEdit(row["_id"])}
+                          >
+                            Edit
+                          </button>
+                        )}
                         <button
                           className="block px-4 py-2 text-[#E52323] hover:bg-gray-100"
                           onClick={() => handleDelete(row["_id"])}
                         >
-                          Deactivate
+                          {row.status === "active" ? "Deactivate" : "Activate"}
                         </button>
                       </div>
                     )}
@@ -164,19 +164,18 @@ const Table = ({ columns, data, onUserClick, PlaceholderImage }) => {
         <EditAgent
           visible={modalVisible}
           handleClose={() => setModalVisible(false)}
-          agent={selectedAgent}
+          agent={selectedAdmin}
         />
       )}
-
       {deleteModal && (
-        <DeactivateAgent
+        <DeactivateAdmin
           visible={deleteModal}
           handleClose={() => setDeleteModal(false)}
-          agent={selectedAgent}
+          admin={selectedAdmin}
         />
       )}
     </table>
   );
 };
 
-export default Table;
+export default TableSettings;
