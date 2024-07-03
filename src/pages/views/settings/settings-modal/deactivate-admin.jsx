@@ -20,11 +20,14 @@ const DeactivateAdmin = ({ visible, handleClose, admin }) => {
 
   const handleDeactivate = handleSubmit(async () => {
     const [response] = await deacticateAgent();
-    if (response.status === 200 || response.status === 201) {
+    if (response.status) {
       showToast(response.message, true, {
         position: "top-center",
       });
       handleClose();
+      setTimeout(() => {
+        window.location.reload()
+      },2000 );
     } else {
       showToast(response.message, false, {
         position: "top-center",
