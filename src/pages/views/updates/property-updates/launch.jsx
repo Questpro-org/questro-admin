@@ -19,7 +19,7 @@ function Launch({ data }) {
  
   const sendUpdate = async () => {
     const [response] = await makeRequest();
-    if (response && response.status === 200) {
+    if (response) {
       showToast(response.message, true, {
         position: "top-center",
       });
