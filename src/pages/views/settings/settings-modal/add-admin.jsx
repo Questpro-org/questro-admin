@@ -13,7 +13,7 @@ import useApi from "../../../../component/hook/request";
 const AddAdmin = ({ visible, handleClose }) => {
   const userToken = localStorage.getItem("token");
   const { makeRequest: addAdmin, loading } = useApi(
-    `/create/admin`,
+    `/admin/create-admin`,
     "POST",
     {
       Authorization: `Bearer ${userToken}`,
