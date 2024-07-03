@@ -4,4 +4,178 @@
     background-position: center;
     background-repeat: no-repeat;
   }
+
+  @media (max-width: 300px) {
+    .toast-message-container {
+      width: 200px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .toast-message-container {
+      width: 300px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
+  
+  
+  @media (min-width: 500px) {
+    .toast-message-container {
+      width: 360px !important;
+      right: -40% !important;
+    }
+  }
+  
+  .toast-message-container .Toastify__toast {
+    margin-bottom: 0px;
+    padding: 11px;
+    border-radius: 8px;
+    align-items: center;
+    box-shadow: none;
+    height: 110px !important;
+  }
+  
+  .Toastify__toast-container.toast-message-container {
+    z-index: 100000 !important;
+  }
+  
+  .Toastify__toast-theme--light {
+    background-color: #FFF;
+  }
+  
+  /* ERROR */
+  .Toastify__toast.toast-error {
+    border: 1px solid #ff0101;
+    background: #C9E4F9 !important;
+    color: #ff0101;
+  }
+  
+  .Toastify__toast.toast-error::before {
+    /* content: url("/src/assets/images/Shape.svg"); */
+    position: relative;
+    z-index: 100000;
+    left: 12px;
+    top: 6px;
+    margin-right: 8px
+  }
+
+  .Toastify__toast.toast-error::after {
+    content: url("/src/assets/images/Shape.svg");
+    z-index: 100000;
+    left: 12px;
+    margin-right: 8px
+  }
+  
+  .Toastify__toast.toast-success {
+    border: 1px solid #459BDA;
+    background: #C9E4F9 !important;
+    color: #459BDA;
+  }
+  
+  .Toastify__toast.toast-success::before {
+    content: url("/src/assets/images/success.svg");
+    position: relative;
+    z-index: 100000;
+    left: 12px;
+    top: 6px;
+    margin-right: 8px
+  }
+  
+  /* SUCCESS */
+  .Toastify__toast.toast-message-container--success {
+    border: 1px solid #459BDA;
+    background: #C9E4F9 !important;
+  }
+  
+  .Toastify__toast.toast-message-container--success .toast-success {
+    content: url("/src/assets/images/success.svg") !important;
+  }
+  
+  .Toastify__toast.toast-message-container--success {
+    content: url("/src/assets/images/success.svg") !important;
+    position: relative;
+    z-index: 100000;
+    left: 12px;
+    top: 6px;
+  }
+  
+  .Toastify__toast.toast-message-container--success .Toastify__toast-body {
+    color: #0b8800;
+    margin-right: 22px;
+  }
+  
+  /* WARNING */
+  .Toastify__toast.toast-message-container--warning {
+    border: 1px solid #f1daac;
+    background: #f3f6ff !important;
+  }
+  
+  .Toastify__toast.toast-message-container--warning::after {
+    /* content: url("/src/assets/images/tick-circle.svg"); */
+    position: absolute;
+    left: 265px;
+  }
+  
+  .Toastify__toast.toast-message-container--warning::before {
+    /* content: url("/src/assets/images/tick-circle.svg"); */
+    position: relative;
+    z-index: 100000;
+    left: 12px;
+    top: 6px;
+  }
+  
+  .Toastify__toast.toast-message-container--warning .Toastify__toast-body {
+    color: #efac01;
+    margin-right: 22px;
+  }
+  
+  /* INFORMATION */
+  .Toastify__toast.toast-message-container--info {
+    background: #f3f6ff !important;
+    border: 1px solid #accdf1;
+  }
+  
+  .Toastify__toast.toast-message-container--info::after {
+    content: url("/src/assets/images/Shape.svg");
+    position: absolute;
+    left: 265px;
+  }
+  
+  .Toastify__toast.toast-message-container--info::before {
+    /* content: url("/src/assets/images/tick-circle.svg"); */
+    position: relative;
+    z-index: 100000;
+    left: 12px;
+    top: 6px;
+  }
+  
+  .Toastify__toast.toast-message-container--info .Toastify__toast-body {
+    color: #0068db;
+    margin-right: 22px;
+  }
+  
+  .Toastify__toast-body {
+    font-size: 16px;
+    line-height: normal;
+    width: 100%;
+    font-weight: 500;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 20px !important;
+  }
+  
+  .Toastify__toast>button>svg {
+    display: none;
+  }
+  
+  .Toastify__toast-icon {
+    display: none !important;
+  }
+  
+  .Toastify__progress-bar {
+    visibility: hidden;
+  }
   

@@ -1,11 +1,13 @@
-import './App.css';
+import "./App.css";
+import Toast from "./component/reusables/toast";
 import Routes from "./routes";
 
 function App() {
   return (
-   <>
-  <Routes />
-   </>
+    <>
+      <Toast />
+      <Routes />
+    </>
   );
 }
 

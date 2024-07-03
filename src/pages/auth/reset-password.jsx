@@ -1,39 +1,36 @@
 import React, { useState } from 'react'
-import Card from '../../component/cards'
+import Card from '../../component/reusables/cards'
 import { Controller, useForm } from 'react-hook-form';
-import Input from '../../component/input';
-import Button from '../../component/button';
+import Input from '../../component/reusables/input';
+import Button from "../../component/reusables/button";
 import { CircleLoader } from 'react-spinners';
+import { showToast } from '../../component/reusables/toast';
+import useRequest from '../../component/hook/use-request';
 
 function ResetPassword() {
-    // const { loading, makeRequest } = useRequest("/users/reset-password", "PUT");
+    const { loading, makeRequest } = useRequest("/admin/reset-password", "PUT");
     const { handleSubmit, control } = useForm();
-    const [loading, setSuccess] = useState(false);
-  
     const [viewPassword, setViewPassword] = useState("");
     const [confirmViewPassword, setConfirmViewPassword] = useState("");
   
 
   
-    // const handleSubmitPassword = handleSubmit(async (formData) => {
-    //   const userReset = {
-    //     resetPasswordToken: formData.resetPasswordToken,
-    //     password: formData.password,
-    //     confirmPassword: formData.confirmPassword,
-    //   };
-    //   const [response] = await makeRequest(userReset);
-    //   if (response.status) {
-    //     setSuccess(true);
-    //     showToast(response.message, true, {
-    //       position: "top-center",
-    //     });
-    //   }
-    //   else{
-    //     showToast(response.message, false, {
-    //       position: "top-center",
-    //     });
-    //   }
-    // });
+    const handleSubmitPassword = handleSubmit(async (formData) => {
+      const userReset = {
+        password: formData.password,
+      };
+      const [response] = await makeRequest(userReset);
+      if (response.status) {
+        showToast(response.message, true, {
+          position: "top-center",
+        });
+      }
+      else{
+        showToast(response.message, false, {
+          position: "top-center",
+        });
+      }
+    });
 
   return (
    <Card>
@@ -44,7 +41,7 @@ function ResetPassword() {
           <span className="text-[14px] text-center">
           Create a new password to reset your account.
           </span>
-          <form className="mt-6 md:mt-2">
+          <form onSubmit={handleSubmitPassword} className="mt-6 md:mt-2">
             <div className="gap-4 md:gap-6 mb-5">
               <Controller
                 name="password"
@@ -88,7 +85,7 @@ function ResetPassword() {
               />
 
               <Controller
-                name="confirmPassword"
+                name="password"
                 control={control}
                 defaultValue=""
                 rules={{
