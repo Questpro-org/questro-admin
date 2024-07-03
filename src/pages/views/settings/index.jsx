@@ -3,6 +3,7 @@ import SettingsTable from "./settings-table";
 import Icon from "../../../assets/icon";
 import useRequest from "../../../component/hook/use-request";
 import AddAdmin from "./settings-modal/add-admin";
+import Pagination from "../../../component/pagination/pagination";
 
 function Settings() {
   const userToken = localStorage.getItem("token");
@@ -158,6 +159,14 @@ function Settings() {
         selectedStatus={selectedStatus}
         handleStatusChange={handleStatusChange}
       />
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       {modalVisible && (
         <AddAdmin

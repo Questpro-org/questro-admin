@@ -1,10 +1,10 @@
 import React from 'react'
 import { DashboardCards } from '../../../../component/cards/dashboard-cards'
 
-const HomeDashboard = () => {
+const HomeDashboard = ({metrics}) => {
   return (
     <div>
-        <DashboardCards />
+        <DashboardCards metrics={metrics} />
     </div>
   )
 }

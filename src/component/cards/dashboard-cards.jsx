@@ -10,32 +10,32 @@ const DashboardCard = ({ title, value }) => {
   );
 };
 
-export const DashboardCards = ({ statistics }) => {
+export const DashboardCards = ({ metrics }) => {
   return (
     <div className="grid lg:grid-cols-3 gap-8 mt-14 px-10 ">
       <DashboardCard
         title="Total number of agents"
-        value={statistics?.all || 0}
+        value={metrics?.totalAgents || 0}
       />
       <DashboardCard
         title="Total number of customers"
-        value={statistics?.active || 0}
+        value={metrics?.totalUsers || 0}
       />
       <DashboardCard
         title="Total number of properties"
-        value={statistics?.suspended || 0}
+        value={metrics?.totalProperties || 0}
       />
       <DashboardCard
         title="Total number of conversations"
-        value={statistics?.all || 0}
+        value={metrics?.all || 0}
       />
       <DashboardCard
         title="Total number of verified agents"
-        value={statistics?.active || 0}
+        value={metrics?.verifiedAgents || 0}
       />
       <DashboardCard
         title="Total number of subscribed agents"
-        value={statistics?.suspended || 0}
+        value={metrics?.subscribedAgents || 0}
       />
     </div>
   );

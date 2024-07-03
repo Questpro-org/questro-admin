@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Modal } from "antd";
 import { CircleLoader } from "react-spinners";
-import useRequest from "../../../component/hook/use-request";
 import { showToast } from "../../../component/reusables/toast";
+import useApi from "../../../component/hook/request";
 
 const DeleteUpdate = ({ visible, handleClose, updates }) => {
   const userToken = localStorage.getItem("token");
 
-  const { makeRequest, loading } = useRequest(
+  const { makeRequest, loading } = useApi(
     `/admin/update-notification/${updates?._id}`,
     "DELETE",{Authorization: `Bearer ${userToken}`});
 
   const handleDeactivate = async () => {
       const response = await makeRequest();
-      if (response && response.message) {
+      if (response) {
         showToast(response.message, true, {
           position: "top-center",
         });
