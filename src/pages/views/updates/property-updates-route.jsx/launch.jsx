@@ -2,13 +2,13 @@ import React from "react";
 import PhoneImage from "../../../../assets/images/Frame 626671.svg";
 import { useNavigate } from "react-router-dom";
 import Icon from "../../../../assets/icon";
-import useRequest from "../../../../component/hook/use-request";
 import { showToast } from "../../../../component/reusables/toast";
+import useApi from "../../../../component/hook/request";
 
 function Launch({ data }) {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
-  const { makeRequest } = useRequest(
+  const { makeRequest } = useApi(
     `/admin/send-update-notification/${data?.data?.data?._id}`,
     "POST",
     {
@@ -18,7 +18,7 @@ function Launch({ data }) {
  
   const sendUpdate = async () => {
     const [response] = await makeRequest();
-    if (response) {
+    if (response && response.status === 200) {
       showToast('response.message', true, {
         position: "top-center",
       });

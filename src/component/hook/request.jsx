@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const baseURL = process.env.REACT_APP_BACKEND_URL || "https://api.questpro.ng/api/v1";
 
-export default function useRequest(endpoint, method, headers = {}) {
+export default function useApi(endpoint, method, headers = {}) {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [statusCode, setStatusCode] = useState(0);
@@ -20,7 +20,6 @@ export default function useRequest(endpoint, method, headers = {}) {
       const response = await fetch(urlWithParams, {
         method,
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
           ...headers,
         },

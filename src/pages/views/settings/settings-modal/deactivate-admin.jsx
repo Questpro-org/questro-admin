@@ -3,12 +3,12 @@ import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { showToast } from "../../../../component/reusables/toast";
 import { CircleLoader } from "react-spinners";
-import useRequest from "../../../../component/hook/use-request";
 import { capitalizeFirstLetter } from "../../../../utilities/function";
+import useApi from "../../../../component/hook/request";
 
 const DeactivateAdmin = ({ visible, handleClose, admin }) => {
   const userToken = localStorage.getItem("token");
-  const { makeRequest: deacticateAgent, loading } = useRequest(
+  const { makeRequest: deacticateAgent, loading } = useApi(
     `/admin/${admin?._id}`,
     "PATCH",
     {
@@ -20,7 +20,7 @@ const DeactivateAdmin = ({ visible, handleClose, admin }) => {
 
   const handleDeactivate = handleSubmit(async () => {
     const [response] = await deacticateAgent();
-    if (response.status) {
+    if (response.status === 200 || response.status === 201) {
       showToast(response.message, true, {
         position: "top-center",
       });
