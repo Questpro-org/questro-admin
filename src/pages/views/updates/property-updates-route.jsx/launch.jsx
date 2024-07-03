@@ -4,26 +4,25 @@ import { useNavigate } from "react-router-dom";
 import Icon from "../../../../assets/icon";
 import { showToast } from "../../../../component/reusables/toast";
 import useApi from "../../../../component/hook/request";
-import useRequest from "../../../../component/hook/use-request";
 
 function Launch({ data }) {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
-  const { makeRequest } = useRequest(
+  const { makeRequest } = useApi(
     `/admin/send-update-notification/${data?.data?.data?._id}`,
     "POST",
     {
       Authorization: `Bearer ${userToken}`,
     }
   );
- 
+
   const sendUpdate = async () => {
     const [response] = await makeRequest();
-    if (response && response.status === 200) {
+    if (response) {
       showToast(response.message, true, {
         position: "top-center",
       });
-      navigate('/updates')
+      navigate("/updates");
     } else {
       showToast(response.message, false, {
         position: "top-center",
@@ -43,14 +42,18 @@ function Launch({ data }) {
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
               Message name{" "}
-              <span className="block font-normal">{data?.data?.data?.title}</span>
+              <span className="block font-normal">
+                {data?.data?.data?.title}
+              </span>
             </h1>
           </div>
           <div className="flex w-full gap-3">
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
               Message body{" "}
-              <span className="block font-normal">{data?.data?.data?.body}</span>
+              <span className="block font-normal">
+                {data?.data?.data?.body}
+              </span>
             </h1>
           </div>
         </section>
