@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, DatePicker } from "antd";
+import { Modal, DatePicker, Switch } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../../../../component/reusables/button";
 import Input from "../../../../component/reusables/input";
@@ -8,10 +8,11 @@ import { CircleLoader } from "react-spinners";
 import Select from "../../../../component/reusables/select";
 import useApi from "../../../../component/hook/request";
 import moment from "moment";
+import useRequest from "../../../../component/hook/use-request";
 
 const AddAdmin = ({ visible, handleClose }) => {
   const userToken = localStorage.getItem("token");
-  const { makeRequest: addAdmin, loading } = useApi(
+  const { makeRequest: addAdmin, loading } = useRequest(
     `/admin/create-admin`,
     "POST",
     {
@@ -21,24 +22,32 @@ const AddAdmin = ({ visible, handleClose }) => {
 
   const { handleSubmit, control, reset } = useForm();
 
-  const handleEdit = handleSubmit(async (formData) => {
-    const updatedAgent = {
+  const handleAddAdmin = handleSubmit(async (formData) => {
+    const addAdminUser = {
       username: formData.username,
       email: formData.email,
       roles: formData.roles,
+      createdAt: formData.createdAt,
       permissions: {
+        agentManagement: formData.agentManagement,
         dashboard: formData.dashboard,
         settings: formData.settings,
+        propertyUpdates: formData.propertyUpdates,
+        pushNotifications: formData.pushNotifications,
+        userManagement: formData.userManagement,
       },
     };
 
-    const [response] = await addAdmin(updatedAgent);
-    if (response) {
+    const [response] = await addAdmin(addAdminUser);
+    if (response.status) {
       showToast(response.message, true, {
         position: "top-center",
       });
       reset();
       handleClose();
+      setTimeout(() => {
+        window.location.reload()
+      },2000 );
     } else {
       showToast(response.message, false, {
         position: "top-center",
@@ -63,16 +72,16 @@ const AddAdmin = ({ visible, handleClose }) => {
         client to create a password and get started with the dashboard.
       </p>
 
-      <form className="w-full mt-10" onSubmit={handleEdit}>
+      <form className="w-full mt-10" onSubmit={handleAddAdmin}>
         <div className="grid grid-cols-2 gap-6 mx-auto">
           <Controller
-            name="firstname"
+            name="username"
             control={control}
             rules={{
-              required: "Agent's first name is required",
+              required: "Name is required",
               minLength: {
                 value: 3,
-                message: "Agent name must be at least 3 characters",
+                message: "Name must be at least 3 characters",
               },
             }}
             render={({ field, fieldState }) => (
@@ -118,15 +127,35 @@ const AddAdmin = ({ visible, handleClose }) => {
                 className="w-full"
                 error={fieldState?.error?.message}
                 options={[
+                  { value: "admin", label: "Admin" },
+                  { value: "superAdmin", label: "Super Admin" },
+                ]}
+              />
+            )}
+          />
+{/* 
+          <Controller
+            name="status"
+            control={control}
+            rules={{
+              required: "Status is required",
+            }}
+            render={({ field, fieldState }) => (
+              <Select
+                {...field}
+                label="Status"
+                className="w-full"
+                error={fieldState?.error?.message}
+                options={[
                   { value: "pending", label: "Pending" },
                   { value: "active", label: "Active" },
                 ]}
               />
             )}
-          />
+          /> */}
 
           <Controller
-            name="updatedAt"
+            name="createdAt"
             control={control}
             defaultValue={null}
             rules={{
@@ -137,40 +166,89 @@ const AddAdmin = ({ visible, handleClose }) => {
                 {...field}
                 value={field.value ? moment(field.value) : null}
                 label="Date"
-                className="h-[45px] mt-8"
+                className="h-[45px] mt-8 w-full"
                 error={fieldState?.error?.message}
                 onChange={(date, dateString) => field.onChange(dateString)}
               />
             )}
           />
-          <Controller
-            name="dashboard"
-            control={control}
-            defaultValue={false}
-            render={({ field, fieldState }) => (
-              <Input
-                {...field}
-                type="checkbox"
-                label="Dashboard"
-                className="w-full"
-                error={fieldState?.error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="settings"
-            control={control}
-            defaultValue={false}
-            render={({ field, fieldState }) => (
-              <Input
-                {...field}
-                type="checkbox"
-                label="Settings"
-                className="w-full"
-                error={fieldState?.error?.message}
-              />
-            )}
-          />
+        </div>
+
+        <div className="mt-6">
+          <h2 className="text-left text-[#040821] text-[14px] font-semibold">
+            Permissions
+          </h2>
+          <p className="text-left text-[#040821] text-[12px] mb-4">
+            Toggle the required permissions for this user
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <Controller
+              name="agentManagement"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <div className="flex items-center">
+                  <Switch {...field} checked={field.value} />
+                  <label className="ml-2">Agent management</label>
+                </div>
+              )}
+            />
+            <Controller
+              name="dashboard"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <div className="flex items-center">
+                  <Switch {...field} checked={field.value} />
+                  <label className="ml-2">Dashboard</label>
+                </div>
+              )}
+            />
+            <Controller
+              name="settings"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <div className="flex items-center">
+                  <Switch {...field} checked={field.value} />
+                  <label className="ml-2">Settings</label>
+                </div>
+              )}
+            />
+            <Controller
+              name="propertyUpdates"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <div className="flex items-center">
+                  <Switch {...field} checked={field.value} />
+                  <label className="ml-2">Property Update</label>
+                </div>
+              )}
+            />
+            <Controller
+              name="pushNotifications"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <div className="flex items-center">
+                  <Switch {...field} checked={field.value} />
+                  <label className="ml-2">Push Notifications</label>
+                </div>
+              )}
+            />
+            <Controller
+              name="userManagement"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <div className="flex items-center">
+                  <Switch {...field} checked={field.value} />
+                  <label className="ml-2">User management</label>
+                </div>
+              )}
+            />
+          </div>
         </div>
 
         <div className="flex gap-8 justify-end items-center mt-8">
@@ -184,7 +262,7 @@ const AddAdmin = ({ visible, handleClose }) => {
             {loading ? (
               <CircleLoader color="#ffffff" loading={loading} size={20} />
             ) : (
-              "Save details"
+              "Add user"
             )}
           </Button>
         </div>
