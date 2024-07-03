@@ -3,22 +3,25 @@ import Icon from "../../../assets/icon";
 import UpdateTable from "./update-table";
 import useRequest from "../../../component/hook/use-request";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../../component/pagination/pagination";
 
 function Updates() {
   const userToken = localStorage.getItem("token");
   const { makeRequest } = useRequest("/admin/update-notifications", "GET", {
     Authorization: `Bearer ${userToken}`,
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [updates, setUpdate] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const params = new URLSearchParams(new URL(window.location.href).search);
-  const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(
+    Number(params.get("page")) || 1
+  );
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Initialize as false
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   function updateUrlParams(params) {
     const url = new URL(window.location.href);
@@ -95,12 +98,12 @@ function Updates() {
 
   const handleUpdates = () => {
     setDropdownOpen(null);
-    navigate('/property/update')
+    navigate("/property/update");
   };
 
   const handleNotification = () => {
     setDropdownOpen(null);
-    navigate('/push/notification')
+    navigate("/push/notification");
   };
 
   return (
@@ -177,6 +180,15 @@ function Updates() {
         selectedStatus={selectedStatus}
         handleStatusChange={handleStatusChange}
       />
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
+      
     </>
   );
 }

@@ -1,3 +1,5 @@
+@import './index.css';
+
 .bg-image {
     background-image: url('assets/images/frame.svg');
     background-size: cover;
@@ -177,5 +179,26 @@
   
   .Toastify__progress-bar {
     visibility: hidden;
+  }
+
+   /* PAGINATION */
+   .pagination {
+    margin-top: 20px;
+  }
+  
+  .pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .pagination ul li {
+    display: inline-block;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination ul li.active {
+    font-weight: bold;
   }
   
