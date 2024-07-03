@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import Icon from "../../../../assets/icon";
 import { showToast } from "../../../../component/reusables/toast";
 import useApi from "../../../../component/hook/request";
+import useRequest from "../../../../component/hook/use-request";
 
 function Launch({ data }) {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
-  const { makeRequest } = useApi(
+  const { makeRequest } = useRequest(
     `/admin/send-update-notification/${data?.data?.data?._id}`,
     "POST",
     {
@@ -19,12 +20,12 @@ function Launch({ data }) {
   const sendUpdate = async () => {
     const [response] = await makeRequest();
     if (response && response.status === 200) {
-      showToast('response.message', true, {
+      showToast(response.message, true, {
         position: "top-center",
       });
       navigate('/updates')
     } else {
-      showToast('response.message', false, {
+      showToast(response.message, false, {
         position: "top-center",
       });
     }
