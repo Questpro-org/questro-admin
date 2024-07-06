@@ -1,33 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Icon from "../../../assets/icon";
-import HomeDashboard from "./home";
-import NotificationsTable from "./notification-table";
 import useRequest from "../../../component/hook/use-request";
 import { useNavigate } from "react-router-dom";
+import NotificationTable from "./notification-table";
 
-const Dashboard = () => {
+function Notifications() {
   const userToken = localStorage.getItem("token");
-  const [metrics, setMetrics] = useState([]);
   const [notification, setNotification] = useState([]);
-  const navigate  = useNavigate()
-
-  const { makeRequest: getMetrics } = useRequest("/admin/dashboard", "GET", {
-    Authorization: `Bearer ${userToken}`,
-  });
-
+  const navigate = useNavigate();
   const { makeRequest: getNotification } = useRequest("/notifications", "GET", {
     Authorization: `Bearer ${userToken}`,
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [response] = await getMetrics();
-      setMetrics(response?.data?.data);
-    };
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,9 +25,8 @@ const Dashboard = () => {
   const notificationCount = notification.length;
 
   const handleClick = () => {
-    navigate('/notifications')
-  }
-
+    navigate("/notifications");
+  };
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between items-center px-10 py-7">
@@ -61,10 +43,38 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <HomeDashboard metrics={metrics} />
-      <NotificationsTable notification={notification} />
+      
+      <div className="flex justify-between w-full px-10 py-14">
+        <div className="border-2 rounded-md solid pl-5 bg-transparent h-[45px] flex gap-3">
+          <Icon name="searchIcon" className="mt-3 rounded" />
+          <input
+            className="outline-none border-none bg-transparent"
+            id="input-placeholder"
+            placeholder="Search agent"
+            // value={searchQuery}
+            // onChange={handleSearchChange}
+          />
+        </div>
+
+        <section className="flex gap-4">
+          <select
+            className=" custom-select border px-3 py-1 bg-[#fff] text-[#459BDA] text-[14px] font-semibold rounded-full border-[#459BDA]"
+            // value={selectedStatus}
+            // onChange={handleStatusChange}
+          >
+            <option value="">Status</option>
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="suspended">Suspended</option>
+            <option value="deactivated">Deactivated</option>
+          </select>
+        </section>
+      </div>
+
+
+      <NotificationTable notification={notification} />
     </>
   );
-};
+}
 
-export default Dashboard;
+export default Notifications;

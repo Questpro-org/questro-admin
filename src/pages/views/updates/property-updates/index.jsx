@@ -9,35 +9,57 @@ import Launch from "./launch";
 function PropertyUpdates() {
   const [data, setData] = useState(null);
   const [showLaunch, setShowLaunch] = useState(false);
+  const [image, setImage] = useState(null); 
   const userToken = localStorage.getItem("token");
-  const { makeRequest } = useRequest("/admin/create-update-notification", "POST", {
-    Authorization: `Bearer ${userToken}`,
-  });
+  const { makeRequest } = useRequest(
+    "/admin/create-update-notification",
+    "POST",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
 
-  const { handleSubmit, control, reset } = useForm();
+  const { handleSubmit, control, reset, register } = useForm();
+  
   const UpdateProperty = handleSubmit(async (formData) => {
-    const updatedProperty = {
-      title: formData.title,
-      body: formData.body,
-      recipientType: formData.recipientType,
-      location: formData.location,
-      type: "Property Updates",
-    };
-    const [response] = await makeRequest(updatedProperty);
-    if (response) {
-      showToast(response.message, true, {
+    try {
+      const form = new FormData();
+      form.append("title", formData.title);
+      form.append("body", formData.body);
+      form.append("recipientType", formData.recipientType);
+      form.append("location", formData.location);
+      form.append("url", formData.url);
+      form.append("type", "Property Updates");
+      if (image) {
+        form.append("image", image);
+      }
+
+      const [response] = await makeRequest(form);
+
+      if (response) {
+        showToast(response.message, true, {
+          position: "top-center",
+        });
+        setData(response);
+        setShowLaunch(true);
+        reset();
+        setImage(null);
+        setTimeout(() => {
+          window.location.reload()
+        },2000 );
+      } else {
+        showToast("Failed to submit data.", false, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      showToast("Error submitting data. Please try again later.", false, {
         position: "top-center",
       });
-      setData(response);
-      setShowLaunch(true);
-      reset();
-    } else {
-      showToast(response.message, false, {
-        position: "top-center",
-      });
+      console.error("Error submitting data:", error);
     }
   });
-
+  
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
@@ -49,12 +71,19 @@ function PropertyUpdates() {
 
       <div className="flex justify-between w-full px-10 py-14">
         <h1 className="text-[16px] font-semibold text-[#28292C]">
-          {" "}
           Message details
         </h1>
       </div>
 
-      {!showLaunch &&  <Update1 UpdateProperty={UpdateProperty} control={control} />}
+      {!showLaunch && (
+        <Update1
+          UpdateProperty={UpdateProperty}
+          control={control}
+          register={register}
+          image={image}
+          setImage={setImage}
+        />
+      )}
 
       {showLaunch && <Launch data={data} />}
     </>

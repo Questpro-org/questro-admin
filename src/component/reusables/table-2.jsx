@@ -3,6 +3,7 @@ import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
 import EditAgent from "../../pages/views/agents/agent-modal/edit-agent";
 import DeactivateAdmin from "../../pages/views/settings/settings-modal/deactivate-admin";
+import EditAdmin from "../../pages/views/settings/settings-modal/edit-admin";
 
 const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -15,8 +16,8 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
   };
 
   const handleEdit = (rowId) => {
-    const agent = data.find((agent) => agent._id === rowId);
-    setSelectedAdmin(agent);
+    const admin = data.find((admin) => admin._id === rowId);
+    setSelectedAdmin(admin);
     setDropdownOpen(null);
     setModalVisible(true);
   };
@@ -122,14 +123,14 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
                     </button>
                     {dropdownOpen === row["_id"] && (
                       <div className="absolute w-[164px] right-0 bg-white shadow-lg rounded-md mt-2 z-10">
-                        {row.username !== "sent" && (
+                       
                           <button
                             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                             onClick={() => handleEdit(row["_id"])}
                           >
                             Edit
                           </button>
-                        )}
+                        
                         <button
                           className="block px-4 py-2 text-[#E52323] hover:bg-gray-100"
                           onClick={() => handleDelete(row["_id"])}
@@ -161,10 +162,10 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
         ))}
       </tbody>
       {modalVisible && (
-        <EditAgent
+        <EditAdmin
           visible={modalVisible}
           handleClose={() => setModalVisible(false)}
-          agent={selectedAdmin}
+          admin={selectedAdmin}
         />
       )}
       {deleteModal && (

@@ -16,18 +16,25 @@ export default function useRequest(endpoint, method, headers = {}) {
       ? `${baseURL}${endpoint}?${queryParams}`
       : `${baseURL}${endpoint}`;
 
+    let body;
+    let contentType = "application/json";
+
+    if (data instanceof FormData) {
+      body = data;
+      contentType = "multipart/form-data"; // This is set by the browser automatically
+    } else if (method === "POST" || method === "PUT" || method === "DELETE" || method === "PATCH") {
+      body = JSON.stringify(data);
+    }
+
     try {
       const response = await fetch(urlWithParams, {
         method,
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
           ...headers,
+          ...(contentType !== "multipart/form-data" && { "Content-Type": contentType }),
         },
-        body:
-          method === "POST" || method === "PUT" || method === "DELETE" || method === "PATCH"
-            ? JSON.stringify(data)
-            : undefined,
+        body: body,
       });
 
       const json = await response.json();

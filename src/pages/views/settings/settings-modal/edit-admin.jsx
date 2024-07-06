@@ -10,7 +10,8 @@ import useApi from "../../../../component/hook/request";
 import moment from "moment";
 import useRequest from "../../../../component/hook/use-request";
 
-const AddAdmin = ({ visible, handleClose }) => {
+const EditAdmin = ({ visible, handleClose, admin }) => {
+  console.log('admin', admin)
   const userToken = localStorage.getItem("token");
   const { makeRequest: addAdmin, loading } = useRequest(
     `/admin/create-admin`,
@@ -252,4 +253,4 @@ const AddAdmin = ({ visible, handleClose }) => {
   );
 };
 
-export default AddAdmin;
+export default EditAdmin;
