@@ -11,7 +11,8 @@ function Updates() {
     Authorization: `Bearer ${userToken}`,
   });
   const navigate = useNavigate();
-  const [updates, setUpdate] = useState([]);
+  const [updates, setUpdates] = useState([]);
+  const [allUpdates, setAllUpdates] = useState([]); // Store all updates
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedType, setSelectedType] = useState("");
@@ -39,7 +40,7 @@ function Updates() {
     setSearchQuery(storedSearchQuery);
     setSelectedStatus(storedStatus);
     setSelectedType(storedType);
-    fetchUpdates();
+    fetchAllUpdates(); // Fetch all updates
   }, [currentPage]);
 
   useEffect(() => {
@@ -49,32 +50,48 @@ function Updates() {
       sentStatus: selectedStatus,
       type: selectedType,
     });
-    fetchUpdates();
-  }, [searchQuery, selectedStatus, selectedType, currentPage]);
+    applyFiltersAndPagination(); // Apply filters and pagination on change
+  }, [searchQuery, selectedStatus, selectedType, currentPage, allUpdates]);
 
-  async function fetchUpdates() {
-    const page = currentPage;
-    const limit = itemsPerPage;
-
-    const params = {
-      limit: limit,
-      page: page,
-      ...(selectedStatus ? { sentStatus: selectedStatus } : {}),
-      ...(selectedType ? { type: selectedType } : {}),
-    };
-
-    const [response] = await makeRequest(undefined, params);
+  async function fetchAllUpdates() {
+    const [response] = await makeRequest(undefined, { limit: 1000 }); // Assuming your backend can handle large limits
     let updates = response?.data?.data?.docs || [];
+    setAllUpdates(updates); // Store all updates
+    applyFiltersAndPagination(updates); // Apply filters and pagination
+  }
+
+  function applyFiltersAndPagination(updatesToFilter = allUpdates) {
+    let filteredUpdates = updatesToFilter;
+
     if (searchQuery) {
       const lowerSearchQuery = searchQuery.toLowerCase();
-      updates = updates.filter(
+      filteredUpdates = filteredUpdates.filter(
         (update) =>
           update.title?.toLowerCase().includes(lowerSearchQuery) ||
           update.type?.toLowerCase().includes(lowerSearchQuery)
       );
     }
-    setUpdate(updates);
-    setTotalPages(Math.ceil(response.data?.data?.totalPages));
+
+    if (selectedStatus) {
+      filteredUpdates = filteredUpdates.filter(
+        (update) => update.sentStatus === selectedStatus
+      );
+    }
+
+    if (selectedType) {
+      filteredUpdates = filteredUpdates.filter(
+        (update) => update.type === selectedType
+      );
+    }
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedUpdates = filteredUpdates.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
+
+    setUpdates(paginatedUpdates);
+    setTotalPages(Math.ceil(filteredUpdates.length / itemsPerPage));
   }
 
   function handlePageChange(page) {
@@ -88,6 +105,7 @@ function Updates() {
   function handleStatusChange(event) {
     setSelectedStatus(event.target.value);
   }
+
   function handleTypeChange(event) {
     setSelectedType(event.target.value);
   }
@@ -188,7 +206,6 @@ function Updates() {
           onPageChange={handlePageChange}
         />
       )}
-      
     </>
   );
 }

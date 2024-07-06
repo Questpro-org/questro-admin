@@ -4,23 +4,21 @@ import { TailSpin } from "react-loader-spinner";
 import Table from "../../../component/reusables/table";
 import { capitalizeFirstLetter } from "../../../utilities/function";
 
-const AgentTable = ({
-  agent,
+const NotificationTable = ({
+  notification,
   selectedStatus,
 }) => {
   const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState([]);
   const columns = [
-    { header: "Name", accessor: "fullName" },  
-    { header: "Email", accessor: "email" },
-    { header: "Phone", accessor: "phone" },
+    { header: "Title", accessor: "title" },  
     { header: "Status", accessor: "status" },
-    { header: "Joined On", accessor: "createdAt" },
+    { header: "Date", accessor: "createdAt" },
     { header: "", accessor: "_id" },
   ];
 
   useEffect(() => {
-    const filtered = agent?.map((user) => {
+    const filtered = notification?.map((user) => {
       if (user?.status) {
         return {
           ...user,
@@ -30,7 +28,7 @@ const AgentTable = ({
       return null;
     })
     setFilteredData(filtered);
-  }, [agent, selectedStatus]);
+  }, [notification, selectedStatus]);
 
   const handleUserClick = (_id) => {
     navigate(`/agent/${_id}`);
@@ -54,4 +52,4 @@ const AgentTable = ({
   );
 };
 
-export default AgentTable;
+export default NotificationTable;

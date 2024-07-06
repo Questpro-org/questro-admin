@@ -6,7 +6,7 @@ import ImageUpload from "../../../../component/uploads/file-upload";
 import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 
-function Update1({ UpdateProperty, control }) {
+function Update1({ UpdateProperty, control, image, setImage }) {
   const navigate = useNavigate();
   return (
     <>
@@ -61,13 +61,58 @@ function Update1({ UpdateProperty, control }) {
               )}
             />
 
-            <ImageUpload />
+            <Controller
+              name="location"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Location is required",
+                minLength: {
+                  value: 3,
+                  message: "Location must be at least 3 characters",
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <Input
+                  type="text"
+                  label="Location"
+                  placeholder="Enter your location"
+                  className="w-full mt-2"
+                  value={field.value}
+                  error={fieldState?.error?.message}
+                  onChange={field.onChange}
+                />
+              )}
+            />
 
-            <Input
-              type="text"
-              label="Custom link"
-              placeholder="https://"
-              className="w-full mt-6"
+            <ImageUpload
+              image={image}
+              setImage={setImage}
+              onFileUpload={setImage}
+            />
+
+            <Controller
+              name="url"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Custom link is required",
+                pattern: {
+                  value: /^(https?|ftp):\/\/[^\s]+$/,
+                  message: "Invalid URL",
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <Input
+                  type="text"
+                  label="Custom link"
+                  placeholder="https://"
+                  className="w-full mt-6"
+                  value={field.value}
+                  error={fieldState?.error?.message}
+                  onChange={field.onChange}
+                />
+              )}
             />
           </div>
           <img src={PhoneImage} alt="PhoneImage" />

@@ -10,7 +10,7 @@ const DashboardLayout = () => {
   const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const sidebarBackgroundCheck = pathname.split("/")[1];
-  const showSidebar = !pathname.startsWith("/notification");
+  const showSidebar = !pathname.startsWith("/notify");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -18,19 +18,21 @@ const DashboardLayout = () => {
       sidebarBackgroundCheck === "" ||
       sidebarBackgroundCheck === "agents" ||
       sidebarBackgroundCheck === "updates" ||
+      sidebarBackgroundCheck === "notifications" ||
       sidebarBackgroundCheck === "settings" ||
       sidebarBackgroundCheck === "agent" ||
       sidebarBackgroundCheck === "properties" ||
       sidebarBackgroundCheck === "property" ||
       sidebarBackgroundCheck === "push" ||
       sidebarBackgroundCheck === "assets"
-    
     ) {
       setSidebarOpen(true);
     } else {
       setSidebarOpen(false);
     }
   }, [sidebarBackgroundCheck]);
+
+  console.log(sidebarBackgroundCheck)
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
