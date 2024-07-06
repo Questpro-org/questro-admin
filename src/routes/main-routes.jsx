@@ -3,6 +3,7 @@ import Agents from "../pages/views/agents";
 import AgentDetails from "../pages/views/agents/agent-details";
 import ActiveListings from "../pages/views/agents/agent-details/active-listing";
 import Dashboard from "../pages/views/dashboard";
+import Notifications from "../pages/views/notify/index.jsx";
 import Settings from "../pages/views/settings";
 import Updates from "../pages/views/updates";
 import PropertyUpdatesRoute from "../pages/views/updates/property-updates-route.jsx";
@@ -31,6 +32,12 @@ const MainRoutes = {
       path: "/updates",
       element: <Updates />,
     },
+
+    {
+      path: "/notifications",
+      element: <Notifications />,
+    },
+
     {
       path: "/settings",
       element: <Settings />,

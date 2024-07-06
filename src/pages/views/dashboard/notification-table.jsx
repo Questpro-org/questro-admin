@@ -1,56 +1,51 @@
 import React from "react";
+import Icon from "../../../assets/icon";
+import { capitalizeFirstLetter, formatDate } from "../../../utilities/function";
+import { Link } from "react-router-dom";
 
-const notifications = [
-  {
-    id: 1,
-    message:
-      "Agent Mike has subscribed for Questpro Max. Please confirm payment and...",
-    status: "Completed",
-    time: "2:15 PM, Today",
-  },
-  {
-    id: 2,
-    message:
-      "Agent Fola verification requested. Please verify agent details for approval",
-    status: "Pending",
-    time: "2:15 PM, Today",
-  },
-];
-
-const NotificationsTable = () => {
+const NotificationsTable = ({ notification }) => {
   return (
+    <>
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden mt-10 mx-10">
-      <div className="flex justify-between items-center p-4 border-b border-gray-200">
-        <h3 className="text-lg font-bold">Notifications</h3>
-        <a href="#" className="text-sm text-blue-600">
-          See more
-        </a>
-      </div>
-      <table className="min-w-full">
+      <table className="w-full table-fixed">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="w-1/2 p-4 text-[14px] text-left">Notifications</th>
+            <th className="w-1/4 p-4 text-[14px] text-left">Status</th>
+            <th className="w-1/4 p-4 text-[14px] text-left">Date</th>
+            <th className="w-1/12  text-[14px] text-left text-[#459BDA]"><Link to='/notifications'>See more</Link></th>
+          </tr>
+        </thead>
         <tbody>
-          {notifications.map((notification) => (
-            <tr
-              key={notification.id}
-              className="flex justify-between p-4 border-b border-gray-200"
-            >
-              <td className="flex-2 text-left font-bold">{notification.message}</td>
-              <td className="flex-1 text-right">
+          {notification?.slice(0, 5)?.map((notify) => (
+            <tr key={notify.id} className="border-b font-bold border-gray-200">
+              <td className="w-1/2 p-4 text-sm text-gray-700 truncate">
+                {notify?.content}
+              </td>
+              <td className="w-1/4 p-4">
                 <span
-                  className={`inline-block px-2 py-1 text-sm font-semibold rounded-full ${
-                    notification.status === "Completed"
+                  className={`inline-block px-3 py-1 text-sm font-semibold rounded-md ${
+                    notify.status === "completed"
                       ? "bg-green-100 text-green-800"
                       : "bg-yellow-100 text-yellow-800"
                   }`}
                 >
-                  {notification.status}
+                  {capitalizeFirstLetter(notify?.status)}
                 </span>
               </td>
-              <td className="flex-1 text-right">{notification.time}</td>
+              <td className="w-1/4 p-4 text-sm text-gray-500">
+                {formatDate(notify?.createdAt)}
+              </td>
+              <td className="w-1/12 p-4 text-right">
+                <Icon name="dotIcon" className="text-gray-400" />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+    <br/>
+    </>
   );
 };
 
