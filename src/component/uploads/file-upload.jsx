@@ -30,7 +30,6 @@ const ImageUpload = ({ onFileUpload,  image, setImage }) => {
     onFileUpload(e.target.files[0]);
   };
 
-  console.log('file', image?.name)
 
   return (
     <>

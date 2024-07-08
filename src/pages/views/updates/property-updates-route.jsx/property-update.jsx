@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 
 function Update1({ UpdateProperty, control, update }) {
-  console.log(update, 'trdfghjggfggfgf')
   const navigate = useNavigate();
   return (
     <>

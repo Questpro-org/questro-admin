@@ -11,7 +11,6 @@ import moment from "moment";
 import useRequest from "../../../../component/hook/use-request";
 
 const EditAdmin = ({ visible, handleClose, admin }) => {
-  console.log('admin', admin)
   const userToken = localStorage.getItem("token");
   const { makeRequest: addAdmin, loading } = useRequest(
     `/admin/create-admin`,

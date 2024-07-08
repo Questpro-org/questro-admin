@@ -5,8 +5,10 @@ import Table from "../../../../component/reusables/table";
 
 const PaymentHistory = ({ payment }) => {
   const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const columns = [
-    { header: "Transaction ID", accessor: "transactionId"},  
+    { header: "Transaction ID", accessor: "transactionId" },
     { header: "Subscription", accessor: "plan" },
     { header: "Timeline", accessor: "duration" },
     { header: "Date", accessor: "updatedAt" },
@@ -32,22 +34,29 @@ const PaymentHistory = ({ payment }) => {
       return null;
     }).filter(Boolean);
     setFilteredData(filtered);
+    setLoading(false);
   }, [payment]);
 
   return (
     <div className="rounded-md bg-white border border-[#fff] mt-10">
       <h4 className="text-[#28292C] text-[16px] font-bold">Payment History</h4>
       <div className="mt-7">
-        {filteredData?.length > 0 ? (
-          <Table
-            columns={columns}
-            data={filteredData}
-            selectedUserId={null}
-          />
-        ) : (
-          <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
+        {loading ? (
+          <div className="flex justify-center mt-10">
             <TailSpin color="skyblue" />
           </div>
+        ) : (
+          filteredData?.length > 0 ? (
+            <Table
+              columns={columns}
+              data={filteredData}
+              selectedUserId={null}
+            />
+          ) : (
+            <div className="flex justify-center mt-10">
+              <p className="text-gray-500 font-bold">No transaction data available</p>
+            </div>
+          )
         )}
       </div>
     </div>
