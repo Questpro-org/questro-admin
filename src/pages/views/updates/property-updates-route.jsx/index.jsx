@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { showToast } from "../../../../component/reusables/toast";
 import Launch from "./launch";
 import { useParams } from "react-router-dom";
-import useApi from "../../../../component/hook/request";
+
 
 function PropertyUpdatesRoute() {
   const { _id } = useParams();
@@ -41,7 +41,7 @@ function PropertyUpdatesRoute() {
 
   const UpdateProperty = handleSubmit(async (formData) => {
     const updatedAgent = {
-      title: formData.title,
+      title: formData?.title,
       body: formData.body,
       recipientType: formData.recipientType,
       location: formData.location,

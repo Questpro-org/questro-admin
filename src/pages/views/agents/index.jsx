@@ -83,7 +83,7 @@ function Agents() {
   useEffect(() => {
     const fetchData = async () => {
       const [response] = await getNotification();
-      setNotification(response?.data?.data);
+      setNotification(response?.data?.data?.docs);
     };
 
     fetchData();

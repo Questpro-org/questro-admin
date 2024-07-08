@@ -92,7 +92,7 @@ function Updates() {
     }
 
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedUpdates = filteredUpdates.slice(
+    const paginatedUpdates = filteredUpdates?.slice(
       startIndex,
       startIndex + itemsPerPage
     );
@@ -104,7 +104,7 @@ function Updates() {
   useEffect(() => {
     const fetchData = async () => {
       const [response] = await getNotification();
-      setNotification(response?.data?.data);
+      setNotification(response?.data?.data?.docs || []);
     };
 
     fetchData();
