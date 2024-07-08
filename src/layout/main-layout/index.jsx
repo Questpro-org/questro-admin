@@ -32,7 +32,6 @@ const DashboardLayout = () => {
     }
   }, [sidebarBackgroundCheck]);
 
-  console.log(sidebarBackgroundCheck)
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);

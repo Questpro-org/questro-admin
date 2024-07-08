@@ -92,11 +92,11 @@ const TableUpdate = ({ columns, data, onUserClick, PlaceholderImage }) => {
               <td
                 key={colIndex}
                 className="h-14 border-b-[2px] relative cursor-pointer"
-                onClick={() =>
-                  column.accessor === "id" || column.accessor === "_id"
-                    ? null
-                    : onUserClick(row["_id"])
-                }
+                // onClick={() =>
+                //   column.accessor === "id" || column.accessor === "_id"
+                //     ? null
+                //     : onUserClick(row["_id"])
+                // }
               >
                 {column.accessor === "created_at" ||
                 column.accessor === "createdAt" ? (

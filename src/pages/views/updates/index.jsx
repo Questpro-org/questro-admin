@@ -7,9 +7,7 @@ import Pagination from "../../../component/pagination/pagination";
 
 function Updates() {
   const userToken = localStorage.getItem("token");
-  const { makeRequest } = useRequest("/admin/update-notifications", "GET", {
-    Authorization: `Bearer ${userToken}`,
-  });
+  const [notification, setNotification] = useState([]);
   const navigate = useNavigate();
   const [updates, setUpdates] = useState([]);
   const [allUpdates, setAllUpdates] = useState([]); // Store all updates
@@ -23,6 +21,13 @@ function Updates() {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const { makeRequest } = useRequest("/admin/update-notifications", "GET", {
+    Authorization: `Bearer ${userToken}`,
+  });
+  const { makeRequest: getNotification } = useRequest("/notifications", "GET", {
+    Authorization: `Bearer ${userToken}`,
+  });
 
   function updateUrlParams(params) {
     const url = new URL(window.location.href);
@@ -40,7 +45,8 @@ function Updates() {
     setSearchQuery(storedSearchQuery);
     setSelectedStatus(storedStatus);
     setSelectedType(storedType);
-    fetchAllUpdates(); // Fetch all updates
+    fetchAllUpdates(); 
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {
@@ -50,14 +56,15 @@ function Updates() {
       sentStatus: selectedStatus,
       type: selectedType,
     });
-    applyFiltersAndPagination(); // Apply filters and pagination on change
+    applyFiltersAndPagination(); 
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedStatus, selectedType, currentPage, allUpdates]);
 
   async function fetchAllUpdates() {
-    const [response] = await makeRequest(undefined, { limit: 1000 }); // Assuming your backend can handle large limits
+    const [response] = await makeRequest(undefined, { limit: 1000 });
     let updates = response?.data?.data?.docs || [];
-    setAllUpdates(updates); // Store all updates
-    applyFiltersAndPagination(updates); // Apply filters and pagination
+    setAllUpdates(updates);
+    applyFiltersAndPagination(updates);
   }
 
   function applyFiltersAndPagination(updatesToFilter = allUpdates) {
@@ -94,6 +101,17 @@ function Updates() {
     setTotalPages(Math.ceil(filteredUpdates.length / itemsPerPage));
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const [response] = await getNotification();
+      setNotification(response?.data?.data);
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
   function handlePageChange(page) {
     setCurrentPage(page);
   }
@@ -124,13 +142,27 @@ function Updates() {
     navigate("/push/notification");
   };
 
+  
+  const notificationCount = notification.length;
+  const handleClick = () => {
+    navigate("/notifications");
+  };
+
+
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
         <h3 className="text-[16px] font-semibold text-white">Agents</h3>
-        <button>
-          <Icon name="bellicon" />
-        </button>
+        <div className="relative" onClick={handleClick}>
+          <button>
+            <Icon name="bellicon" />
+          </button>
+          {notificationCount > 0 && (
+            <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+              {notificationCount}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-between w-full px-10 py-14">

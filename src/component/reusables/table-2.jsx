@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
-import EditAgent from "../../pages/views/agents/agent-modal/edit-agent";
 import DeactivateAdmin from "../../pages/views/settings/settings-modal/deactivate-admin";
 import EditAdmin from "../../pages/views/settings/settings-modal/edit-admin";
 
@@ -97,11 +96,11 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
               <td
                 key={colIndex}
                 className="h-14 border-b-[2px] relative cursor-pointer"
-                onClick={() =>
-                  column.accessor === "id" || column.accessor === "_id"
-                    ? null
-                    : onUserClick(row["_id"])
-                }
+                // onClick={() =>
+                //   column.accessor === "id" || column.accessor === "_id"
+                //     ? null
+                //     : onUserClick(row["_id"])
+                // }
               >
                 {column.accessor === "created_at" ||
                 column.accessor === "createdAt" ? (
