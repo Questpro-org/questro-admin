@@ -45,6 +45,7 @@ function Settings() {
     setSelectedStatus(storedStatus);
     setSelectedRoles(storedRoles);
     fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ function Settings() {
       roles: selectedRoles,
     });
     fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedStatus, selectedRoles, currentPage]);
 
   async function fetchData() {
@@ -70,8 +72,6 @@ function Settings() {
 
     const [response] = await makeRequest(undefined, params);
     let users = response.data?.data?.docs || [];
-
-    // Client-side filtering for search query
     if (searchQuery) {
       const lowerSearchQuery = searchQuery.toLowerCase();
       users = users.filter(
@@ -89,7 +89,7 @@ function Settings() {
   useEffect(() => {
     const fetchData = async () => {
       const [response] = await getNotification();
-      setNotification(response?.data?.data);
+      setNotification(response?.data?.data?.docs || []);
     };
 
     fetchData();

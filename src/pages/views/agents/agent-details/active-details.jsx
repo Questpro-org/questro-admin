@@ -16,7 +16,7 @@ function ActiveListing({ activeListing, _id }) {
 
       {activeListing && activeListing.length > 0 ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-white">
-          {activeListing.slice(0, 3).map((item, index) => (
+          {activeListing?.slice(0, 3).map((item, index) => (
             <div key={index} className="border rounded-lg shadow-lg overflow-hidden">
               <img
                 src={item.propertyImage?.image || Avatar}

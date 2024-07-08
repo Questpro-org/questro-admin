@@ -57,7 +57,7 @@ function Notifications() {
     };
 
     const [response] = await getNotification(undefined, params);
-    let notifications = response.data?.data || [];
+    let notifications = response.data?.data?.docs || [];
 
     // Client-side filtering for search query
     if (searchQuery) {
