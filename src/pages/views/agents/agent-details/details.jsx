@@ -40,7 +40,7 @@ const AgentDetail = ({ agent, _id }) => {
   const { makeRequest: getComments } = useRequest(`/admin/agent/${agent?._id}/comments`, "GET", {
     Authorization: `Bearer ${userToken}`,
   });
-
+ 
   let selfieUrl = agent?.selfie?.filePath || "";
   let uploadUrl = agent?.idUpload?.filePath || "";
 
@@ -75,7 +75,7 @@ const AgentDetail = ({ agent, _id }) => {
       setPayment(response?.message?.data || []);
     };
     fetchPayment();
-  }, []);
+  }, [agent?._id]);
 
   useEffect(() => {
     const fetchComment = async () => {
@@ -85,6 +85,7 @@ const AgentDetail = ({ agent, _id }) => {
     };
     fetchComment();
   }, [agent?._id]);
+
 
 
   return (

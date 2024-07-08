@@ -4,12 +4,11 @@ import Icon from "../../../assets/icon";
 import useRequest from "../../../component/hook/use-request";
 import AddAdmin from "./settings-modal/add-admin";
 import Pagination from "../../../component/pagination/pagination";
+import { useNavigate } from "react-router-dom";
 
 function Settings() {
   const userToken = localStorage.getItem("token");
-  const { makeRequest } = useRequest("/admin/admins", "GET", {
-    Authorization: `Bearer ${userToken}`,
-  });
+  const [notification, setNotification] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -19,6 +18,15 @@ function Settings() {
   const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+  const navigate = useNavigate();
+
+  const { makeRequest } = useRequest("/admin/admins", "GET", {
+    Authorization: `Bearer ${userToken}`,
+  });
+
+  const { makeRequest: getNotification } = useRequest("/notifications", "GET", {
+    Authorization: `Bearer ${userToken}`,
+  });
 
   function updateUrlParams(params) {
     const url = new URL(window.location.href);
@@ -78,6 +86,16 @@ function Settings() {
     setTotalPages(Math.ceil(response.data?.data?.totalPages));
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const [response] = await getNotification();
+      setNotification(response?.data?.data);
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handlePageChange(page) {
     setCurrentPage(page);
   }
@@ -98,13 +116,25 @@ function Settings() {
     setModalVisible(true);
   };
 
+  const notificationCount = notification.length;
+  const handleClick = () => {
+    navigate("/notifications");
+  };
+
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
         <h3 className="text-[16px] font-semibold text-white">Agents</h3>
-        <button>
-          <Icon name="bellicon" />
-        </button>
+        <div className="relative" onClick={handleClick}>
+          <button>
+            <Icon name="bellicon" />
+          </button>
+          {notificationCount > 0 && (
+            <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+              {notificationCount}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-between w-full px-10 py-14">

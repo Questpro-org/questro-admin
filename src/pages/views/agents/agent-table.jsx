@@ -43,7 +43,7 @@ const AgentTable = ({
           columns={columns}
           data={filteredData}
           selectedUserId={null}
-        
+          onUserClick={handleUserClick}
         />
       ) : (
         <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">

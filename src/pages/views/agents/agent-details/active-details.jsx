@@ -43,7 +43,7 @@ function ActiveListing({ activeListing, _id }) {
           ))}
         </div>
       ) : (
-        <div className="text-center text-[#28292C] text-[16px] font-bold">
+        <div className="text-center text-gray-500 text-[16px] font-bold">
          No properties available
         </div>
       )}
