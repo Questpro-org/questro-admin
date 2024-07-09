@@ -46,7 +46,7 @@ function PropertyUpdatesRoute() {
       recipientType: formData.recipientType,
       location: formData.location,
       url: formData.url,
-      type: "Property Updates",
+      type: "property updates",
     };
     const [response] = await makeRequest(updatedAgent);
     if (response) {

@@ -29,7 +29,7 @@ function PropertyUpdates() {
       form.append("recipientType", formData.recipientType);
       form.append("location", formData.location);
       form.append("url", formData.url);
-      form.append("type", "Property Updates");
+      form.append("type", "property updates");
       if (image) {
         form.append("image", image);
       }
