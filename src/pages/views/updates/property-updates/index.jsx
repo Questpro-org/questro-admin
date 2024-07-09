@@ -56,7 +56,7 @@ function PropertyUpdates() {
       showToast("Error submitting data. Please try again later.", false, {
         position: "top-center",
       });
-      console.error("Error submitting data:", error);
+     
     }
   });
   

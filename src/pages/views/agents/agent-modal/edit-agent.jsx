@@ -41,7 +41,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       status: agent?.status || "",
       isVerified: agent?.isVerified || "",
       plan: agent?.subscription?.plan || "",
-      updatedAt: moment(agent?.updatedAt) || null, // Convert to moment object
+      updatedAt: moment(agent?.updatedAt) || null, 
     },
   });
 
@@ -74,6 +74,9 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       });
       reset();
       handleClose();
+      setTimeout(() => {
+        window.location.reload()
+      },2000 );
     } else {
       showToast(response.message, false, {
         position: "top-center",

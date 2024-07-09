@@ -17,9 +17,9 @@ const DeactivateAgent = ({ visible, handleClose, agent }) => {
 
   const { handleSubmit, control, reset } = useForm();
 
-  const handleDeactivate = handleSubmit(async (formData) => {
+  const handleDeactivate = handleSubmit(async () => {
     const updatedAgent = {
-      isVerified: formData.isVerified,
+      status: 'deactivated',
     };
     const [response] = await deacticateAgent(updatedAgent);
     if (response.status) {
@@ -27,6 +27,9 @@ const DeactivateAgent = ({ visible, handleClose, agent }) => {
         position: "top-center",
       });
       reset();
+      setTimeout(() => {
+        window.location.reload()
+      },2000 );
       handleClose();
     } else {
       showToast(response.message, false, {
