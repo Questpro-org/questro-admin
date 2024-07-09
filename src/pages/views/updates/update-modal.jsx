@@ -17,6 +17,9 @@ const DeleteUpdate = ({ visible, handleClose, updates }) => {
         showToast(response.message, true, {
           position: "top-center",
         });
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000);
         handleClose();
       } else {
         showToast("Failed to delete the update", false, {

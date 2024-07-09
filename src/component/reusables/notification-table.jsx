@@ -59,7 +59,7 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage, userT
       await getReadNotifications();
       onUserClick(_id);
     } catch (error) {
-      console.error("Error marking notification as read:", error);
+     
     }
   };
 
