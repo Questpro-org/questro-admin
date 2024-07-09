@@ -11,8 +11,8 @@ const NotificationsTable = ({ notification }) => {
         <thead>
           <tr className="bg-gray-100">
             <th className="w-1/2 p-4 text-[14px] text-left">Notifications</th>
-            <th className="w-1/4 p-4 text-[14px] text-left">Status</th>
-            <th className="w-1/4 p-4 text-[14px] text-left">Date</th>
+            <th className="w-1/4 p-4 text-[14px] text-left"></th>
+            <th className="w-1/4 p-4 text-[14px] text-left"></th>
             <th className="w-1/12  text-[14px] text-left text-[#459BDA]"><Link to='/notifications'>See more</Link></th>
           </tr>
         </thead>

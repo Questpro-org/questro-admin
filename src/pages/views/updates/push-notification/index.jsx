@@ -20,7 +20,7 @@ function PushNotification() {
       body: formData.body,
       recipientType: formData.recipientType,
       location: formData.location,
-      type: "Push Notifications",
+      type: "push notifications",
     };
     const [response] = await makeRequest(updatedAgent);
     if (response) {
