@@ -9,7 +9,7 @@ const PaymentHistory = ({ payment }) => {
 
   const columns = [
     { header: "Transaction ID", accessor: "transactionId" },
-    { header: "Subscription", accessor: "plan" },
+    { header: "Description", accessor: "paymentDescription" },
     { header: "Timeline", accessor: "duration" },
     { header: "Date", accessor: "updatedAt" },
     { header: "Amount", accessor: "amount", Cell: ({ value }) => (

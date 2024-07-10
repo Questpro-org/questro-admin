@@ -7,10 +7,12 @@ import TableUpdate from "../../../component/reusables/update-table";
 const UpdateTable = ({
   updates,
   selectedStatus,
-  handleStatusChange,
+  currentPage,
+  onPageChange,
 }) => {
   const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const columns = [
     { header: "Message title", accessor: "title" },
     { header: "Type", accessor: "type" },
@@ -24,12 +26,13 @@ const UpdateTable = ({
       if (update?.sentStatus) {
         return {
           ...update,
-          sentStatus: `${capitalizeFirstLetter(update.sentStatus)}`
+          sentStatus: `${capitalizeFirstLetter(update.sentStatus)}`,
         };
       }
       return false;
     });
     setFilteredData(filtered);
+    setLoading(false);
   }, [updates, selectedStatus]);
 
   const handleUserClick = (id) => {
@@ -38,18 +41,27 @@ const UpdateTable = ({
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
-      {filteredData?.length > 0 ? (
+      {loading ? (
+        <div className="flex justify-center mt-10">
+          <TailSpin color="skyblue" />
+        </div>
+      ) : 
+      filteredData?.length > 0 ? (
         <TableUpdate
           columns={columns}
           data={filteredData}
           selectedUserId={null}
-            // onUserClick={handleUserClick}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+          // onUserClick={handleUserClick}
         />
-       ) : (
-        <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
-         <TailSpin color="skyblue" />
+      ) : (
+        <div className="flex justify-center mt-10">
+          <p className="text-gray-500 font-bold">
+            No Property Update data available
+          </p>
         </div>
-      )} 
+      )}
     </div>
   );
 };
