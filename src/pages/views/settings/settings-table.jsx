@@ -6,7 +6,9 @@ import TableSettings from "../../../component/reusables/table-2";
 
 const SettingsTable = ({ admins, selectedStatus }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
+
   const columns = [
     { header: "Name", accessor: "username" },
     { header: "Email", accessor: "email" },
@@ -25,15 +27,18 @@ const SettingsTable = ({ admins, selectedStatus }) => {
         roles: capitalizeFirstLetter(admin?.roles),
       }));
     setFilteredData(filtered);
+    setLoading(false);
   }, [admins, selectedStatus]);
 
-  const handleUserClick = (id) => {
-    navigate(`/account/details/${id}`);
-  };
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
-      {filteredData?.length > 0 ? (
+       {loading ? (
+        <div className="flex justify-center mt-10">
+          <TailSpin color="skyblue" />
+        </div>
+      ) : 
+      filteredData?.length > 0 ? (
         <TableSettings
           columns={columns}
           data={filteredData}
@@ -41,9 +46,11 @@ const SettingsTable = ({ admins, selectedStatus }) => {
       
         />
       ) : (
-        <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
-          <TailSpin color="skyblue" />
-        </div>
+        <div className="flex justify-center mt-10">
+        <p className="text-gray-500 font-bold">
+          No Agent data available
+        </p>
+      </div>
       )}
     </div>
   );
