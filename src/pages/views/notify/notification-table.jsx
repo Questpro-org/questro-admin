@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { capitalizeFirstLetter } from "../../../utilities/function";
 import TableNotification from "../../../component/reusables/notification-table";
+import NotificationDetails from './notification-details'
 
 const NotificationTable = ({ notification, selectedStatus }) => {
   const userToken = localStorage.getItem("token");
   const [filteredData, setFilteredData] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState("");
   const navigate = useNavigate();
   const columns = [
     { header: "Title", accessor: "title" },
@@ -16,20 +18,26 @@ const NotificationTable = ({ notification, selectedStatus }) => {
   ];
 
   useEffect(() => {
-    const filtered = notification?.map((user) => {
-      if (user?.status) {
-        return {
-          ...user,
-          title: `${capitalizeFirstLetter(user.title)}`,
-        };
-      }
-      return null;
-    }).filter(Boolean);
+    const filtered = notification
+      ?.map((user) => {
+        if (user?.status) {
+          return {
+            ...user,
+            title: `${capitalizeFirstLetter(user.title)}`,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
     setFilteredData(filtered);
   }, [notification, selectedStatus]);
 
   const handleUserClick = (_id) => {
-    // navigate(`/agent/${_id}`);
+    setSelectedUserId(_id);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUserId(null);
   };
 
   return (
@@ -46,6 +54,14 @@ const NotificationTable = ({ notification, selectedStatus }) => {
         <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
           <TailSpin color="skyblue" />
         </div>
+      )}
+
+      {selectedUserId && (
+        <NotificationDetails
+          visible={!!selectedUserId}
+          handleClose={handleCloseModal}
+          data={selectedUserId}
+        />
       )}
     </div>
   );

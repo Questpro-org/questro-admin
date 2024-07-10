@@ -21,7 +21,7 @@ export default function useRequest(endpoint, method, headers = {}) {
 
     if (data instanceof FormData) {
       body = data;
-      contentType = "multipart/form-data"; // This is set by the browser automatically
+      contentType = "multipart/form-data";
     } else if (method === "POST" || method === "PUT" || method === "DELETE" || method === "PATCH") {
       body = JSON.stringify(data);
     }
