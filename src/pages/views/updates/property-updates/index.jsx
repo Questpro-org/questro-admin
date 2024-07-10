@@ -44,9 +44,6 @@ function PropertyUpdates() {
         setShowLaunch(true);
         reset();
         setImage(null);
-        setTimeout(() => {
-          window.location.reload()
-        },2000 );
       } else {
         showToast("Failed to submit data.", false, {
           position: "top-center",

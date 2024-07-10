@@ -10,6 +10,7 @@ const AgentTable = ({
 }) => {
   const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const columns = [
     { header: "Name", accessor: "fullName" },  
     { header: "Email", accessor: "email" },
@@ -30,6 +31,7 @@ const AgentTable = ({
       return null;
     })
     setFilteredData(filtered);
+    setLoading(false);
   }, [agent, selectedStatus]);
 
   const handleUserClick = (_id) => {
@@ -38,7 +40,12 @@ const AgentTable = ({
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
-      {filteredData?.length > 0 ? (
+        {loading ? (
+        <div className="flex justify-center mt-10">
+          <TailSpin color="skyblue" />
+        </div>
+      ) : 
+      filteredData?.length > 0 ? (
         <Table
           columns={columns}
           data={filteredData}
@@ -46,8 +53,10 @@ const AgentTable = ({
           onUserClick={handleUserClick}
         />
       ) : (
-        <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
-         <TailSpin color="skyblue" />
+        <div className="flex justify-center mt-10">
+          <p className="text-gray-500 font-bold">
+            No Agent data available
+          </p>
         </div>
       )}
     </div>

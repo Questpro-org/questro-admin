@@ -166,8 +166,8 @@ function Settings() {
             <option value="">Type</option>
             <option value="admin">Admin</option>
             <option value="superAdmin">Super Admin</option>
-            {/* <option value="inactive">Inactive</option>
-          <option value="blocked">Blocked</option> */}
+            <option value="support">Support</option>
+          
           </select>
 
           <select
