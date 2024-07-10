@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { capitalizeFirstLetter } from "../../../utilities/function";
 import TableNotification from "../../../component/reusables/notification-table";
+import NotificationDetails from './notification-details'
 
 const NotificationTable = ({ notification, selectedStatus }) => {
   const userToken = localStorage.getItem("token");
   const [filteredData, setFilteredData] = useState([]);
-  const navigate = useNavigate();
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [loading, setLoading] = useState(true);
   const columns = [
     { header: "Title", accessor: "title" },
     { header: "Status", accessor: "status" },
@@ -16,25 +17,37 @@ const NotificationTable = ({ notification, selectedStatus }) => {
   ];
 
   useEffect(() => {
-    const filtered = notification?.map((user) => {
-      if (user?.status) {
-        return {
-          ...user,
-          title: `${capitalizeFirstLetter(user.title)}`,
-        };
-      }
-      return null;
-    }).filter(Boolean);
+    const filtered = notification
+      ?.map((user) => {
+        if (user?.status) {
+          return {
+            ...user,
+            title: `${capitalizeFirstLetter(user.title)}`,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
     setFilteredData(filtered);
+    setLoading(false);
   }, [notification, selectedStatus]);
 
   const handleUserClick = (_id) => {
-    // navigate(`/agent/${_id}`);
+    setSelectedUserId(_id);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUserId(null);
   };
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
-      {filteredData?.length > 0 ? (
+          {loading ? (
+        <div className="flex justify-center mt-10">
+          <TailSpin color="skyblue" />
+        </div>
+      ) : 
+      filteredData?.length > 0 ? (
         <TableNotification
           columns={columns}
           data={filteredData}
@@ -43,9 +56,19 @@ const NotificationTable = ({ notification, selectedStatus }) => {
           userToken={userToken} // Pass userToken to the table component
         />
       ) : (
-        <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
-          <TailSpin color="skyblue" />
-        </div>
+        <div className="flex justify-center mt-10">
+        <p className="text-gray-500 font-bold">
+          No Notification data available
+        </p>
+      </div>
+      )}
+
+      {selectedUserId && (
+        <NotificationDetails
+          visible={!!selectedUserId}
+          handleClose={handleCloseModal}
+          data={selectedUserId}
+        />
       )}
     </div>
   );

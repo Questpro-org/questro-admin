@@ -66,7 +66,6 @@ function Update1({ UpdateProperty, control, image, setImage }) {
               control={control}
               defaultValue=""
               rules={{
-                required: "Location is required",
                 minLength: {
                   value: 3,
                   message: "Location must be at least 3 characters",
@@ -96,7 +95,6 @@ function Update1({ UpdateProperty, control, image, setImage }) {
               control={control}
               defaultValue=""
               rules={{
-                required: "Custom link is required",
                 pattern: {
                   value: /^(https?|ftp):\/\/[^\s]+$/,
                   message: "Invalid URL",

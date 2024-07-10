@@ -24,6 +24,9 @@ function Launch({ data }) {
         position: "top-center",
       });
       navigate('/updates')
+      setTimeout(() => {
+        window.location.reload()
+      },2000 );
     } else {
       showToast(response.message, false, {
         position: "top-center",

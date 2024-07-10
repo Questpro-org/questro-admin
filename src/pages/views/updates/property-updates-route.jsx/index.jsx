@@ -64,6 +64,8 @@ function PropertyUpdatesRoute() {
     }
   });
 
+  console.log(selectedUpdates)
+
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">

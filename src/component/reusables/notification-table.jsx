@@ -1,13 +1,8 @@
 import React from "react";
 import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
-import useRequest from "../hook/use-request";
 
-const TableNotification = ({ columns, data, onUserClick, PlaceholderImage, userToken }) => {
-    const { makeRequest: getReadNotifications } = useRequest(`/notifications/admin/${data.map((item) => item._id)}`, "GET", {
-        Authorization: `Bearer ${userToken}`,
-      });
-
+const TableNotification = ({ columns, data, onUserClick, PlaceholderImage }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "sent":
@@ -54,15 +49,6 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage, userT
     }
   };
 
-  const handleUserClick = async (_id) => {
-    try {
-      await getReadNotifications();
-      onUserClick(_id);
-    } catch (error) {
-     
-    }
-  };
-
   return (
     <table className="table w-full">
       <thead className="border-b-2 h-10">
@@ -83,7 +69,7 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage, userT
                 className="h-14 border-b-[2px] relative cursor-pointer"
                 onClick={() => {
                   if (column.accessor !== "id" && column.accessor !== "_id") {
-                    handleUserClick(row);
+                    onUserClick(row);
                   }
                 }}
               >
@@ -97,7 +83,7 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage, userT
                   />
                 ) : column.accessor === "id" || column.accessor === "_id" ? (
                   <>
-                    <button onClick={() => handleUserClick(row)}>
+                    <button onClick={() => onUserClick(row)}>
                       <Icon name="dotIcon" />
                     </button>
                   </>
@@ -110,7 +96,7 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage, userT
                       backgroundColor: getStatusColor(row[column.accessor]),
                       color: getStatusText(row[column.accessor]),
                     }}
-                    onClick={() => handleUserClick(row)}
+                    onClick={() => onUserClick(row)}
                   >
                     {capitalizeFirstLetter(row[column.accessor])}
                   </p>

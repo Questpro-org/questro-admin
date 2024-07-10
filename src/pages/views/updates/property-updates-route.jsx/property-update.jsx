@@ -4,9 +4,11 @@ import Textarea from "../../../../component/reusables/textarea";
 import PhoneImage from "../../../../assets/images/Frame 626671.svg";
 import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
+import { TailSpin } from "react-loader-spinner";
 
 function Update1({ UpdateProperty, control, update }) {
   const navigate = useNavigate();
+  console.log('update', update)
   return (
     <>
       {update ? (
@@ -66,7 +68,6 @@ function Update1({ UpdateProperty, control, update }) {
                 control={control}
                 defaultValue=""
                 rules={{
-                  required: "Location is required",
                   minLength: {
                     value: 3,
                     message: "Location must be at least 3 characters",
@@ -90,7 +91,6 @@ function Update1({ UpdateProperty, control, update }) {
                 control={control}
                 defaultValue={update?.url || ""}
                 rules={{
-                  required: "URL is required",
                   pattern: {
                     value: /^https?:\/\/\S+$/,
                     message: "Enter a valid URL",
@@ -126,7 +126,9 @@ function Update1({ UpdateProperty, control, update }) {
           </div>
         </form>
       ) : (
-        <p>bbbb</p>
+        <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
+        <TailSpin color="skyblue" />
+       </div>
       )}
       <br />
     </>
