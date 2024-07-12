@@ -23,6 +23,7 @@ const NotificationDetails = ({ visible, handleClose, data }) => {
       localStorage.setItem("notificationCount", notificationCount - 1);
     };
     fetchData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?._id]);
 
   const Details = ({ title, value }) => (
