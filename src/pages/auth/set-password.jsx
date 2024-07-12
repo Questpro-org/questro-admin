@@ -12,7 +12,7 @@ function SetPassword() {
   const navigate = useNavigate();
   const {id} = useParams()
   const userToken = localStorage.getItem("token");
-  const { makeRequest: addAdmin, loading } = useRequest(
+  const { makeRequest: setYourPassword, loading } = useRequest(
     `/admin/set-password/${id}`,
     "POST",
     {
@@ -27,8 +27,8 @@ function SetPassword() {
       password: formData.password,
     };
 
-    const [response] = await addAdmin(setPassword);
-    if (response.status === 201) {
+    const [response] = await setYourPassword(setPassword);
+    if (response.status) {
       showToast(response.message, true, {
         position: "top-center",
       });
@@ -38,6 +38,7 @@ function SetPassword() {
       showToast(response.message, false, {
         position: "top-center",
       });
+      navigate("/setpassword");
     }
   });
 
