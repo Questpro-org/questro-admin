@@ -35,6 +35,7 @@ function Notifications() {
     setSearchQuery(storedSearchQuery);
     setSelectedStatus(storedStatus);
     fetchData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ function Notifications() {
       status: selectedStatus,
     });
     fetchData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedStatus, currentPage]);
 
   async function fetchData() {
@@ -59,7 +61,7 @@ function Notifications() {
     const [response] = await getNotification(undefined, params);
     let notifications = response.data?.data?.docs || [];
 
-    // Client-side filtering for search query
+
     if (searchQuery) {
       const lowerSearchQuery = searchQuery.toLowerCase();
       notifications = notifications.filter(
