@@ -26,8 +26,8 @@ const DeactivateAdmin = ({ visible, handleClose, admin }) => {
       });
       handleClose();
       setTimeout(() => {
-        window.location.reload()
-      },2000 );
+        window.location.reload();
+      }, 2000);
     } else {
       showToast(response.message, false, {
         position: "top-center",
@@ -45,19 +45,25 @@ const DeactivateAdmin = ({ visible, handleClose, admin }) => {
       className="flex justify-center items-center"
     >
       <p className="text-left text-[#344054] font-semibold mt-4 text-[20px]">
-        Are you sure you want to deactivate this admin? <span className="block text-center text-[20px] font-extrabold">{capitalizeFirstLetter(admin?.username)}</span> 
-        <span className="text-[16px] font-medium block">
-          This action is permanent and cannot be undone
+        Are you sure you want to{" "}
+        {admin.status === "active" ? "deactivate" : "activate"} this admin?{" "}
+        <span className="block text-center text-[20px] font-extrabold">
+          {capitalizeFirstLetter(admin?.username)}
         </span>
       </p>
       {admin ? (
         <form className="w-full mt-10" onSubmit={handleDeactivate}>
           <div className="flex gap-8 justify-end items-center mt-8">
-            <button className="w-full bg-[#E00202] text-white h-[40px] rounded-md" type="submit">
+            <button
+              className="w-full bg-[#E00202] text-white h-[40px] rounded-md"
+              type="submit"
+            >
               {loading ? (
                 <CircleLoader color="#ffffff" loading={loading} size={20} />
+              ) : admin.status === "active" ? (
+                "Deactivate"
               ) : (
-                admin.status === "active" ? "Deactivate" : "Activate"
+                "Activate"
               )}
             </button>
             <button
