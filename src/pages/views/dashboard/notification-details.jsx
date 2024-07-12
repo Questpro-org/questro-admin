@@ -5,14 +5,12 @@ import { capitalizeFirstLetter, formatDate } from "../../../utilities/function";
 
 const NotificationDetails = ({ visible, handleClose, notificationId }) => {
   const userToken = localStorage.getItem("token");
-  const Details = ({ title, value }) => {
-    return (
-      <div className="grid grid-cols-2 text-[16px] px-3 mt-4 w-[100%]">
-        <p>{title}</p>
-        <p className="text-left">{value}</p>
-      </div>
-    );
-  };
+  const Details = ({ title, value }) => (
+    <div className="grid grid-cols-2 items-center border-b py-3">
+      <p className="font-medium text-gray-600">{title}</p>
+      <p className="text-gray-800">{value}</p>
+    </div>
+  );
 
   const [notificationUpdate, setNotificationUpdate] = useState(null);
   const { makeRequest: getReadNotifications } = useRequest(
@@ -43,29 +41,34 @@ const NotificationDetails = ({ visible, handleClose, notificationId }) => {
       footer={null}
       className="items-center mt-14"
     >
-      <div className="px-10 py-10">
-        <p className="text-[16px] font-semibold">Notification Details</p>
-
-        <Details
-          title="Recipient"
-          value={capitalizeFirstLetter(notificationUpdate?.recipientType) || "N/A"}
-        />
-        <Details
-          title="Title:"
-          value={capitalizeFirstLetter(notificationUpdate?.title) || "N/A"}
-        />
-        <Details
-          title="Message:"
-          value={notificationUpdate?.content || "N/A"}
-        />
-        <Details
-          title="Status:"
-          value={capitalizeFirstLetter(notificationUpdate?.status) || "N/A"}
-        />
-        <Details
-          title="Created At:"
-          value={formatDate(notificationUpdate?.createdAt) || "N/A"}
-        />
+      <div className="p-6">
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Notification Details
+        </h2>
+        <div className="bg-gray-50 p-4 rounded-md shadow-sm">
+          <Details
+            title="Recipient"
+            value={
+              capitalizeFirstLetter(notificationUpdate?.recipientType) || "N/A"
+            }
+          />
+          <Details
+            title="Title"
+            value={capitalizeFirstLetter(notificationUpdate?.title) || "N/A"}
+          />
+          <Details
+            title="Message"
+            value={notificationUpdate?.content || "N/A"}
+          />
+          <Details
+            title="Status"
+            value={capitalizeFirstLetter(notificationUpdate?.status) || "N/A"}
+          />
+          <Details
+            title="Created At"
+            value={formatDate(notificationUpdate?.createdAt) || "N/A"}
+          />
+        </div>
       </div>
     </Modal>
   );
