@@ -3,13 +3,11 @@ import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
 import DeactivateAdmin from "../../pages/views/settings/settings-modal/deactivate-admin";
 import EditAdmin from "../../pages/views/settings/settings-modal/edit-admin";
-import CreatePassword from "../../pages/views/settings/settings-modal/create-password";
 
 const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [createPasswordModal, setCreatePasswordModal] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState(null);
 
   const handleDropdownToggle = (rowId) => {
@@ -21,13 +19,6 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
     setSelectedAdmin(admin);
     setDropdownOpen(null);
     setModalVisible(true);
-  };
-
-  const handlePassword = (rowId) => {
-    const admin = data.find((admin) => admin._id === rowId);
-    setSelectedAdmin(admin);
-    setDropdownOpen(null);
-    setCreatePasswordModal(true);
   };
 
   const handleDelete = (rowId) => {
@@ -144,13 +135,6 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
                         >
                           {row.status === "active" ? "Deactivate" : "Activate"}
                         </button>
-
-                        <button
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          onClick={() => handlePassword(row["_id"])}
-                        >
-                          Change Password
-                        </button>
                       </div>
                     )}
                   </>
@@ -186,14 +170,6 @@ const TableSettings = ({ columns, data, onUserClick, PlaceholderImage }) => {
         <DeactivateAdmin
           visible={deleteModal}
           handleClose={() => setDeleteModal(false)}
-          admin={selectedAdmin}
-        />
-      )}
-
-      {createPasswordModal && (
-        <CreatePassword
-          visible={createPasswordModal}
-          handleClose={() => setCreatePasswordModal(false)}
           admin={selectedAdmin}
         />
       )}
