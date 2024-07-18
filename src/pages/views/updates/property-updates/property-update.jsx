@@ -5,8 +5,10 @@ import PhoneImage from "../../../../assets/images/Frame 626671.svg";
 import ImageUpload from "../../../../component/uploads/file-upload";
 import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
+import SearchSelect from "../../../../component/reusables/search-select";
+import states from '../../../../json/data'
 
-function Update1({ UpdateProperty, control, image, setImage }) {
+function Update1({ UpdateProperty, control, image, setImage, setValue }) {
   const navigate = useNavigate();
   return (
     <>
@@ -62,24 +64,48 @@ function Update1({ UpdateProperty, control, image, setImage }) {
             />
 
             <Controller
-              name="location"
+              name="country"
               control={control}
               defaultValue=""
               rules={{
                 minLength: {
                   value: 3,
-                  message: "Location must be at least 3 characters",
+                  message: "Country must be at least 3 characters",
                 },
               }}
               render={({ field, fieldState }) => (
                 <Input
                   type="text"
-                  label="Location"
-                  placeholder="Enter your location"
+                  label="Country"
+                  placeholder="Enter your country"
                   className="w-full mt-2"
                   value={field.value}
                   error={fieldState?.error?.message}
                   onChange={field.onChange}
+                />
+              )}
+            />
+
+            <Controller
+              name="state"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Select a State" }}
+              render={({ field, fieldState }) => (
+                <SearchSelect
+                  label="State"
+                  name="state"
+                  options={states.map((state) => ({
+                    value: state,
+                    label: state,
+                  }))}
+                  className="lg:w-[49%] w-full"
+                  onChange={(selectedValue) => {
+                    field.onChange(selectedValue);
+                    setValue("stateCode", selectedValue);
+                  }}
+                  value={field.value}
+                  error={fieldState?.error?.message}
                 />
               )}
             />

@@ -9,7 +9,7 @@ const Dashboard = () => {
   const userToken = localStorage.getItem("token");
   const [metrics, setMetrics] = useState([]);
   const [notification, setNotification] = useState([]);
-  const navigate  = useNavigate()
+  const navigate  = useNavigate();
 
   const { makeRequest: getMetrics } = useRequest("/admin/dashboard", "GET", {
     Authorization: `Bearer ${userToken}`,
@@ -31,19 +31,22 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [response] = await getNotification();
-      setNotification(response?.data?.data?.docs);
+      const [response] = await getNotification(undefined, {
+        recipientType: 'admin'
+      });
+      const notifications = response?.data?.data?.docs || [];
+      setNotification(notifications);
     };
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const notificationCount = notification.length;
+  const notificationCount = notification.filter(notify => !notify.readBy || notify.readBy.length === 0).length;
 
   const handleClick = () => {
-    navigate('/notifications')
-  }
+    navigate('/notifications');
+  };
 
   return (
     <>

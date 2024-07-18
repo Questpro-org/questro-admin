@@ -49,12 +49,25 @@ const AgentDetail = ({ agent, _id }) => {
     setDropdownVisible(null);
   };
 
+  // const handleSave = (url) => {
+  //   const link = document.createElement("a");
+  //   link.href = url;
+  //   link.download = url.split("/").pop();
+  //   link.click();
+  //   setDropdownVisible(null);
+  // };
+
   const handleSave = (url) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = url.split("/").pop();
-    link.click();
-    setDropdownVisible(null);
+    fetch(url)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = url.split("/").pop() || "download";
+        link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+        URL.revokeObjectURL(url);
+      });
   };
 
   const toggleDropdown = (url) => {

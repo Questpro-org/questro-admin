@@ -37,14 +37,15 @@ function PropertyUpdatesRoute() {
     fetchData();
   }, []);
 
-  const { handleSubmit, control, reset, register } = useForm();
+  const { handleSubmit, control, reset, register, setValue } = useForm();
 
   const UpdateProperty = handleSubmit(async (formData) => {
     const updatedAgent = {
       title: formData?.title,
       body: formData.body,
       recipientType: formData.recipientType,
-      location: formData.location,
+      country: formData.country,
+      state: formData.state,
       url: formData.url,
       type: "property updates",
     };
@@ -87,6 +88,7 @@ function PropertyUpdatesRoute() {
           UpdateProperty={UpdateProperty}
           control={control}
           register={register}
+          setValue={setValue}
           image={image}
           setImage={setImage}
           update={selectedUpdates}

@@ -55,6 +55,7 @@ function Notifications() {
     const params = {
       limit: limit,
       page: page,
+      recipientType: 'admin',
       ...(selectedStatus ? { status: selectedStatus } : {}),
     };
 
@@ -87,7 +88,7 @@ function Notifications() {
     setSelectedStatus(event.target.value);
   }
 
-  const notificationCount = notification.length;
+  const notificationCount = notification.filter(notify => !notify.readBy || notify.readBy.length === 0).length;
 
   const handleClick = () => {
     navigate("/notifications");
