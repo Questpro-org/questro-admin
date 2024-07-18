@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Bed from "../../../../assets/images/bed 1.svg";
 import Bath from "../../../../assets/images/bath-tub 1.svg";
-import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg"
+import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg";
 
 function ActiveListing({ activeListing, _id }) {
   return (
@@ -17,15 +17,22 @@ function ActiveListing({ activeListing, _id }) {
       {activeListing && activeListing.length > 0 ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-white">
           {activeListing?.slice(0, 3).map((item, index) => (
-            <div key={index} className="border rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={item.propertyImage?.image || Avatar}
-                alt={item.propertyDescription}
-                className="w-full h-48 object-cover"
-              />
+            <div
+              key={index}
+              className="border rounded-lg shadow-lg overflow-hidden"
+            >
+              {item.propertyImage?.image && (
+                <img
+                  src={item.propertyImage?.image}
+                  alt={item.propertyDescription}
+                  className="w-full h-48 object-cover"
+                />
+              )}
               <div className="p-4 bg-[#3F90CB]">
                 <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-[28px] font-semibold">#{(item.price.rent)}</h2>
+                  <h2 className="text-[28px] font-semibold">
+                    #{item.price.rent}
+                  </h2>
                 </div>
                 <div className="flex gap-5 text-sm mb-2">
                   <p className="flex gap-3">
@@ -44,7 +51,7 @@ function ActiveListing({ activeListing, _id }) {
         </div>
       ) : (
         <div className="text-center text-gray-500 text-[16px] font-bold">
-         No properties available
+          No properties available
         </div>
       )}
     </div>
