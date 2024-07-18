@@ -19,7 +19,7 @@ function PropertyUpdates() {
     }
   );
 
-  const { handleSubmit, control, reset, register } = useForm();
+  const { handleSubmit, control, reset, register, setValue } = useForm();
   
   const UpdateProperty = handleSubmit(async (formData) => {
     try {
@@ -27,7 +27,8 @@ function PropertyUpdates() {
       form.append("title", formData.title);
       form.append("body", formData.body);
       form.append("recipientType", formData.recipientType);
-      form.append("location", formData.location);
+      form.append("country", formData.country);
+      form.append("state", formData.state);
       form.append("url", formData.url);
       form.append("type", "property updates");
       if (image) {
@@ -77,6 +78,7 @@ function PropertyUpdates() {
           UpdateProperty={UpdateProperty}
           control={control}
           register={register}
+          setValue={setValue}
           image={image}
           setImage={setImage}
         />
