@@ -32,10 +32,12 @@ const NotificationsTable = ({ notification }) => {
               notification.slice(0, 5).map((notify) => (
                 <tr
                   key={notify._id}
-                  className="border-b font-bold border-gray-200"
+                  className={`border-b font-bold border-gray-200 ${
+                    notify.readBy && notify.readBy.length > 0 ? "bg-gray-200" : ""
+                  }`}
                 >
                   <td className="w-1/2 p-4 text-sm text-gray-700 truncate">
-                    {notify.content}
+                    {notify?.body || 'N/A'}
                   </td>
                   <td className="w-1/4 p-4">
                     <span
@@ -45,7 +47,7 @@ const NotificationsTable = ({ notification }) => {
                           : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {capitalizeFirstLetter(notify.status)}
+                      {capitalizeFirstLetter(notify.status || 'N/A')}
                     </span>
                   </td>
                   <td className="w-1/4 p-4 text-sm text-gray-500">

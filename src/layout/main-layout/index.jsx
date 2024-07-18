@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./sidebar";
 import classNames from "classnames";
 import Icon from "../../assets/icon";
+import { capitalizeFirstLetter } from "../../utilities/function";
 
 const DashboardLayout = () => {
   const user = localStorage.getItem("user");
@@ -56,11 +57,12 @@ const DashboardLayout = () => {
           )}
           style={{ height: "100vh" }}
         >
-          <div className="flex justify-between mx-4 px-4 py-2.5 h-[62px] rounded-md bg-[#0979A1CC] mt-5">
+          <div className="flex justify-between mx-4 px-4 py-2.5 h-[80px] rounded-md bg-[#0979A1CC] mt-5">
             <section className="flex gap-3">
               <Icon name="questicon" />
               <h3 className="text-[15px] text-white font-bold">
-                Questpro{" "}
+              <span className="block">Questpro</span>
+              {capitalizeFirstLetter(parsedUser?.username)}{" "}
                 <span className="font-normal block">{parsedUser?.roles}</span>
               </h3>
             </section>

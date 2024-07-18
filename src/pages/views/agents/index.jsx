@@ -82,7 +82,9 @@ function Agents() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [response] = await getNotification();
+      const [response] = await getNotification(undefined, {
+        recipientType: 'admin',
+      });
       setNotification(response?.data?.data?.docs);
     };
 
@@ -103,7 +105,8 @@ function Agents() {
     setSelectedStatus(event.target.value);
   }
   
-  const notificationCount = notification.length;
+  const notificationCount = notification.filter(notify => !notify.readBy || notify.readBy.length === 0).length;
+
   const handleClick = () => {
     navigate('/notifications')
   }

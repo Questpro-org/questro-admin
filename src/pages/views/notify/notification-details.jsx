@@ -19,7 +19,7 @@ const NotificationDetails = ({ visible, handleClose, data }) => {
     const fetchData = async () => {
       const [response] = await readNotifications(data?._id);
       setNotificationUpdate(response?.data || null);
-      const notificationCount = parseInt(localStorage.getItem("notificationCount"));
+      const notificationCount = parseInt(localStorage.getItem("notificationCount"));  
       localStorage.setItem("notificationCount", notificationCount - 1);
     };
     fetchData();

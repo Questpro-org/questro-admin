@@ -5,10 +5,12 @@ import PhoneImage from "../../../../assets/images/Frame 626671.svg";
 import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 import { TailSpin } from "react-loader-spinner";
+import states from "../../../../json/data";
+import SearchSelect from "../../../../component/reusables/search-select";
 
-function Update1({ UpdateProperty, control, update }) {
+function Update1({ UpdateProperty, control, update, setValue }) {
   const navigate = useNavigate();
-  console.log('update', update)
+  console.log("setValue", setValue);
   return (
     <>
       {update ? (
@@ -64,24 +66,48 @@ function Update1({ UpdateProperty, control, update }) {
               />
 
               <Controller
-                name="location"
+                name="country"
                 control={control}
-                defaultValue=""
+                defaultValue={update?.country || ""}
                 rules={{
                   minLength: {
                     value: 3,
-                    message: "Location must be at least 3 characters",
+                    message: "Country must be at least 3 characters",
                   },
                 }}
                 render={({ field, fieldState }) => (
                   <Input
                     type="text"
-                    label="Location"
-                    placeholder="Enter your location"
+                    label="Country"
+                    placeholder="Enter your country"
                     className="w-full mt-2"
                     value={field.value}
                     error={fieldState?.error?.message}
                     onChange={field.onChange}
+                  />
+                )}
+              />
+
+              <Controller
+                name="state"
+                control={control}
+                defaultValue={update?.state || ""}
+                rules={{ required: "Select a State" }}
+                render={({ field, fieldState }) => (
+                  <SearchSelect
+                    label="State"
+                    name="state"
+                    options={states.map((state) => ({
+                      value: state,
+                      label: state,
+                    }))}
+                    className="mt-3 w-full"
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue);
+                      setValue("stateCode", selectedValue);
+                    }}
+                    value={field.value}
+                    error={fieldState?.error?.message}
                   />
                 )}
               />
@@ -127,8 +153,8 @@ function Update1({ UpdateProperty, control, update }) {
         </form>
       ) : (
         <div className="opacity-80 mt-10 font-bold w-[4%] mx-auto">
-        <TailSpin color="skyblue" />
-       </div>
+          <TailSpin color="skyblue" />
+        </div>
       )}
       <br />
     </>

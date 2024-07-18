@@ -7,6 +7,7 @@ import Pagination from "../../../component/pagination/pagination";
 
 function Updates() {
   const userToken = localStorage.getItem("token");
+  const [data, setData] = useState(null);
   const [notification, setNotification] = useState([]);
   const navigate = useNavigate();
   const [updates, setUpdates] = useState([]);
@@ -103,15 +104,16 @@ function Updates() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [response] = await getNotification();
+      const [response] = await getNotification(undefined, {
+        recipientType: 'admin',
+      });
       setNotification(response?.data?.data?.docs || []);
     };
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
+  
   function handlePageChange(page) {
     setCurrentPage(page);
   }
@@ -143,7 +145,8 @@ function Updates() {
   };
 
   
-  const notificationCount = notification.length;
+  const notificationCount = notification.filter(notify => !notify.readBy || notify.readBy.length === 0).length;
+  
   const handleClick = () => {
     navigate("/notifications");
   };
