@@ -37,7 +37,7 @@ const NotificationsTable = ({ notification }) => {
                   }`}
                 >
                   <td className="w-1/2 p-4 text-sm text-gray-700 truncate">
-                    {notify?.body || 'N/A'}
+                    {notify?.content || 'N/A'}
                   </td>
                   <td className="w-1/4 p-4">
                     <span
