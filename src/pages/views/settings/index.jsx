@@ -39,7 +39,7 @@ function Settings() {
   useEffect(() => {
     const storedSearchQuery = params.get("search") || "";
     const storedStatus = params.get("status") || "";
-    const storedRoles = params.get("roles") || "";
+    const storedRoles = params.get("role") || "";
 
     setSearchQuery(storedSearchQuery);
     setSelectedStatus(storedStatus);
@@ -53,7 +53,7 @@ function Settings() {
       page: currentPage,
       search: searchQuery,
       status: selectedStatus,
-      roles: selectedRoles,
+      role: selectedRoles,
     });
     fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,7 +67,7 @@ function Settings() {
       limit: limit,
       page: page,
       ...(selectedStatus ? { status: selectedStatus } : {}),
-      ...(selectedRoles ? { roles: selectedRoles } : {}),
+      ...(selectedRoles ? { role: selectedRoles } : {}),
     };
 
     const [response] = await makeRequest(undefined, params);
@@ -78,7 +78,7 @@ function Settings() {
         (admin) =>
           admin.username?.toLowerCase().includes(lowerSearchQuery) ||
           admin.email?.toLowerCase().includes(lowerSearchQuery) ||
-          admin.roles?.toLowerCase().includes(lowerSearchQuery)
+          admin.role?.toLowerCase().includes(lowerSearchQuery)
       );
     }
 
@@ -168,7 +168,7 @@ function Settings() {
           >
             <option value="">Type</option>
             <option value="admin">Admin</option>
-            <option value="superAdmin">Super Admin</option>
+            <option value="superadmin">Super Admin</option>
             <option value="support">Support</option>
           
           </select>

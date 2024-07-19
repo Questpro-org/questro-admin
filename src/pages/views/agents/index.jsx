@@ -65,7 +65,7 @@ function Agents() {
     const [response] = await makeRequest(undefined, params);
     let agents = response.data?.data?.docs || [];
   
-    // Client-side filtering for search query
+  
     if (searchQuery) {
       const lowerSearchQuery = searchQuery.toLowerCase();
       agents = agents.filter(agent => 
