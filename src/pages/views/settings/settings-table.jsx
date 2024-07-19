@@ -12,7 +12,7 @@ const SettingsTable = ({ admins, selectedStatus }) => {
   const columns = [
     { header: "Name", accessor: "username" },
     { header: "Email", accessor: "email" },
-    { header: "Roles", accessor: "roles" },
+    { header: "Roles", accessor: "role" },
     { header: "Status", accessor: "status" },
     { header: "Created On", accessor: "createdAt" },
     { header: "", accessor: "id" },
@@ -48,7 +48,7 @@ const SettingsTable = ({ admins, selectedStatus }) => {
       ) : (
         <div className="flex justify-center mt-10">
         <p className="text-gray-500 font-bold">
-          No Agent data available
+          No data available
         </p>
       </div>
       )}

@@ -43,7 +43,6 @@ function PropertyUpdatesRoute() {
     const updatedAgent = {
       title: formData?.title,
       body: formData.body,
-      recipientType: formData.recipientType,
       country: formData.country,
       state: formData.state,
       url: formData.url,

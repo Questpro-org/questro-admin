@@ -80,6 +80,7 @@ const AgentDetail = ({ agent, _id }) => {
       setActiveListing(response?.data?.payload || []);
     };
     fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?._id]);
 
   useEffect(() => {
@@ -88,6 +89,7 @@ const AgentDetail = ({ agent, _id }) => {
       setPayment(response?.message?.data || []);
     };
     fetchPayment();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?._id]);
 
   useEffect(() => {
@@ -97,6 +99,7 @@ const AgentDetail = ({ agent, _id }) => {
       setComment(commentsData);
     };
     fetchComment();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?._id]);
 
 
