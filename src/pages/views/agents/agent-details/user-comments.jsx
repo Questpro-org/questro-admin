@@ -37,7 +37,7 @@ function UserComments({ comments }) {
         </div>
       ) : (
         <div className="text-center text-gray-500 text-[16px] font-bold">
-          No properties available
+          No comments available
         </div>
       )}
     </div>
