@@ -5,7 +5,7 @@ import Bath from "../../../../assets/images/bath-tub 1.svg";
 import useRequest from "../../../../component/hook/use-request";
 import Back from "../../../../component/reusables/back";
 import Icon from "../../../../assets/icon";
-import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg"
+import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg";
 
 function ActiveListings() {
   const { _id } = useParams();
@@ -44,7 +44,7 @@ function ActiveListings() {
       </div>
 
       <div className="flex justify-between w-full  mt-6">
-      <h4 className="text-[#28292C] text-[16px] font-bold">Active Listing</h4>
+        <h4 className="text-[#28292C] text-[16px] font-bold">Active Listing</h4>
         <section className="flex gap-4">
           <select
             className=" custom-select border px-3 py-1 bg-[#fff] text-[#459BDA] h-10 text-[14px] font-semibold rounded-full border-[#459BDA]"
@@ -66,12 +66,18 @@ function ActiveListings() {
             key={index}
             className="border rounded-lg shadow-lg overflow-hidden"
           >
-  
-            <img
-              src={item.propertyImage?.image || Avatar}
-              alt={item.propertyDescription}
-              className="w-full h-48 object-cover"
-            />
+            {item.propertyImage && Array.isArray(item.propertyImage) && (
+              <div className="w-full h-48 flex">
+                {item.propertyImage.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={item.propertyDescription}
+                    className="object-cover w-full h-full"
+                  />
+                ))}
+              </div>
+            )}
             <div className="p-4 bg-[#3F90CB]">
               <div className="flex justify-between items-center mb-2">
                 <h2 className="text-[28px] font-semibold">

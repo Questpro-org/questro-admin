@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../../component/reusables/input";
 import Textarea from "../../../../component/reusables/textarea";
 import PhoneImage from "../../../../assets/images/Frame 626671.svg";
@@ -7,10 +7,24 @@ import { Controller } from "react-hook-form";
 import { TailSpin } from "react-loader-spinner";
 import states from "../../../../json/data";
 import SearchSelect from "../../../../component/reusables/search-select";
+import { IoIosClose } from "react-icons/io";
 
 function Update1({ UpdateProperty, control, update, setValue }) {
   const navigate = useNavigate();
-  console.log("setValue", setValue);
+  const [selectedStates, setSelectedStates] = useState(update?.state || []);
+
+  useEffect(() => {
+    setValue("stateCode", selectedStates);
+  }, [selectedStates, setValue]);
+
+  const handleRemove = (stateToRemove) => {
+    const newSelectedValues = selectedStates.filter(
+      (state) => state !== stateToRemove
+    );
+    setSelectedStates(newSelectedValues);
+  };
+
+  console.log(selectedStates);
   return (
     <>
       {update ? (
@@ -91,26 +105,49 @@ function Update1({ UpdateProperty, control, update, setValue }) {
               <Controller
                 name="state"
                 control={control}
-                defaultValue={update?.state || ""}
+                defaultValue={[]}
                 rules={{ required: "Select a State" }}
                 render={({ field, fieldState }) => (
-                  <SearchSelect
-                    label="State"
-                    name="state"
-                    options={states.map((state) => ({
-                      value: state,
-                      label: state,
-                    }))}
-                    className="mt-3 w-full"
-                    onChange={(selectedValue) => {
-                      field.onChange(selectedValue);
-                      setValue("stateCode", selectedValue);
-                    }}
-                    value={field.value}
-                    error={fieldState?.error?.message}
-                  />
+                  <>
+                    <SearchSelect
+                      label="State"
+                      name="state"
+                      options={states.map((state) => ({
+                        value: state,
+                        label: state,
+                      }))}
+                      className="w-full mt-3"
+                      onChange={(selectedValue) => {
+                        field.onChange(selectedValue);
+                        setValue("stateCode", selectedValue);
+                      }}
+                      value={field.value}
+                      error={fieldState?.error?.message}
+                    />
+                  </>
                 )}
               />
+              
+              {/* <>
+                {update?.state ? (
+                  <div className="mt-2">
+                    {update?.state.map((state) => (
+                      <span
+                        key={state}
+                        className="bg-blue-500 text-white px-2 py-1 rounded mr-1 mb-1 inline-block"
+                      >
+                        {state}{" "}
+                        <IoIosClose
+                          onClick={() => handleRemove(state)}
+                          className="inline cursor-pointer"
+                        />
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p>gh</p>
+                )}
+              </> */}
 
               <Controller
                 name="url"
@@ -135,7 +172,9 @@ function Update1({ UpdateProperty, control, update, setValue }) {
                 )}
               />
             </div>
-            <img src={PhoneImage} alt="PhoneImage" />
+            <div className="w-full pl-14 mt-4 lg:mt-0">
+              <img src={PhoneImage} alt="PhoneImage" />
+            </div>
           </div>
 
           <div className="flex justify-between px-10 mt-8">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../../../component/reusables/input";
 import Textarea from "../../../../component/reusables/textarea";
 import PhoneImage from "../../../../assets/images/Frame 626671.svg";
@@ -6,7 +6,7 @@ import ImageUpload from "../../../../component/uploads/file-upload";
 import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 import SearchSelect from "../../../../component/reusables/search-select";
-import states from '../../../../json/data'
+import states from "../../../../json/data";
 
 function Update1({ UpdateProperty, control, image, setImage, setValue }) {
   const navigate = useNavigate();
@@ -89,24 +89,27 @@ function Update1({ UpdateProperty, control, image, setImage, setValue }) {
             <Controller
               name="state"
               control={control}
-              defaultValue=""
+              defaultValue={[]}
               rules={{ required: "Select a State" }}
               render={({ field, fieldState }) => (
-                <SearchSelect
-                  label="State"
-                  name="state"
-                  options={states.map((state) => ({
-                    value: state,
-                    label: state,
-                  }))}
-                  className="lg:w-[49%] w-full"
-                  onChange={(selectedValue) => {
-                    field.onChange(selectedValue);
-                    setValue("stateCode", selectedValue);
-                  }}
-                  value={field.value}
-                  error={fieldState?.error?.message}
-                />
+                <>
+                  <SearchSelect
+                    label="State"
+                    name="state"
+                    options={states.map((state) => ({
+                      value: state,
+                      label: state,
+                    }))}
+                    className="w-full mt-3"
+                    onChange={(selectedValue) => {
+                      field.onChange(selectedValue);
+                      setValue("stateCode", selectedValue);
+                    }}
+                    value={field.value}
+                    error={fieldState?.error?.message}
+                  />
+                
+                </>
               )}
             />
 
@@ -138,8 +141,11 @@ function Update1({ UpdateProperty, control, image, setImage, setValue }) {
                 />
               )}
             />
+            
           </div>
-          <img src={PhoneImage} alt="PhoneImage" />
+          <div className="w-full pl-14 lg:mt-0 mt-4">
+            <img src={PhoneImage} alt="PhoneImage" />
+          </div>
         </div>
 
         <div className="flex justify-between px-10 mt-8">
