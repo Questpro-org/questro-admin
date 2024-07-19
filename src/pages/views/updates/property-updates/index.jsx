@@ -25,7 +25,6 @@ function PropertyUpdates() {
       const form = new FormData();
       form.append("title", formData.title);
       form.append("body", formData.body);
-      form.append("recipientType", formData.recipientType);
       form.append("country", formData.country);
       form.append("state", formData.state);
       form.append("url", formData.url);

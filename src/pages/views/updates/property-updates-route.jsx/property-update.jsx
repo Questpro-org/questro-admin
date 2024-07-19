@@ -23,8 +23,6 @@ function Update1({ UpdateProperty, control, update, setValue }) {
     );
     setSelectedStates(newSelectedValues);
   };
-
-  console.log(selectedStates);
   return (
     <>
       {update ? (

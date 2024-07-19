@@ -2,7 +2,6 @@ import React from "react";
 import PhoneImage from "../../../../assets/images/Frame 626671.svg";
 import { useNavigate } from "react-router-dom";
 import Icon from "../../../../assets/icon";
-import useRequest from "../../../../component/hook/use-request";
 
 function Launch({ data }) {
   const navigate = useNavigate();
@@ -23,14 +22,14 @@ function Launch({ data }) {
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
               Message name{" "}
-              <span className="block font-normal">{data?.data.data.title}</span>
+              <span className="block font-normal">{data?.data?.data?.title}</span>
             </h1>
           </div>
           <div className="flex w-full gap-3">
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
               Message body{" "}
-              <span className="block font-normal">{data?.data.data.body}</span>
+              <span className="block font-normal">{data?.data?.data?.body}</span>
             </h1>
           </div>
         </section>

@@ -43,7 +43,6 @@ function PropertyUpdatesRoute() {
     const updatedAgent = {
       title: formData?.title,
       body: formData.body,
-      recipientType: formData.recipientType,
       country: formData.country,
       state: formData.state,
       url: formData.url,
@@ -61,9 +60,6 @@ function PropertyUpdatesRoute() {
       });
     }
   });
-
-  console.log(selectedUpdates)
-
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">

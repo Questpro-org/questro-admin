@@ -5,7 +5,6 @@ import Bath from "../../../../assets/images/bath-tub 1.svg";
 import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg";
 
 function ActiveListing({ activeListing, _id }) {
-  console.log("enj3ebjbjb3jnf", activeListing[1]?.propertyImage[1]);
   return (
     <div>
       <section className="flex justify-between mb-4">
