@@ -22,7 +22,6 @@ function PropertyUpdates() {
   const { handleSubmit, control, reset, register, setValue } = useForm();
   
   const UpdateProperty = handleSubmit(async (formData) => {
-    try {
       const form = new FormData();
       form.append("title", formData.title);
       form.append("body", formData.body);
@@ -38,9 +37,6 @@ function PropertyUpdates() {
       const [response] = await makeRequest(form);
 
       if (response) {
-        showToast(response.message, true, {
-          position: "top-center",
-        });
         setData(response);
         setShowLaunch(true);
         reset();
@@ -50,12 +46,6 @@ function PropertyUpdates() {
           position: "top-center",
         });
       }
-    } catch (error) {
-      showToast("Error submitting data. Please try again later.", false, {
-        position: "top-center",
-      });
-     
-    }
   });
   
   return (

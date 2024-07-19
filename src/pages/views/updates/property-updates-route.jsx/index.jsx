@@ -51,9 +51,6 @@ function PropertyUpdatesRoute() {
     };
     const [response] = await makeRequest(updatedAgent);
     if (response) {
-      showToast(response.message, true, {
-        position: "top-center",
-      });
       setData(response);
       setShowLaunch(true);
       reset();

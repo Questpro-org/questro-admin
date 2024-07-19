@@ -5,6 +5,7 @@ import Bath from "../../../../assets/images/bath-tub 1.svg";
 import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg";
 
 function ActiveListing({ activeListing, _id }) {
+  console.log("enj3ebjbjb3jnf", activeListing[1]?.propertyImage[1]);
   return (
     <div>
       <section className="flex justify-between mb-4">
@@ -21,13 +22,19 @@ function ActiveListing({ activeListing, _id }) {
               key={index}
               className="border rounded-lg shadow-lg overflow-hidden"
             >
-              {item.propertyImage?.image && (
-                <img
-                  src={item.propertyImage?.image}
-                  alt={item.propertyDescription}
-                  className="w-full h-48 object-cover"
-                />
+              {item.propertyImage && Array.isArray(item.propertyImage) && (
+                <div className="w-full h-48 flex overflow-x-scroll">
+                  {item.propertyImage.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image || "No image"}
+                      alt={item.propertyDescription}
+                      className="object-cover w-full h-full"
+                    />
+                  ))}
+                </div>
               )}
+
               <div className="p-4 bg-[#3F90CB]">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-[28px] font-semibold">
