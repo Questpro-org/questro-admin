@@ -7,6 +7,10 @@ import NotificationDetails from "./notification-details";
 const NotificationsTable = ({ notification }) => {
   const [notificationModal, setNotificationModal] = useState(false);
   const [selectedNotificationId, setSelectedNotificationId] = useState(null);
+  
+  const user = localStorage.getItem("user");
+  const parsedUser = user ? JSON.parse(user) : null;
+  const userId = parsedUser?._id;
 
   const openNotification = (_id) => {
     setSelectedNotificationId(_id);
@@ -29,38 +33,41 @@ const NotificationsTable = ({ notification }) => {
           </thead>
           <tbody>
             {notification && notification.length > 0 ? (
-              notification.slice(0, 5).map((notify) => (
-                <tr
-                  key={notify._id}
-                  className={`border-b font-bold border-gray-200 ${
-                    notify.readBy && notify.readBy.length > 0 ? "bg-gray-200" : ""
-                  }`}
-                >
-                  <td className="w-1/2 p-4 text-sm text-gray-700 truncate">
-                    {notify?.content || 'N/A'}
-                  </td>
-                  <td className="w-1/4 p-4">
-                    <span
-                      className={`inline-block px-3 py-1 text-sm font-semibold rounded-md ${
-                        notify.status === "completed"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}
-                    >
-                      {capitalizeFirstLetter(notify.status || 'N/A')}
-                    </span>
-                  </td>
-                  <td className="w-1/4 p-4 text-sm text-gray-500">
-                    {formatDate(notify.createdAt)}
-                  </td>
-                  <td
-                    className="w-1/12 p-4 text-right cursor-pointer"
-                    onClick={() => openNotification(notify._id)}
+              notification.slice(0, 5).map((notify) => {
+                const isReadByUser = notify.readBy.some(reader => reader.userId === userId);
+                return (
+                  <tr
+                    key={notify._id}
+                    className={`border-b font-bold border-gray-200 ${
+                      isReadByUser ? "bg-gray-200" : ""
+                    }`}
                   >
-                    <Icon name="dotIcon" className="text-gray-400" />
-                  </td>
-                </tr>
-              ))
+                    <td className="w-1/2 p-4 text-sm text-gray-700 truncate">
+                      {notify?.content || 'N/A'}
+                    </td>
+                    <td className="w-1/4 p-4">
+                      <span
+                        className={`inline-block px-3 py-1 text-sm font-semibold rounded-md ${
+                          notify.status === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {capitalizeFirstLetter(notify.status || 'N/A')}
+                      </span>
+                    </td>
+                    <td className="w-1/4 p-4 text-sm text-gray-500">
+                      {formatDate(notify.createdAt)}
+                    </td>
+                    <td
+                      className="w-1/12 p-4 text-right cursor-pointer"
+                      onClick={() => openNotification(notify._id)}
+                    >
+                      <Icon name="dotIcon" className="text-gray-400" />
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td

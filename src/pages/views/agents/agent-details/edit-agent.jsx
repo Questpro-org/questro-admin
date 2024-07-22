@@ -75,7 +75,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       status: formData.status,
       isVerified: formData.isVerified,
       plan: formData.plan,
-      duration: formData.duration,
       updatedAt: moment(formData.updatedAt).toISOString(),
     };
     const [response] = await editAgent(updatedAgent);
@@ -204,10 +203,10 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   label="Verification"
                   className="w-full"
                   error={fieldState?.error?.message}
-                  options={[
-                    { value: "true", label: "Verified" },
-                    { value: "false", label: "Unverified" },
-                  ]}
+                  // options={[
+                  //   { value: "true", label: "Verified" },
+                  //   { value: "false", label: "Unverified" },
+                  // ]}
                 />
               )}
             />
@@ -224,10 +223,10 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   label="Subscription"
                   className="w-full"
                   error={fieldState?.error?.message}
-                  // options={[
-                  //   { value: "true", label: "Verified" },
-                  //   { value: "false", label: "Unverified" },
-                  // ]}
+                  options={[
+                    { value: "true", label: "Verified" },
+                    { value: "false", label: "Unverified" },
+                  ]}
                 />
               )}
             />

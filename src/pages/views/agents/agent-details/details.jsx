@@ -8,6 +8,7 @@ import useRequest from "../../../../component/hook/use-request";
 import ActiveListing from "./active-details";
 import PaymentHistory from "./payment-history";
 import UserComments from "./user-comments";
+import EditAgent from "./edit-agent";
 
 const AgentDetails = ({ title, value, icon }) => {
   return (
@@ -26,24 +27,36 @@ const AgentDetails = ({ title, value, icon }) => {
 const AgentDetail = ({ agent, _id }) => {
   const userToken = localStorage.getItem("token");
   const [activeListing, setActiveListing] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [payment, setPayment] = useState([]);
   const [comment, setComment] = useState([]);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(null);
 
-  const { makeRequest } = useRequest(`/admin/agent/${agent?._id}/listings`, "GET", {
-    Authorization: `Bearer ${userToken}`,
-  });
-  const { makeRequest: getPayment } = useRequest(`/payment/agent/${agent?._id}/transactions`, "GET", {
-    Authorization: `Bearer ${userToken}`,
-  });
-  const { makeRequest: getComments } = useRequest(`/admin/agent/${agent?._id}/comments`, "GET", {
-    Authorization: `Bearer ${userToken}`,
-  });
- 
+  const { makeRequest } = useRequest(
+    `/admin/agent/${agent?._id}/listings`,
+    "GET",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
+  const { makeRequest: getPayment } = useRequest(
+    `/payment/agent/${agent?._id}/transactions`,
+    "GET",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
+  const { makeRequest: getComments } = useRequest(
+    `/admin/agent/${agent?._id}/comments`,
+    "GET",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
+
   let selfieUrl = agent?.selfie?.filePath || "";
   let uploadUrl = agent?.idUpload?.filePath || "";
-
   const handlePreview = (url) => {
     setPreviewUrl(url);
     setDropdownVisible(null);
@@ -59,13 +72,15 @@ const AgentDetail = ({ agent, _id }) => {
 
   const handleSave = (url) => {
     fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
         link.download = url.split("/").pop() || "download";
-        link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+        link.dispatchEvent(
+          new MouseEvent("click", { bubbles: true, cancelable: true })
+        );
         URL.revokeObjectURL(url);
       });
   };
@@ -80,7 +95,7 @@ const AgentDetail = ({ agent, _id }) => {
       setActiveListing(response?.data?.payload || []);
     };
     fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?._id]);
 
   useEffect(() => {
@@ -89,26 +104,35 @@ const AgentDetail = ({ agent, _id }) => {
       setPayment(response?.message?.data || []);
     };
     fetchPayment();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?._id]);
 
   useEffect(() => {
     const fetchComment = async () => {
       const [response] = await getComments();
-      const commentsData = response?.data?.flatMap((item) => item.comments) || [];
+      const commentsData =
+        response?.data?.flatMap((item) => item.comments) || [];
       setComment(commentsData);
     };
     fetchComment();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?._id]);
 
-
+  const handleEdit = () => {
+    setModalVisible(true);
+  };
 
   return (
     <div className="mt-2 w-full px-10">
       <section className="flex justify-between mt-3">
-        <p className="text-[#28292C] font-semibold text-[16px]">Agent details</p>
-        <button type="button" className="text-[#459BDA] text-[16px] font-normal">
+        <p className="text-[#28292C] font-semibold text-[16px]">
+          Agent details
+        </p>
+        <button
+          type="button"
+          className="text-[#459BDA] text-[16px] font-normal"
+          onClick={handleEdit}
+        >
           Edit
         </button>
       </section>
@@ -124,7 +148,8 @@ const AgentDetail = ({ agent, _id }) => {
           <Icon name="avatarIcon" className=" -mt-[14px]  rounded-full" />
         )}
         <p className="text-[16px] text-[#515359] font-medium">
-          {capitalizeFirstLetter(agent?.firstname)} {capitalizeFirstLetter(agent?.lastname)}
+          {capitalizeFirstLetter(agent?.firstname)}{" "}
+          {capitalizeFirstLetter(agent?.lastname)}
         </p>
         <hr className="w-[81%] mt-3 h-[1px] block bg-[#D2D9DF]" />
       </section>
@@ -161,14 +186,19 @@ const AgentDetail = ({ agent, _id }) => {
         />
       </div>
 
-      <h4 className="text-[16px] font-semibold text-[#666975] mt-5">File uploads</h4>
+      <h4 className="text-[16px] font-semibold text-[#666975] mt-5">
+        File uploads
+      </h4>
 
       <section className="grid grid-cols-3 mt-10 gap-4">
         {uploadUrl && (
           <div className="relative">
             <img src={uploadUrl} className="" alt="upload" />
             <span onClick={() => toggleDropdown(uploadUrl)}>
-              <Icon name="dotIcon" className="absolute top-0 right-0 cursor-pointer" />
+              <Icon
+                name="dotIcon"
+                className="absolute top-0 right-0 cursor-pointer"
+              />
             </span>
             {dropdownVisible === uploadUrl && (
               <div className="absolute top-6 right-0 bg-white shadow-lg rounded p-2">
@@ -192,7 +222,10 @@ const AgentDetail = ({ agent, _id }) => {
           <div className="relative">
             <img src={selfieUrl} className="" alt="selfie" />
             <span onClick={() => toggleDropdown(selfieUrl)}>
-              <Icon name="dotIcon" className="absolute top-0 right-0 cursor-pointer" />
+              <Icon
+                name="dotIcon"
+                className="absolute top-0 right-0 cursor-pointer"
+              />
             </span>
             {dropdownVisible === selfieUrl && (
               <div className="absolute top-6 right-0 bg-white shadow-lg rounded p-2">
@@ -225,7 +258,11 @@ const AgentDetail = ({ agent, _id }) => {
                 <Icon name="cancelIcon" />
               </button>
             </div>
-            <img src={previewUrl} alt="Preview" className="w-[700px] h-[400px]" />
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="w-[700px] h-[400px]"
+            />
           </div>
         </div>
       )}
@@ -235,6 +272,12 @@ const AgentDetail = ({ agent, _id }) => {
       <UserComments comments={comment} />
 
       <PaymentHistory payment={payment} />
+
+      <EditAgent
+        visible={modalVisible}
+        handleClose={() => setModalVisible(false)}
+        agent={agent}
+      />
     </div>
   );
 };
