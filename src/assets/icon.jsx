@@ -421,6 +421,26 @@ const Icon = ({ name, className }) => {
           />
         </svg>
       );
+
+    case "miniDropDownIcon":
+      return (
+        <svg
+          className={className}
+          width="13"
+          height="12"
+          viewBox="0 0 13 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8.93313 4.48483C9.07958 4.63128 9.07958 4.86872 8.93313 5.01517L6.93313 7.01517C6.78669 7.16161 6.54925 7.16161 6.4028 7.01517L4.4028 5.01517C4.25636 4.86872 4.25636 4.63128 4.4028 4.48484C4.54925 4.33839 4.78669 4.33839 4.93313 4.48484L6.66797 6.21967L8.4028 4.48483C8.54925 4.33839 8.78669 4.33839 8.93313 4.48483Z"
+            fill="#008138"
+          />
+        </svg>
+      );
+
     default:
       return null; // or render a default icon here if needed
   }
