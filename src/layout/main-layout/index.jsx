@@ -63,7 +63,7 @@ const DashboardLayout = () => {
               <h3 className="text-[15px] text-white font-bold">
               <span className="block">Questpro</span>
               {capitalizeFirstLetter(parsedUser?.username)}{" "}
-                <span className="font-normal block">{parsedUser?.roles}</span>
+                <span className="font-normal block">{parsedUser?.role}</span>
               </h3>
             </section>
             <button onClick={handleDropdownToggle}>

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function Agents() {
   const [agent, setAgent] = useState([]);
-  const [notification, setNotification] = useState([]);
+  const [unreadNotification, setUnreadNotification] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const params = new URLSearchParams(new URL(window.location.href).search);
@@ -20,7 +20,7 @@ function Agents() {
     Authorization: `Bearer ${userToken}`,
   });
 
-  const { makeRequest: getNotification } = useRequest("/notifications", "GET", {
+  const { makeRequest: getUnreadNotification } = useRequest("/notifications/unread/admin", "GET", {
     Authorization: `Bearer ${userToken}`,
   });
 
@@ -82,10 +82,8 @@ function Agents() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [response] = await getNotification(undefined, {
-        recipientType: 'admin',
-      });
-      setNotification(response?.data?.data?.docs);
+      const [response] = await getUnreadNotification();
+      setUnreadNotification(response?.data?.unreadCount || []);
     };
 
     fetchData();
@@ -104,8 +102,6 @@ function Agents() {
   function handleStatusChange(event) {
     setSelectedStatus(event.target.value);
   }
-  
-  const notificationCount = notification.filter(notify => !notify.readBy || notify.readBy.length === 0).length;
 
   const handleClick = () => {
     navigate('/notifications')
@@ -119,9 +115,9 @@ function Agents() {
           <button>
             <Icon name="bellicon" />
           </button>
-          {notificationCount > 0 && (
+          {unreadNotification > 0 && (
             <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
-              {notificationCount}
+              {unreadNotification}
             </span>
           )}
         </div>
