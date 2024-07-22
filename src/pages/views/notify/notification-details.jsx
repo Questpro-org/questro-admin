@@ -8,12 +8,14 @@ const NotificationDetails = ({ visible, handleClose, data }) => {
   const [notificationUpdate, setNotificationUpdate] = useState(null);
 
   const { makeRequest: readNotifications } = useRequest(
-    `/notifications/admin/${data?._id}`,
+    `/notifications/admin/${data}`,
     "GET",
     {
       Authorization: `Bearer ${userToken}`,
     }
   );
+
+  console.log(data)
 
   useEffect(() => {
     const fetchData = async () => {

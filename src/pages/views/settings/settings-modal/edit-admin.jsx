@@ -129,7 +129,7 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
                 options={[
                   { value: "", label: "Select a role" },
                   { value: "admin", label: "Admin" },
-                  { value: "superAdmin", label: "Super Admin" },
+                  { value: "superadmin", label: "Super Admin" },
                 ]}
               />
             )}
