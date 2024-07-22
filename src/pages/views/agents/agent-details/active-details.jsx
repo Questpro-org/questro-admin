@@ -1,10 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Bed from "../../../../assets/images/bed 1.svg";
 import Bath from "../../../../assets/images/bath-tub 1.svg";
-import Avatar from "../../../../assets/images/an_avatar_image_of_a_house.jpeg";
+import Icon from "../../../../assets/icon";
+import { capitalizeFirstLetter } from "../../../../utilities/function";
+import { showToast } from "../../../../component/reusables/toast";
+import useRequest from "../../../../component/hook/use-request";
 
 function ActiveListing({ activeListing, _id }) {
+  const [dropdownVisible, setDropdownVisible] = useState(null);
+  const userToken = localStorage.getItem("token");
+  const { makeRequest: updateBoostPackage, loading } = useRequest(
+    `/admin/property/${_id}`,
+    "PATCH",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
+
+  const handleBoostPackage = async (packageType) => {
+    const updatedAgent = {
+      boostPackage: packageType,
+    };
+    const [response] = await updateBoostPackage(updatedAgent);
+    if (response.status === 200) {
+      showToast(response.message, true, {
+        position: "top-center",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } else {
+      showToast(response.message, false, {
+        position: "top-center",
+      });
+    }
+    setDropdownVisible(null);
+  };
+
+  const toggleDropdown = (index) => {
+    setDropdownVisible(dropdownVisible === index ? null : index);
+  };
+
   return (
     <div>
       <section className="flex justify-between mb-4">
@@ -19,18 +56,24 @@ function ActiveListing({ activeListing, _id }) {
           {activeListing?.slice(0, 3).map((item, index) => (
             <div
               key={index}
-              className="border rounded-lg shadow-lg overflow-hidden"
+              className="border rounded-lg shadow-lg overflow-hidden relative"
             >
               {item.propertyImage && Array.isArray(item.propertyImage) && (
-                <div className="w-full h-48 flex overflow-x-scroll">
-                  {item.propertyImage.map((image, index) => (
+                <div className="w-full relative h-48 flex">
+                  {item.propertyImage.map((image, imgIndex) => (
                     <img
-                      key={index}
-                      src={image || "No image"}
+                      key={imgIndex}
+                      src={image}
                       alt={item.propertyDescription}
                       className="object-cover w-full h-full"
                     />
                   ))}
+                  <span onClick={() => toggleDropdown(index)}>
+                    <Icon
+                      name="dotIcon"
+                      className="absolute top-2 right-3 cursor-pointer"
+                    />
+                  </span>
                 </div>
               )}
 
@@ -52,6 +95,24 @@ function ActiveListing({ activeListing, _id }) {
                 </div>
                 <h2 className="text-[14px]">{item.propertyDescription}</h2>
               </div>
+
+              {dropdownVisible === index && (
+                <div className="absolute top-8 right-3 bg-white text-black shadow-lg rounded-md w-40 px-3 z-10">
+                  <ul className="text-[#1A1B1E] text-[14px]">
+                    {["basic", "standard", "premium", "featured"].map(
+                      (packageType) => (
+                        <li
+                          key={packageType}
+                          className="cursor-pointer hover:bg-gray-200 p-1"
+                          onClick={() => handleBoostPackage(packageType)}
+                        >
+                          {capitalizeFirstLetter(packageType)}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
             </div>
           ))}
         </div>

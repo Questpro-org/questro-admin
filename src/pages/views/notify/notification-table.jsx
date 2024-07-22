@@ -4,7 +4,7 @@ import { capitalizeFirstLetter } from "../../../utilities/function";
 import TableNotification from "../../../component/reusables/notification-table";
 import NotificationDetails from './notification-details'
 
-const NotificationTable = ({ notification, selectedStatus }) => {
+const NotificationTable = ({ notification, selectedStatus, userId }) => { // Accept userId as prop
   const userToken = localStorage.getItem("token");
   const [filteredData, setFilteredData] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -42,7 +42,7 @@ const NotificationTable = ({ notification, selectedStatus }) => {
 
   return (
     <div className="rounded-md px-10 bg-white border border-[#fff]">
-          {loading ? (
+      {loading ? (
         <div className="flex justify-center mt-10">
           <TailSpin color="skyblue" />
         </div>
@@ -50,17 +50,20 @@ const NotificationTable = ({ notification, selectedStatus }) => {
       filteredData?.length > 0 ? (
         <TableNotification
           columns={columns}
-          data={filteredData}
+          data={filteredData.map(item => ({
+            ...item,
+            readByUser: item.readBy.some(reader => reader.userId === userId)
+          }))}
           selectedUserId={null}
           onUserClick={handleUserClick}
-          userToken={userToken} // Pass userToken to the table component
+          userToken={userToken}
         />
       ) : (
         <div className="flex justify-center mt-10">
-        <p className="text-gray-500 font-bold">
-          No Notification data available
-        </p>
-      </div>
+          <p className="text-gray-500 font-bold">
+            No Notification data available
+          </p>
+        </div>
       )}
 
       {selectedUserId && (

@@ -26,7 +26,7 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
     const addAdminUser = {
       username: formData.username,
       email: formData.email,
-      roles: formData.roles,
+      role: formData.role,
       createdAt: formData.createdAt,
       permissions: {
         agentManagement: formData.agentManagement,
@@ -39,7 +39,7 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
     };
 
     const [response] = await addAdmin(addAdminUser);
-    if (response.status) {
+    if (response.status === 201) {
       showToast(response.message, true, {
         position: "top-center",
       });
@@ -115,7 +115,7 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
           />
 
           <Controller
-            name="roles"
+            name="role"
             control={control}
             rules={{
               required: "Role is required",

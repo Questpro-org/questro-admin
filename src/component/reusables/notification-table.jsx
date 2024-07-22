@@ -2,7 +2,12 @@ import React from "react";
 import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
 
-const TableNotification = ({ columns, data, onUserClick, PlaceholderImage }) => {
+const TableNotification = ({
+  columns,
+  data,
+  onUserClick,
+  PlaceholderImage,
+}) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "sent":
@@ -62,7 +67,13 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage }) => 
       </thead>
       <tbody className="text-[12px]">
         {data?.map((row, rowIndex) => (
-          <tr key={rowIndex} className="hover:bg-gray-100">
+          <tr
+            key={rowIndex}
+            onClick={() => onUserClick(row._id)}
+            className={`border-b cursor-pointer hover:bg-gray-100 ${
+              row.readByUser ? "bg-gray-200" : ""
+            }`}
+          >
             {columns.map((column, colIndex) => (
               <td
                 key={colIndex}
@@ -73,11 +84,16 @@ const TableNotification = ({ columns, data, onUserClick, PlaceholderImage }) => 
                   }
                 }}
               >
-                {column.accessor === "created_at" || column.accessor === "createdAt" ? (
+                {column.accessor === "created_at" ||
+                column.accessor === "createdAt" ? (
                   formatDate(row[column.accessor])
                 ) : column.accessor === "profilePhoto" ? (
                   <img
-                    src={row[column.accessor] ? row[column.accessor] : PlaceholderImage}
+                    src={
+                      row[column.accessor]
+                        ? row[column.accessor]
+                        : PlaceholderImage
+                    }
                     className="rounded-full w-[40px] h-[40px]"
                     alt="profile"
                   />
