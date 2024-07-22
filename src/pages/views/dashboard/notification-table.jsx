@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "../../../assets/icon";
-import { capitalizeFirstLetter, formatDate } from "../../../utilities/function";
+import { formatDate } from "../../../utilities/function";
 import { Link } from "react-router-dom";
 import NotificationDetails from "./notification-details";
+import useRequest from "../../../component/hook/use-request";
+import { showToast } from "../../../component/reusables/toast";
 
 const NotificationsTable = ({ notification }) => {
   const [notificationModal, setNotificationModal] = useState(false);
   const [selectedNotificationId, setSelectedNotificationId] = useState(null);
-  
+  const [selectedNotificationStatus, setSelectedNotificationStatus] = useState({
+    id: null,
+    status: null
+  });
+  const userToken = localStorage.getItem("token");
+
   const user = localStorage.getItem("user");
   const parsedUser = user ? JSON.parse(user) : null;
   const userId = parsedUser?._id;
@@ -15,6 +22,40 @@ const NotificationsTable = ({ notification }) => {
   const openNotification = (_id) => {
     setSelectedNotificationId(_id);
     setNotificationModal(true);
+  };
+
+  const { makeRequest: updateStatusPackage } = useRequest(
+    `/notifications/update/${selectedNotificationStatus.id}`,
+    "PATCH",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
+
+  useEffect(() => {
+    const updateStatus = async () => {
+      if (selectedNotificationStatus.id && selectedNotificationStatus.status) {
+        const [response] = await updateStatusPackage({ status: selectedNotificationStatus.status });
+        if (response.status) {
+          showToast(response.message, true, {
+            position: "top-center",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          showToast(response.message, false, {
+            position: "top-center",
+          });
+        }
+      }
+    };
+    updateStatus();
+       // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedNotificationStatus]);
+
+  const handleStatusChange = (notifyId, newStatus) => {
+    setSelectedNotificationStatus({ id: notifyId, status: newStatus });
   };
 
   return (
@@ -34,7 +75,9 @@ const NotificationsTable = ({ notification }) => {
           <tbody>
             {notification && notification.length > 0 ? (
               notification.slice(0, 5).map((notify) => {
-                const isReadByUser = notify.readBy.some(reader => reader.userId === userId);
+                const isReadByUser = notify.readBy.some(
+                  (reader) => reader.userId === userId
+                );
                 return (
                   <tr
                     key={notify._id}
@@ -43,18 +86,23 @@ const NotificationsTable = ({ notification }) => {
                     }`}
                   >
                     <td className="w-1/2 p-4 text-sm text-gray-700 truncate">
-                      {notify?.content || 'N/A'}
+                      {notify?.content || "N/A"}
                     </td>
                     <td className="w-1/4 p-4">
-                      <span
-                        className={`inline-block px-3 py-1 text-sm font-semibold rounded-md ${
+                      <select
+                        className={`inline-block px-3 py-2 text-sm font-semibold rounded-md ${
                           notify.status === "completed"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                            ? "bg-[#ECFDF3] text-[#008138]"
+                            : "bg-[#FFFAEB] text-[#B54708]"
                         }`}
+                        value={notify.status}
+                        onChange={(e) =>
+                          handleStatusChange(notify._id, e.target.value)
+                        }
                       >
-                        {capitalizeFirstLetter(notify.status || 'N/A')}
-                      </span>
+                        <option value="completed">Completed</option>
+                        <option value="pending">Pending</option>
+                      </select>
                     </td>
                     <td className="w-1/4 p-4 text-sm text-gray-500">
                       {formatDate(notify.createdAt)}

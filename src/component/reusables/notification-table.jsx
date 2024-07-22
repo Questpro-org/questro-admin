@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../../assets/icon";
 import { capitalizeFirstLetter, formatDate } from "../../utilities/function";
+import useRequest from "../hook/use-request";
+import { showToast } from "./toast";
 
 const TableNotification = ({
   columns,
@@ -8,24 +10,28 @@ const TableNotification = ({
   onUserClick,
   PlaceholderImage,
 }) => {
+  const userToken = localStorage.getItem("token");
+  const [selectedNotificationStatus, setSelectedNotificationStatus] = useState({
+    id: null,
+    status: null,
+  });
+
+  const { makeRequest: updateStatusPackage } = useRequest(
+    `/notifications/update/${selectedNotificationStatus.id}`,
+    "PATCH",
+    {
+      Authorization: `Bearer ${userToken}`,
+    }
+  );
+
+
+
   const getStatusColor = (status) => {
     switch (status) {
-      case "sent":
       case "completed":
         return "#ECFDF3";
-      case "confirmed":
-        return "#D1FFC9";
       case "pending":
-        return "#F2F4F7";
-      case "delivered":
-        return "#CFF0FC";
-      case "failed":
-      case "draft":
         return "#FFFAEB";
-      case "inactive":
-        return "#D9D9D9";
-      case "active":
-        return "#ECFDF3";
       default:
         return "transparent";
     }
@@ -33,25 +39,40 @@ const TableNotification = ({
 
   const getStatusText = (status) => {
     switch (status) {
-      case "sent":
       case "completed":
         return "#008138";
-      case "confirmed":
-        return "#D1FFC9";
       case "pending":
-        return "#344054";
-      case "delivered":
-        return "#CFF0FC";
-      case "failed":
-      case "draft":
         return "#B54708";
-      case "inactive":
-        return "#D9D9D9";
-      case "active":
-        return "#008138";
       default:
         return "transparent";
     }
+  };
+
+
+  useEffect(() => {
+    const updateStatus = async () => {
+      if (selectedNotificationStatus.id && selectedNotificationStatus.status) {
+        const [response] = await updateStatusPackage({ status: selectedNotificationStatus.status });
+        if (response.status) {
+          showToast(response.message, true, {
+            position: "top-center",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          showToast(response.message, false, {
+            position: "top-center",
+          });
+        }
+      }
+    };
+    updateStatus();
+       // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedNotificationStatus]);
+
+  const handleStatusChange = (notifyId, newStatus) => {
+    setSelectedNotificationStatus({ id: notifyId, status: newStatus });
   };
 
   return (
@@ -69,7 +90,6 @@ const TableNotification = ({
         {data?.map((row, rowIndex) => (
           <tr
             key={rowIndex}
-            onClick={() => onUserClick(row._id)}
             className={`border-b cursor-pointer hover:bg-gray-100 ${
               row.readByUser ? "bg-gray-200" : ""
             }`}
@@ -78,11 +98,6 @@ const TableNotification = ({
               <td
                 key={colIndex}
                 className="h-14 border-b-[2px] relative cursor-pointer"
-                onClick={() => {
-                  if (column.accessor !== "id" && column.accessor !== "_id") {
-                    onUserClick(row);
-                  }
-                }}
               >
                 {column.accessor === "created_at" ||
                 column.accessor === "createdAt" ? (
@@ -99,23 +114,27 @@ const TableNotification = ({
                   />
                 ) : column.accessor === "id" || column.accessor === "_id" ? (
                   <>
-                    <button onClick={() => onUserClick(row)}>
+                    <button onClick={() => onUserClick(row._id)}>
                       <Icon name="dotIcon" />
                     </button>
                   </>
                 ) : column.accessor === "phone" && !row[column.accessor] ? (
                   "N/A"
                 ) : column.accessor === "status" ? (
-                  <p
-                    className="-mt-1 text-[12px] p-1 text-center font-normal w-20 rounded-md cursor-pointer"
+                  <select
+                    className={`inline-block px-3 py-2 text-sm font-semibold rounded-md`}
                     style={{
                       backgroundColor: getStatusColor(row[column.accessor]),
                       color: getStatusText(row[column.accessor]),
                     }}
-                    onClick={() => onUserClick(row)}
+                    value={row[column.accessor]}
+                    onChange={(e) =>
+                      handleStatusChange(row._id, e.target.value)
+                    }
                   >
-                    {capitalizeFirstLetter(row[column.accessor])}
-                  </p>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                  </select>
                 ) : (
                   row[column.accessor]
                 )}

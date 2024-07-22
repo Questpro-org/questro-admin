@@ -95,7 +95,7 @@ function ActiveListings() {
             className="border rounded-lg shadow-lg overflow-hidden relative"
           >
             {item.propertyImage && Array.isArray(item.propertyImage) && (
-              <div className="w-full relative h-48 flex">
+              <div className="w-full relative h-48 overflow-x-scroll flex">
                 {item.propertyImage.map((image, imgIndex) => (
                   <img
                     key={imgIndex}

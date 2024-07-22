@@ -10,7 +10,7 @@ import useRequest from "../../../../component/hook/use-request";
 function ActiveListing({ activeListing, _id }) {
   const [dropdownVisible, setDropdownVisible] = useState(null);
   const userToken = localStorage.getItem("token");
-  const { makeRequest: updateBoostPackage, loading } = useRequest(
+  const { makeRequest: updateBoostPackage } = useRequest(
     `/admin/property/${_id}`,
     "PATCH",
     {
@@ -56,7 +56,7 @@ function ActiveListing({ activeListing, _id }) {
           {activeListing?.slice(0, 3).map((item, index) => (
             <div
               key={index}
-              className="border rounded-lg shadow-lg overflow-hidden relative"
+              className="border rounded-lg shadow-lg overflow-x-scroll relative"
             >
               {item.propertyImage && Array.isArray(item.propertyImage) && (
                 <div className="w-full relative h-48 flex">
