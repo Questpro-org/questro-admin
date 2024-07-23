@@ -9,7 +9,7 @@ import Button from "../../component/reusables/button";
 
 function ForgotPassword() {
   const { loading, makeRequest } = useRequest("/admin/forgot-password", "POST");
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control, reset } = useForm();
   const [success, setSuccess] = useState(false);
 
   const handleSubmitPassword = handleSubmit(async (formData) => {
@@ -22,6 +22,7 @@ function ForgotPassword() {
       showToast(response?.message, true, {
         position: "top-center",
       });
+      reset()
     } else {
       showToast(response?.message, false, {
         position: "top-center",
