@@ -6,31 +6,33 @@ import Button from "../../component/reusables/button";
 import { CircleLoader } from "react-spinners";
 import { showToast } from "../../component/reusables/toast";
 import useRequest from "../../component/hook/use-request";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ResetPassword() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
   const { loading, makeRequest } = useRequest(
     `/admin/reset-password/${id}`,
-    "PUT",
+    "POST",
     {
       Authorization: `Bearer ${userToken}`,
     }
   );
-  const { handleSubmit, control } = useForm();
-  const [viewPassword, setViewPassword] = useState("");
-  const [confirmViewPassword, setConfirmViewPassword] = useState("");
+  const { handleSubmit, control, reset, getValues } = useForm();
 
   const handleSubmitPassword = handleSubmit(async (formData) => {
     const userReset = {
       password: formData.password,
+      confirmPassword: formData.confirmPassword,
     };
     const [response] = await makeRequest(userReset);
     if (response.status) {
       showToast(response.message, true, {
         position: "top-center",
       });
+      reset();
+      navigate("/login");
     } else {
       showToast(response.message, false, {
         position: "top-center",
@@ -60,73 +62,51 @@ function ResetPassword() {
                   message: "Password must be at least 6 characters",
                 },
                 maxLength: {
-                  value: 13,
-                  message: "Password must not be more than 13 characters",
+                  value: 70,
+                  message: "Password must not be more than 70 characters",
+                },
+                pattern: {
+                  value:
+                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_\W])[A-Za-z\d@$!%*#?&_\W]{6,70}$/,
+                  message:
+                    "Password must contain at least one alphabet, one number, and one special character",
                 },
               }}
               render={({ field, fieldState }) => (
                 <div className="w-full relative">
                   <Input
-                    label="New Password"
-                    type={viewPassword ? "text" : "password"}
+                    label="Password"
+                    type="password"
                     value={field.value}
-                    className="w-full mt-3 custom-font"
+                    placeholder="Password"
+                    className="w-full"
                     error={fieldState?.error?.message}
                     onChange={field.onChange}
                   />
-                  {/* <button
-                      onClick={handleShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      className="w-5 h-5 absolute top-1/2 right-2 transform -translate-y-1/2 mt-3 md:mt-4"
-                      type="button"
-                    >
-                      {viewPassword ? (
-                        <img src={Invisible} alt="password" />
-                      ) : (
-                        <img src={Visible} alt="password" />
-                      )}
-                    </button> */}
                 </div>
               )}
             />
 
             <Controller
-              name="password"
+              name="confirmPassword"
               control={control}
               defaultValue=""
               rules={{
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-                maxLength: {
-                  value: 13,
-                  message: "Password must not be more than 13 characters",
-                },
+                required: "Confirm Password is required",
+                validate: (value) =>
+                  value === getValues("password") || "Passwords do not match",
               }}
               render={({ field, fieldState }) => (
                 <div className="w-full relative">
                   <Input
                     label="Confirm Password"
-                    type={confirmViewPassword ? "text" : "password"}
+                    type="password"
                     value={field.value}
-                    className="w-full mt-3 custom-font"
+                    placeholder="Confirm Password"
+                    className="w-full"
                     error={fieldState?.error?.message}
                     onChange={field.onChange}
                   />
-                  {/* <button
-                      onClick={handleConfirmShowPassword}
-                      onMouseDown={handleConfirmMouseDownPassword}
-                      className="w-5 h-5 absolute top-1/2 right-2 transform -translate-y-1/2 mt-3 md:mt-4"
-                      type="button"
-                    >
-                      {confirmViewPassword ? (
-                        <img src={Invisible} alt="password" />
-                      ) : (
-                        <img src={Visible} alt="password" />
-                      )}
-                    </button> */}
                 </div>
               )}
             />
