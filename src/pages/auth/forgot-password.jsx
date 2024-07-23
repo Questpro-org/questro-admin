@@ -17,7 +17,7 @@ function ForgotPassword() {
       email: formData.email,
     };
     const [response, status] = await makeRequest(userEmail);
-    if (status === 200) {
+    if (response?.status) {
       setSuccess(true);
       showToast(response?.message, true, {
         position: "top-center",
