@@ -13,6 +13,7 @@ import useApi from "../../../../component/hook/request";
 
 const EditAgent = ({ visible, handleClose, agent }) => {
   const subscriptionOptions = [
+    { value: "", label: "Select your plan" },
     { value: "test-daily", label: "Test-Daily" },
     { value: "test-weekly", label: "Test-Weekly" },
     { value: "test-monthly", label: "Test-Monthly" },
@@ -63,7 +64,9 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       email: agent?.email || "",
       status: agent?.status || "",
       isVerified: agent?.isVerified || "",
-      plan: agent?.subscription?.plan || "",
+      subscription: agent?.subscription
+      ? `${agent.subscription.plan}-${agent.subscription.duration}`
+      : "",
       updatedAt: moment(agent?.updatedAt) || null,
     },
   });
@@ -76,7 +79,9 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       status: agent?.status || "",
       updatedAt: moment(agent?.updatedAt) || null,
       isVerified: agent?.isVerified || "",
-      plan: agent?.subscription?.plan || "",
+      subscription: agent?.subscription
+      ? `${agent.subscription.plan}-${agent.subscription.duration}`
+      : "",
     });
   }, [agent, reset]);
 

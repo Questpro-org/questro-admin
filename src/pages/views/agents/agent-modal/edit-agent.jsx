@@ -12,6 +12,7 @@ import useApi from "../../../../component/hook/request";
 
 const EditAgent = ({ visible, handleClose, agent }) => {
   const subscriptionOptions = [
+    { value: "", label: "Select your plan" },
     { value: "test-daily", label: "Test-Daily" },
     { value: "test-weekly", label: "Test-Weekly" },
     { value: "test-monthly", label: "Test-Monthly" },
