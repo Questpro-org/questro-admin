@@ -42,11 +42,11 @@ export default function SearchSelect({
         <div
           onClick={() => setOpen(!open)}
           className={`w-full h-[45px] pl-5 flex items-center font-normal justify-between border-2 border-solid rounded-md cursor-pointer ${
-            !selected.length && "text-[#040821]"
+            !selected?.length && "text-[#040821]"
           }`}
         >
           {selected.length
-            ? selected.map((item) => (
+            ? selected?.map((item) => (
                 <span key={item} className="bg-[#459BDA] hidden text-white px-2 py-1 rounded mr-1">
                   {item} <IoIosClose onClick={() => handleRemove(item)} className="inline cursor-pointer" />
                 </span>
