@@ -28,7 +28,7 @@ function ResetPassword() {
     };
     const [response] = await makeRequest(userReset);
     if (response.status) {
-      showToast(response.message, true, {
+      showToast('A password reset link has been sent to your email address', true, {
         position: "top-center",
       });
       reset();
