@@ -12,16 +12,29 @@ import moment from "moment";
 import useApi from "../../../../component/hook/request";
 
 const EditAgent = ({ visible, handleClose, agent }) => {
-  const socialMediaPlatforms = {
-    daily: "Test-Daily",
-    weekly: "Test-Weekly",
-    monthly: "Test-Monthly",
-    quarterly: "Test-Yearly",
-    daily: "Test-Daily",
-    weekly: "Test-Weekly",
-    monthly: "Test-Monthly",
-    quarterly: "Test-Yearly",
-  };
+  const subscriptionOptions = [
+    { value: "test-daily", label: "Test-Daily" },
+    { value: "test-weekly", label: "Test-Weekly" },
+    { value: "test-monthly", label: "Test-Monthly" },
+    { value: "test-quarterly", label: "Test-Quarterly" },
+    { value: "beta-daily", label: "Beta-Daily" },
+    { value: "beta-weekly", label: "Beta-Weekly" },
+    { value: "beta-monthly", label: "Beta-Monthly" },
+    { value: "beta-quarterly", label: "Beta-Quarterly" },
+    { value: "starter-daily", label: "Starter-Daily" },
+    { value: "starter-weekly", label: "Starter-Weekly" },
+    { value: "starter-monthly", label: "Starter-Monthly" },
+    { value: "starter-quarterly", label: "Starter-Quarterly" },
+    { value: "max-daily", label: "Max-Daily" },
+    { value: "max-weekly", label: "Max-Weekly" },
+    { value: "max-monthly", label: "Max-Monthly" },
+    { value: "max-quarterly", label: "Max-Quarterly" },
+    { value: "premium-daily", label: "Premium-Daily" },
+    { value: "premium-weekly", label: "Premium-Weekly" },
+    { value: "premium-monthly", label: "Premium-Monthly" },
+    { value: "premium-quarterly", label: "Premium-Quarterly" },
+  ];
+
   const [data, setData] = useState([]);
   const userToken = localStorage.getItem("token");
   const { makeRequest } = useRequest("/admin/agents", "GET", {
@@ -51,7 +64,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       status: agent?.status || "",
       isVerified: agent?.isVerified || "",
       plan: agent?.subscription?.plan || "",
-      updatedAt: moment(agent?.updatedAt) || null, 
+      updatedAt: moment(agent?.updatedAt) || null,
     },
   });
 
@@ -68,15 +81,20 @@ const EditAgent = ({ visible, handleClose, agent }) => {
   }, [agent, reset]);
 
   const handleEdit = handleSubmit(async (formData) => {
+    const [plan, duration] = formData.subscription.split("-");
     const updatedAgent = {
       firstname: formData.firstname,
       lastname: formData.lastname,
       email: formData.email,
       status: formData.status,
       isVerified: formData.isVerified,
-      plan: formData.plan,
+      subscription: {
+        plan,
+        duration,
+      },
       updatedAt: moment(formData.updatedAt).toISOString(),
     };
+
     const [response] = await editAgent(updatedAgent);
     if (response) {
       showToast(response.message, true, {
@@ -85,8 +103,8 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       reset();
       handleClose();
       setTimeout(() => {
-        window.location.reload()
-      },2000 );
+        window.location.reload();
+      }, 2000);
     } else {
       showToast(response.message, false, {
         position: "top-center",
@@ -203,19 +221,19 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   label="Verification"
                   className="w-full"
                   error={fieldState?.error?.message}
-                  // options={[
-                  //   { value: "true", label: "Verified" },
-                  //   { value: "false", label: "Unverified" },
-                  // ]}
+                  options={[
+                    { value: "true", label: "Verified" },
+                    { value: "false", label: "Unverified" },
+                  ]}
                 />
               )}
             />
 
-             <Controller
-              name="plan"
+            <Controller
+              name="subscription"
               control={control}
               rules={{
-                required: "Subscription plan is required",
+                required: "Subscription is required",
               }}
               render={({ field, fieldState }) => (
                 <Select
@@ -223,10 +241,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   label="Subscription"
                   className="w-full"
                   error={fieldState?.error?.message}
-                  options={[
-                    { value: "true", label: "Verified" },
-                    { value: "false", label: "Unverified" },
-                  ]}
+                  options={subscriptionOptions}
                 />
               )}
             />
