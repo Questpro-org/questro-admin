@@ -13,7 +13,7 @@ export default function ThemeRoutes() {
     MainRoutes,
     { path: "/login", element: <Login /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
-    { path: "/reset-password", element: <ResetPassword /> },
+    { path: "/reset-password/:id", element: <ResetPassword /> },
     { path: "/setpassword/:id", element: <SetPassword /> },
   ]);
 }
