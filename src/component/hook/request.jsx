@@ -12,21 +12,17 @@ export default function useApi(endpoint, method, headers = {}) {
     setLoading(true);
 
     const queryParams = new URLSearchParams(params).toString();
-    const urlWithParams = queryParams
-      ? `${baseURL}${endpoint}?${queryParams}`
-      : `${baseURL}${endpoint}`;
+    const urlWithParams = queryParams ? `${baseURL}${endpoint}?${queryParams}` : `${baseURL}${endpoint}`;
 
     try {
       const response = await fetch(urlWithParams, {
         method,
         headers: {
+          "Content-Type": "application/json", // Ensure Content-Type header is included
           Authorization: `Bearer ${token}`,
           ...headers,
         },
-        body:
-          method === "POST" || method === "PUT" || method === "DELETE" || method === "PATCH"
-            ? JSON.stringify(data)
-            : undefined,
+        body: method !== "GET" ? JSON.stringify(data) : undefined, // Ensure body is correctly serialized
       });
 
       const json = await response.json();

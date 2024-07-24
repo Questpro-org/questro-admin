@@ -158,7 +158,7 @@ const AgentDetail = ({ agent, _id }) => {
         <AgentDetails
           title="Agent Status"
           icon="agentIcon"
-          value={agent?.status || "N/A"}
+          value={capitalizeFirstLetter(agent?.status) || "N/A"}
         />
 
         <AgentDetails
@@ -176,13 +176,13 @@ const AgentDetail = ({ agent, _id }) => {
         <AgentDetails
           title="Verification"
           icon="locationIcon"
-          value={agent?.isVerified || "N/A"}
+          value={agent?.isVerified ? 'Verified' : 'Not Verified' || "N/A"}
         />
 
         <AgentDetails
           title="Subscription Plan"
           icon="locationIcon"
-          value={agent?.subscription?.plan || "N/A"}
+          value={capitalizeFirstLetter(agent?.subscription?.plan) || "N/A"}
         />
       </div>
 

@@ -38,7 +38,7 @@ const AddAdmin = ({ visible, handleClose }) => {
     };
 
     const [response] = await addAdmin(addAdminUser);
-    if (response.status === 201) {
+    if (response.status) {
       showToast(response.message, true, {
         position: "top-center",
       });
@@ -128,7 +128,7 @@ const AddAdmin = ({ visible, handleClose }) => {
                 options={[
                   { value: "", label: "Select a role" },
                   { value: "admin", label: "Admin" },
-                  { value: "superAdmin", label: "Super Admin" },
+                  { value: "superadmin", label: "Super Admin" },
                 ]}
               />
             )}
