@@ -15,8 +15,6 @@ const NotificationDetails = ({ visible, handleClose, data }) => {
     }
   );
 
-  console.log(data)
-
   useEffect(() => {
     const fetchData = async () => {
       const [response] = await readNotifications(data?._id);
