@@ -57,58 +57,38 @@ const EditAgent = ({ visible, handleClose, agent }) => {
     fetchData();
   }, []);
 
-  const { handleSubmit, control, reset } = useForm({
-    defaultValues: {
-      firstname: agent?.firstname?.split(" ")[0] || "",
-      lastname: agent?.lastname?.split(" ")[1] || "",
-      email: agent?.email || "",
-      status: agent?.status || "",
-      isVerified: agent?.isVerified || "",
-      subscription: agent?.subscription
-      ? `${agent.subscription.plan}-${agent.subscription.duration}`
-      : "",
-      updatedAt: moment(agent?.updatedAt) || null,
-    },
-  });
-
-  useEffect(() => {
-    reset({
-      firstname: agent?.firstname || "",
-      lastname: agent?.lastname || "",
-      email: agent?.email || "",
-      status: agent?.status || "",
-      updatedAt: moment(agent?.updatedAt) || null,
-      isVerified: agent?.isVerified || "",
-      subscription: agent?.subscription
-      ? `${agent.subscription.plan}-${agent.subscription.duration}`
-      : "",
-    });
-  }, [agent, reset]);
+  const { handleSubmit, control, reset } = useForm();
 
   const handleEdit = handleSubmit(async (formData) => {
-    const [plan, duration] = formData.subscription.split("-");
-    const updatedAgent = {
+    let updatedAgent = {
       firstname: formData.firstname,
       lastname: formData.lastname,
       email: formData.email,
       status: formData.status,
+      agencyName: formData.agencyName,
       isVerified: formData.isVerified,
-      subscription: {
-        plan,
-        duration,
-      },
-      updatedAt: moment(formData.updatedAt).toISOString(),
     };
 
+    if (formData.subscription) {
+      const [plan, duration] = formData.subscription.split("-");
+      updatedAgent = {
+        ...updatedAgent,
+        subscription: {
+          plan,
+          duration,
+        },
+      };
+    }
+
     const [response] = await editAgent(updatedAgent);
-    if (response) {
+    if (response.status) {
       showToast(response.message, true, {
         position: "top-center",
       });
       reset();
       handleClose();
       setTimeout(() => {
-        window.location.reload();
+        window.location.reload()
       }, 2000);
     } else {
       showToast(response.message, false, {
@@ -116,6 +96,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
       });
     }
   });
+
 
   return (
     <Modal
@@ -140,7 +121,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
               name="firstname"
               control={control}
               rules={{
-                required: "Agent's first name is required",
                 minLength: {
                   value: 3,
                   message: "Agent name must be at least 3 characters",
@@ -160,7 +140,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
               name="lastname"
               control={control}
               rules={{
-                required: "Agent's last name is required",
                 minLength: {
                   value: 3,
                   message: "Agent name must be at least 3 characters",
@@ -180,7 +159,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
               name="email"
               control={control}
               rules={{
-                required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Enter a valid email. E.g., example@gmail.com",
@@ -198,9 +176,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
             <Controller
               name="status"
               control={control}
-              rules={{
-                required: "Status is required",
-              }}
               render={({ field, fieldState }) => (
                 <Select
                   {...field}
@@ -208,8 +183,10 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   className="w-full"
                   error={fieldState?.error?.message}
                   options={[
-                    { value: "pending", label: "Pending" },
+                    { value: "", label: "Choose Status" },
                     { value: "active", label: "Active" },
+                    { value: "pending", label: "Pending" },
+                    { value: "deactivate", label: "Deactivate" }
                   ]}
                 />
               )}
@@ -217,9 +194,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
             <Controller
               name="isVerified"
               control={control}
-              rules={{
-                required: "Verification is required",
-              }}
               render={({ field, fieldState }) => (
                 <Select
                   {...field}
@@ -227,6 +201,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   className="w-full"
                   error={fieldState?.error?.message}
                   options={[
+                    { value: "", label: "Select Verification" },
                     { value: "true", label: "Verified" },
                     { value: "false", label: "Unverified" },
                   ]}
@@ -237,9 +212,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
             <Controller
               name="subscription"
               control={control}
-              rules={{
-                required: "Subscription is required",
-              }}
               render={({ field, fieldState }) => (
                 <Select
                   {...field}
@@ -251,7 +223,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
               )}
             />
 
-            <Controller
+            {/* <Controller
               name="updatedAt"
               control={control}
               defaultValue={moment(agent?.updatedAt) || null}
@@ -267,7 +239,7 @@ const EditAgent = ({ visible, handleClose, agent }) => {
                   onChange={field.onChange}
                 />
               )}
-            />
+            /> */}
           </div>
 
           <div className="flex gap-8 justify-end items-center mt-8">
