@@ -18,11 +18,11 @@ export default function useApi(endpoint, method, headers = {}) {
       const response = await fetch(urlWithParams, {
         method,
         headers: {
-          "Content-Type": "application/json", // Ensure Content-Type header is included
+          "Content-Type": "application/json", 
           Authorization: `Bearer ${token}`,
           ...headers,
         },
-        body: method !== "GET" ? JSON.stringify(data) : undefined, // Ensure body is correctly serialized
+        body: method !== "GET" && data !== null ? JSON.stringify(data) : undefined,
       });
 
       const json = await response.json();
