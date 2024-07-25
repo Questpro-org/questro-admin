@@ -206,9 +206,6 @@ const EditAgent = ({ visible, handleClose, agent }) => {
             <Controller
               name="isVerified"
               control={control}
-              rules={{
-                required: "Verification is required",
-              }}
               render={({ field, fieldState }) => (
                 <Select
                   {...field}
