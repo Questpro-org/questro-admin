@@ -57,6 +57,8 @@ function Notifications() {
       status: selectedStatus,
     });
     fetchData();
+    const intervalId = setInterval(fetchData, 5000);
+    return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedStatus, currentPage]);
 
@@ -72,7 +74,7 @@ function Notifications() {
     };
 
     const [response] = await getNotification(undefined, params);
-    let notifications = response.data?.data?.docs || [];
+    let notifications = response.data?.docs || [];
 
     if (searchQuery) {
       const lowerSearchQuery = searchQuery.toLowerCase();
@@ -94,6 +96,8 @@ function Notifications() {
     };
 
     fetchData();
+    const intervalId = setInterval(fetchData, 10000);
+    return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
