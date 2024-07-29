@@ -39,11 +39,13 @@ const Dashboard = () => {
       const [response] = await getNotification(undefined, {
         recipientType: 'admin'
       });
-      const notifications = response?.data?.data?.docs || [];
+      const notifications = response?.data?.docs || [];
       setNotification(notifications);
     };
 
     fetchData();
+    const intervalId = setInterval(fetchData, 5000);
+    return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,8 +54,10 @@ const Dashboard = () => {
       const [response] = await getUnreadNotification();
       setUnreadNotification(response?.data?.unreadCount || []);
     };
-      fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchData();
+    const intervalId = setInterval(fetchData, 10000);
+    return () => clearInterval(intervalId);
+       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
