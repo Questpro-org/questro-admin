@@ -86,7 +86,7 @@ function Notifications() {
     }
 
     setNotification(notifications);
-    setTotalPages(Math.ceil(response.data?.data?.totalPages));
+    setTotalPages(Math.ceil(response.data?.totalPages));
   }
 
   useEffect(() => {
@@ -173,7 +173,7 @@ function Notifications() {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-      )}
+     )} 
     </>
   );
 }

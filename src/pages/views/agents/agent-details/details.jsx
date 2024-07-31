@@ -32,6 +32,10 @@ const AgentDetail = ({ agent, _id }) => {
   const [comment, setComment] = useState([]);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(null);
+  const params = new URLSearchParams(new URL(window.location.href).search);
+  const [currentPage, setCurrentPage] = useState(params.get("page") || 1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10;
 
   const { makeRequest } = useRequest(
     `/admin/agent/${agent?._id}/listings`,
