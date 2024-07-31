@@ -1,12 +1,11 @@
 import React from "react";
-import { Modal, DatePicker, Switch } from "antd";
+import { Modal, Switch } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../../../../component/reusables/button";
 import Input from "../../../../component/reusables/input";
 import { showToast } from "../../../../component/reusables/toast";
 import { CircleLoader } from "react-spinners";
 import Select from "../../../../component/reusables/select";
-import moment from "moment";
 import useRequest from "../../../../component/hook/use-request";
 
 const AddAdmin = ({ visible, handleClose }) => {
@@ -26,7 +25,6 @@ const AddAdmin = ({ visible, handleClose }) => {
       username: formData.username,
       email: formData.email,
       role: formData.role,
-      createdAt: formData.createdAt,
       permissions: {
         agentManagement: formData.agentManagement,
         dashboard: formData.dashboard,
@@ -134,7 +132,7 @@ const AddAdmin = ({ visible, handleClose }) => {
             )}
           />
 
-          <Controller
+          {/* <Controller
             name="createdAt"
             control={control}
             defaultValue={null}
@@ -151,7 +149,7 @@ const AddAdmin = ({ visible, handleClose }) => {
                 onChange={(date, dateString) => field.onChange(dateString)}
               />
             )}
-          />
+          /> */}
         </div>
 
         <div className="mt-6">

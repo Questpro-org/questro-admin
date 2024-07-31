@@ -120,7 +120,7 @@ function Notifications() {
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between items-center px-10 py-7">
-        <h3 className="text-[16px] font-semibold text-white">Welcome Admin</h3>
+        <h3 className="text-[16px] font-semibold text-white">Notifications</h3>
         <div className="relative" onClick={handleClick}>
           <button>
             <Icon name="bellicon" />
@@ -139,7 +139,7 @@ function Notifications() {
           <input
             className="outline-none border-none bg-transparent"
             id="input-placeholder"
-            placeholder="Search agent"
+            placeholder="Search notifications"
             value={searchQuery}
             onChange={handleSearchChange}
           />
