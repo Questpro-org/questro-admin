@@ -124,7 +124,7 @@ function Settings() {
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
-        <h3 className="text-[16px] font-semibold text-white">Agents</h3>
+        <h3 className="text-[16px] font-semibold text-white">Settings</h3>
         <div className="relative" onClick={handleClick}>
           <button>
             <Icon name="bellicon" />
@@ -163,7 +163,7 @@ function Settings() {
             value={selectedRoles}
             onChange={handleRolesChange}
           >
-            <option value="">Type</option>
+            <option value="">Roles</option>
             <option value="admin">Admin</option>
             <option value="superadmin">Super Admin</option>
             <option value="support">Support</option>

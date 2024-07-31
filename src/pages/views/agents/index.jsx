@@ -141,7 +141,7 @@ function Agents() {
             value={selectedStatus}
             onChange={handleStatusChange}
           >
-            <option value="">All</option>
+            <option value="">Status</option>
             <option value="active">Active</option>
             <option value="pending">Pending</option>
             <option value="suspended">Suspended</option>
