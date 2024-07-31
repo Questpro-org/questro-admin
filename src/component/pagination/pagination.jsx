@@ -1,6 +1,6 @@
 import React from "react";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const   Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -10,7 +10,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
+      onPageChange(Math.min(currentPage + 1, totalPages));
     }
   };
 
