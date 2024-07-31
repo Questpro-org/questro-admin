@@ -151,7 +151,7 @@ function Updates() {
   return (
     <>
       <div className="bg-[#459BDA] h-[80px] flex justify-between px-10 py-7">
-        <h3 className="text-[16px] font-semibold text-white">Agents</h3>
+        <h3 className="text-[16px] font-semibold text-white">Updates</h3>
         <div className="relative" onClick={handleClick}>
           <button>
             <Icon name="bellicon" />

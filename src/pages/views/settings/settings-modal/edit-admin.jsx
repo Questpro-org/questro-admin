@@ -27,7 +27,6 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
       username: formData.username,
       email: formData.email,
       role: formData.role,
-      createdAt: formData.createdAt,
       permissions: {
         agentManagement: formData.agentManagement,
         dashboard: formData.dashboard,
@@ -135,7 +134,7 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
             )}
           />
 
-          <Controller
+          {/* <Controller
             name="createdAt"
             control={control}
             defaultValue={null}
@@ -152,7 +151,7 @@ const EditAdmin = ({ visible, handleClose, admin }) => {
                 onChange={(date, dateString) => field.onChange(dateString)}
               />
             )}
-          />
+          /> */}
         </div>
 
         <div className="mt-6">
