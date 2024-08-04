@@ -7,7 +7,6 @@ import Pagination from "../../../component/pagination/pagination";
 
 function Updates() {
   const userToken = localStorage.getItem("token");
-  const [data, setData] = useState(null);
   const [unreadNotification, setUnreadNotification] = useState([]);
   const navigate = useNavigate();
   const [updates, setUpdates] = useState([]);
@@ -208,8 +207,8 @@ function Updates() {
             onChange={handleTypeChange}
           >
             <option value="">Type</option>
-            <option value="Push Notifications">Push Notification</option>
-            <option value="New Property">New Property</option>
+            <option value="push notifications">Push Notification</option>
+            <option value="property updates">New Property</option>
           </select>
 
           <select
