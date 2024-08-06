@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Bed from "../../../../assets/images/bed 1.svg";
 import Bath from "../../../../assets/images/bath-tub 1.svg";
 import Icon from "../../../../assets/icon";
-import { capitalizeFirstLetter } from "../../../../utilities/function";
+import { capitalizeFirstLetter, formatCurrency } from "../../../../utilities/function";
 import { showToast } from "../../../../component/reusables/toast";
 import useRequest from "../../../../component/hook/use-request";
 
@@ -80,7 +80,7 @@ function ActiveListing({ activeListing, _id }) {
               <div className="p-4 bg-[#3F90CB]">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-[28px] font-semibold">
-                    #{item.price.rent}
+                  #{formatCurrency(item.price.rent)}
                   </h2>
                 </div>
                 <div className="flex gap-5 text-sm mb-2">

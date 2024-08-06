@@ -6,7 +6,7 @@ import useRequest from "../../../../component/hook/use-request";
 import Back from "../../../../component/reusables/back";
 import Icon from "../../../../assets/icon";
 import { showToast } from "../../../../component/reusables/toast";
-import { capitalizeFirstLetter } from "../../../../utilities/function";
+import { capitalizeFirstLetter, formatCurrency } from "../../../../utilities/function";
 
 function ActiveListings() {
   const { _id } = useParams();
@@ -115,7 +115,7 @@ function ActiveListings() {
             <div className="p-4 bg-[#3F90CB]">
               <div className="flex justify-between items-center mb-2">
                 <h2 className="text-[28px] font-semibold">
-                  #{item.price.rent}
+                  #{formatCurrency(item.price.rent)}
                 </h2>
               </div>
               <div className="flex  gap-5 text-sm mb-2">

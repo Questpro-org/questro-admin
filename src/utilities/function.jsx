@@ -17,7 +17,12 @@ export const formatDate = (dateString) => {
   export function formatCurrency(value) {
     try {
       if (value != null) {
-        return `#${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
+        const numberValue = parseFloat(value);
+        if (!isNaN(numberValue)) {
+          return numberValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+        } else {
+          return "Invalid number";
+        }
       }
     } catch (e) {
       return "N/A";
