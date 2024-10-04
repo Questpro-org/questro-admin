@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const baseURL = process.env.REACT_APP_BACKEND_URL || "https://api.questpro.ng/api/v1";
+const baseURL = process.env.REACT_APP_BACKEND_URL || "https://api.questproperty.africa/api/v1";
 
 export default function useApi(endpoint, method, headers = {}) {
   const [loading, setLoading] = useState(false);
