@@ -11,13 +11,12 @@
     url("./fonts/Omnes\ Bold\ Italic.woff") format("woff"),
     url("./fonts/Omnes\ ExtraLight\ Italic.woff") format("woff"),
     url("./fonts/Omnes\ SemiBold.woff") format("woff");
-  /* Add more src entries if you have other font file formats */
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "omne";
+  font-family: "omnes";
   src: url("./fonts/Omnes\ Light.woff") format("woff");
   font-weight: 400;
   font-style: normal;
@@ -29,7 +28,7 @@
 }
 
 span{
-  font-family: "omne";
+  font-family: "omnes";
 }
 
 body {
