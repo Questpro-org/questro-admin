@@ -2,7 +2,6 @@ import React from "react";
 import PhoneImage from "../../../../assets/images/Frame 626671.svg";
 import { useNavigate } from "react-router-dom";
 import Icon from "../../../../assets/icon";
-import useRequest from "../../../../component/hook/use-request";
 import { showToast } from "../../../../component/reusables/toast";
 import useApi from "../../../../component/hook/request";
 
@@ -53,7 +52,7 @@ function Launch({ data }) {
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
               Message body{" "}
-              <span className="block font-normal">{data?.data?.data?.body}</span>
+              <span className="block font-normal">{data?.data?.data?.content}</span>
             </h1>
           </div>
         </section>

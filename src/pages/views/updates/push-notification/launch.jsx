@@ -29,7 +29,7 @@ function Launch({ data }) {
             <Icon name="msgIcon" />
             <h1 className="text-[14px] font-semibold text-[#28292C] ">
               Message body{" "}
-              <span className="block font-normal">{data?.data?.data?.body}</span>
+              <span className="block font-normal">{data?.data?.data?.content}</span>
             </h1>
           </div>
         </section>
