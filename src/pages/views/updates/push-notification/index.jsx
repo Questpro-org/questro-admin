@@ -9,7 +9,6 @@ import Launch from "./launch";
 function PushNotification() {
   const [data, setData] = useState(null);
   const [showLaunch, setShowLaunch] = useState(false);
-  const [image, setImage] = useState(null); 
   const userToken = localStorage.getItem("token");
   const { makeRequest } = useRequest("/admin/create-update-notification", "POST", {
     Authorization: `Bearer ${userToken}`,
@@ -20,7 +19,7 @@ function PushNotification() {
   const UpdateProperty = handleSubmit(async (formData) => {
       const form = new FormData();
       form.append("title", formData.title);
-      form.append("body", formData.body);
+      form.append("content", formData.content);
       form.append("country", formData.country);
       form.append("state", formData.state);
       form.append("url", formData.url);

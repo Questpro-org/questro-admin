@@ -39,7 +39,7 @@ function Push1({ control, UpdateProperty, setValue, }) {
             />
 
             <Controller
-              name="body"
+              name="content"
               control={control}
               defaultValue=""
               rules={{
