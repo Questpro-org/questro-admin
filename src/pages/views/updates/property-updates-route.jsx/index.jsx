@@ -42,7 +42,7 @@ function PropertyUpdatesRoute() {
   const UpdateProperty = handleSubmit(async (formData) => {
     const updatedAgent = {
       title: formData?.title,
-      body: formData.body,
+      content: formData.content,
       country: formData.country,
       state: formData.state,
       url: formData.url,

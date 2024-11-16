@@ -54,9 +54,9 @@ function Update1({ UpdateProperty, control, update, setValue }) {
               />
 
               <Controller
-                name="body"
+                name="content"
                 control={control}
-                defaultValue={update?.body || ""}
+                defaultValue={update?.content || ""}
                 rules={{
                   required: "Message is required",
                   minLength: {

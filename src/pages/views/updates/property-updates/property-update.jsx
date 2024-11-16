@@ -40,7 +40,7 @@ function Update1({ UpdateProperty, control, image, setImage, setValue }) {
             />
 
             <Controller
-              name="body"
+              name="content"
               control={control}
               defaultValue=""
               rules={{
